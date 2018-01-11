@@ -29,3 +29,5 @@ struct NetworkAdapter{
         }
     }
 }
+
+

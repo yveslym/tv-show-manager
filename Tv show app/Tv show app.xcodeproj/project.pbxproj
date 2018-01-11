@@ -16,6 +16,7 @@
 		20CFE61420054AEF00876855 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CFE61320054AEF00876855 /* Route.swift */; };
 		20CFE6172005E23C00876855 /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CFE6162005E23C00876855 /* URL+Extension.swift */; };
 		20CFE61920075D2900876855 /* NetworkAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CFE61820075D2900876855 /* NetworkAdapter.swift */; };
+		20CFE61B200773C400876855 /* TVShowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CFE61A200773C300876855 /* TVShowManager.swift */; };
 		9753A15EF54AC830D0A98754 /* Pods_Tv_show_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79E3F10B8A171F2E64C93224 /* Pods_Tv_show_app.framework */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +32,7 @@
 		20CFE61320054AEF00876855 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		20CFE6162005E23C00876855 /* URL+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extension.swift"; sourceTree = "<group>"; };
 		20CFE61820075D2900876855 /* NetworkAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkAdapter.swift; sourceTree = "<group>"; };
+		20CFE61A200773C300876855 /* TVShowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVShowManager.swift; sourceTree = "<group>"; };
 		308C976CFF210B85C03F58D0 /* Pods-Tv show app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tv show app.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tv show app/Pods-Tv show app.debug.xcconfig"; sourceTree = "<group>"; };
 		5C09A128E16EC22B777C6E9F /* Pods-Tv show app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tv show app.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tv show app/Pods-Tv show app.release.xcconfig"; sourceTree = "<group>"; };
 		79E3F10B8A171F2E64C93224 /* Pods_Tv_show_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tv_show_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,6 +121,7 @@
 			children = (
 				20CFE61020054AD000876855 /* ClientApi.swift */,
 				20CFE61820075D2900876855 /* NetworkAdapter.swift */,
+				20CFE61A200773C300876855 /* TVShowManager.swift */,
 			);
 			path = "Client-Api";
 			sourceTree = "<group>";
@@ -291,6 +294,7 @@
 			files = (
 				20CFE61920075D2900876855 /* NetworkAdapter.swift in Sources */,
 				20CFE5FC20054A5B00876855 /* ViewController.swift in Sources */,
+				20CFE61B200773C400876855 /* TVShowManager.swift in Sources */,
 				20CFE61420054AEF00876855 /* Route.swift in Sources */,
 				20CFE5FA20054A5B00876855 /* AppDelegate.swift in Sources */,
 				20CFE6172005E23C00876855 /* URL+Extension.swift in Sources */,
