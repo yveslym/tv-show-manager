@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		20AF761C2007E0AF001A32F6 /* ApiConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF761B2007E0AF001A32F6 /* ApiConfiguration.swift */; };
 		20CFE5FA20054A5B00876855 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CFE5F920054A5B00876855 /* AppDelegate.swift */; };
 		20CFE5FC20054A5B00876855 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CFE5FB20054A5B00876855 /* ViewController.swift */; };
 		20CFE5FF20054A5B00876855 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20CFE5FD20054A5B00876855 /* Main.storyboard */; };
@@ -17,10 +18,13 @@
 		20CFE6172005E23C00876855 /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CFE6162005E23C00876855 /* URL+Extension.swift */; };
 		20CFE61920075D2900876855 /* NetworkAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CFE61820075D2900876855 /* NetworkAdapter.swift */; };
 		20CFE61B200773C400876855 /* TVShowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CFE61A200773C300876855 /* TVShowManager.swift */; };
+		20CFE61D2007753000876855 /* TVShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CFE61C2007753000876855 /* TVShow.swift */; };
+		20CFE61F2007754600876855 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CFE61E2007754600876855 /* Episode.swift */; };
 		9753A15EF54AC830D0A98754 /* Pods_Tv_show_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79E3F10B8A171F2E64C93224 /* Pods_Tv_show_app.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		20AF761B2007E0AF001A32F6 /* ApiConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiConfiguration.swift; sourceTree = "<group>"; };
 		20CFE5F620054A5B00876855 /* Tv show app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tv show app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		20CFE5F920054A5B00876855 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		20CFE5FB20054A5B00876855 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -33,6 +37,8 @@
 		20CFE6162005E23C00876855 /* URL+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extension.swift"; sourceTree = "<group>"; };
 		20CFE61820075D2900876855 /* NetworkAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkAdapter.swift; sourceTree = "<group>"; };
 		20CFE61A200773C300876855 /* TVShowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVShowManager.swift; sourceTree = "<group>"; };
+		20CFE61C2007753000876855 /* TVShow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVShow.swift; sourceTree = "<group>"; };
+		20CFE61E2007754600876855 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		308C976CFF210B85C03F58D0 /* Pods-Tv show app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tv show app.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tv show app/Pods-Tv show app.debug.xcconfig"; sourceTree = "<group>"; };
 		5C09A128E16EC22B777C6E9F /* Pods-Tv show app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tv show app.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tv show app/Pods-Tv show app.release.xcconfig"; sourceTree = "<group>"; };
 		79E3F10B8A171F2E64C93224 /* Pods_Tv_show_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tv_show_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -89,6 +95,8 @@
 		20CFE60B20054A6C00876855 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				20CFE61C2007753000876855 /* TVShow.swift */,
+				20CFE61E2007754600876855 /* Episode.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -122,6 +130,7 @@
 				20CFE61020054AD000876855 /* ClientApi.swift */,
 				20CFE61820075D2900876855 /* NetworkAdapter.swift */,
 				20CFE61A200773C300876855 /* TVShowManager.swift */,
+				20AF761B2007E0AF001A32F6 /* ApiConfiguration.swift */,
 			);
 			path = "Client-Api";
 			sourceTree = "<group>";
@@ -271,13 +280,17 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Tv show app/Pods-Tv show app-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/ModelMapper/Mapper.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
+				"${BUILT_PRODUCTS_DIR}/Moya-ModelMapper/Moya_ModelMapper.framework",
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya_ModelMapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -294,10 +307,13 @@
 			files = (
 				20CFE61920075D2900876855 /* NetworkAdapter.swift in Sources */,
 				20CFE5FC20054A5B00876855 /* ViewController.swift in Sources */,
+				20CFE61D2007753000876855 /* TVShow.swift in Sources */,
+				20AF761C2007E0AF001A32F6 /* ApiConfiguration.swift in Sources */,
 				20CFE61B200773C400876855 /* TVShowManager.swift in Sources */,
 				20CFE61420054AEF00876855 /* Route.swift in Sources */,
 				20CFE5FA20054A5B00876855 /* AppDelegate.swift in Sources */,
 				20CFE6172005E23C00876855 /* URL+Extension.swift in Sources */,
+				20CFE61F2007754600876855 /* Episode.swift in Sources */,
 				20CFE61120054AD000876855 /* ClientApi.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

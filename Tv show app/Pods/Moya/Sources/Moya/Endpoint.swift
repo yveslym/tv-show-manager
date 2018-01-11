@@ -26,9 +26,9 @@ open class Endpoint<Target> {
     /// Main initializer for `Endpoint`.
     public init(url: String,
                 sampleResponseClosure: @escaping SampleResponseClosure,
-                method: Moya.Method,
+                method: Moya.Method = Moya.Method.get,
                 task: Task,
-                httpHeaderFields: [String: String]?) {
+                httpHeaderFields: [String: String]? = nil) {
 
         self.url = url
         self.sampleResponseClosure = sampleResponseClosure
@@ -60,13 +60,11 @@ open class Endpoint<Target> {
     }
 }
 
-/// Extension for converting an `Endpoint` into a `URLRequest`.
+/// Extension for converting an `Endpoint` into an optional `URLRequest`.
 extension Endpoint {
-    /// Returns the `Endpoint` converted to a `URLRequest` if valid. Throws an error otherwise.
-    public func urlRequest() throws -> URLRequest {
-        guard let requestURL = Foundation.URL(string: url) else {
-            throw MoyaError.requestMapping(url)
-        }
+    /// Returns the `Endpoint` converted to a `URLRequest` if valid. Returns `nil` otherwise.
+    public var urlRequest: URLRequest? {
+        guard let requestURL = Foundation.URL(string: url) else { return nil }
 
         var request = URLRequest(url: requestURL)
         request.httpMethod = method.rawValue
@@ -78,24 +76,19 @@ extension Endpoint {
         case .requestData(let data):
             request.httpBody = data
             return request
-        case let .requestJSONEncodable(encodable):
-            return try request.encoded(encodable: encodable)
         case let .requestParameters(parameters, parameterEncoding):
-            return try request.encoded(parameters: parameters, parameterEncoding: parameterEncoding)
+            return try? parameterEncoding.encode(request, with: parameters)
         case let .uploadCompositeMultipart(_, urlParameters):
-            let parameterEncoding = URLEncoding(destination: .queryString)
-            return try request.encoded(parameters: urlParameters, parameterEncoding: parameterEncoding)
+            return try? URLEncoding(destination: .queryString).encode(request, with: urlParameters)
         case let .downloadParameters(parameters, parameterEncoding, _):
-            return try request.encoded(parameters: parameters, parameterEncoding: parameterEncoding)
+            return try? parameterEncoding.encode(request, with: parameters)
         case let .requestCompositeData(bodyData: bodyData, urlParameters: urlParameters):
             request.httpBody = bodyData
-            let parameterEncoding = URLEncoding(destination: .queryString)
-            return try request.encoded(parameters: urlParameters, parameterEncoding: parameterEncoding)
+            return try? URLEncoding(destination: .queryString).encode(request, with: urlParameters)
         case let .requestCompositeParameters(bodyParameters: bodyParameters, bodyEncoding: bodyParameterEncoding, urlParameters: urlParameters):
             if bodyParameterEncoding is URLEncoding { fatalError("URLEncoding is disallowed as bodyEncoding.") }
-            let bodyfulRequest = try request.encoded(parameters: bodyParameters, parameterEncoding: bodyParameterEncoding)
-            let urlEncoding = URLEncoding(destination: .queryString)
-            return try bodyfulRequest.encoded(parameters: urlParameters, parameterEncoding: urlEncoding)
+            guard let bodyfulRequest = try? bodyParameterEncoding.encode(request, with: bodyParameters) else { return nil }
+            return try? URLEncoding(destination: .queryString).encode(bodyfulRequest, with: urlParameters)
         }
     }
 }
@@ -103,18 +96,13 @@ extension Endpoint {
 /// Required for using `Endpoint` as a key type in a `Dictionary`.
 extension Endpoint: Equatable, Hashable {
     public var hashValue: Int {
-        let request = try? urlRequest()
-        return request?.hashValue ?? url.hashValue
+        return urlRequest?.hashValue ?? url.hashValue
     }
 
-    /// Note: If both Endpoints fail to produce a URLRequest the comparison will
-    /// fall back to comparing each Endpoint's hashValue.
     public static func == <T>(lhs: Endpoint<T>, rhs: Endpoint<T>) -> Bool {
-        let lhsRequest = try? lhs.urlRequest()
-        let rhsRequest = try? rhs.urlRequest()
-        if lhsRequest != nil, rhsRequest == nil { return false }
-        if lhsRequest == nil, rhsRequest != nil { return false }
-        if lhsRequest == nil, rhsRequest == nil { return lhs.hashValue == rhs.hashValue }
-        return (lhsRequest == rhsRequest)
+        if lhs.urlRequest != nil, rhs.urlRequest == nil { return false }
+        if lhs.urlRequest == nil, rhs.urlRequest != nil { return false }
+        if lhs.urlRequest == nil, rhs.urlRequest == nil { return lhs.hashValue == rhs.hashValue }
+        return (lhs.urlRequest == rhs.urlRequest)
     }
 }

@@ -13,15 +13,10 @@ public extension MoyaProvider {
     }
 
     public final class func defaultRequestMapping(for endpoint: Endpoint<Target>, closure: RequestResultClosure) {
-        do {
-            let urlRequest = try endpoint.urlRequest()
+        if let urlRequest = endpoint.urlRequest {
             closure(.success(urlRequest))
-        } catch MoyaError.requestMapping(let url) {
-            closure(.failure(MoyaError.requestMapping(url)))
-        } catch MoyaError.parameterEncoding(let error) {
-            closure(.failure(MoyaError.parameterEncoding(error)))
-        } catch {
-            closure(.failure(MoyaError.underlying(error, nil)))
+        } else {
+            closure(.failure(MoyaError.requestMapping(endpoint.url)))
         }
     }
 

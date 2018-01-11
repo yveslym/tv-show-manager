@@ -10,15 +10,15 @@ import Foundation
 import Moya
 
 enum TvShowApi{
-    case popularTvShow (api_key: String, language: String)
-    case similarTvShow(id: Int, api_key: String, language: String)
-    case bestRateTvShow (api_key: String, language: String)
-    case getVideos(id: Int, api_key: String, language: String)
+    case popularTvShow (language: String)
+    case similarTvShow(id: Int, language: String)
+    case bestRateTvShow ( language: String)
+    case getVideos(id: Int, language: String)
     
-    case findTvShow(api_key: String, query: String,language: String)
-    case theTvDBLogin (userkey: String, username: String, apikey: String)
+    case findTvShow(query: String,language: String)
+    case theTvDBLogin
     case theTvDBEpisode(episodeId: Int, Authorization: String)
-    case theTvdbFindShow(id: Int, authorization: String)
+    case theTvdbFindShow(name:String, authorization: String)
 }
 
 extension TvShowApi:  TargetType{
@@ -62,8 +62,8 @@ extension TvShowApi:  TargetType{
             return "/login"
         case .theTvDBEpisode(let episodeId, _):
              return "/series/\(episodeId)/episodes"
-        case .theTvdbFindShow(let id, _):
-             return "/series/\(id)"
+        case .theTvdbFindShow:
+             return "/search/series"
         }
     }
     // properties to get the method
@@ -118,26 +118,29 @@ extension TvShowApi:  TargetType{
     
     // properties to get parameter
     public var task: Task {
+        
+         let api = ApiConfiguration.config
         switch self{
+        
+        case .popularTvShow(let language):
+            return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language, "page": 1], encoding: URLEncoding.default)
+        case .similarTvShow(let language):
+            return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language, "page": 1], encoding: URLEncoding.default)
+        case .bestRateTvShow(let language):
+            return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language, "page": 1], encoding: URLEncoding.default)
+        case .getVideos(let language):
+            return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language], encoding: URLEncoding.default)
+        case .findTvShow(let query,let language):
+            return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language, "query": query, "page": 1], encoding: URLEncoding.default)
             
-        case .popularTvShow(let api_key, let language):
-            return .requestParameters(parameters: ["api_key": api_key, "language": language, "page": 1], encoding: URLEncoding.default)
-        case .similarTvShow(_,let api_key, let language):
-            return .requestParameters(parameters: ["api_key": api_key, "language": language, "page": 1], encoding: URLEncoding.default)
-        case .bestRateTvShow(let api_key, let language):
-            return .requestParameters(parameters: ["api_key": api_key, "language": language, "page": 1], encoding: URLEncoding.default)
-        case .getVideos(_,let api_key, let language):
-            return .requestParameters(parameters: ["api_key": api_key, "language": language], encoding: URLEncoding.default)
-        case .findTvShow(let api_key, let query,let language):
-            return .requestParameters(parameters: ["api_key": api_key, "language": language, "query": query, "page": 1], encoding: URLEncoding.default)
+        case .theTvDBLogin:
+            return .requestParameters(parameters: ["userkey": api.thetvdbUsername!, "username": api.thetvdbUsername!, "apikey": api.theTvDbApiKey!], encoding: URLEncoding.default)
             
-        case .theTvDBLogin(let userkey, let username, let apikey):
-             return .requestParameters(parameters: ["userkey": userkey, "username": username, "apikey": apikey], encoding: URLEncoding.default)
         case .theTvDBEpisode:
             return .requestPlain
 
-        case .theTvdbFindShow:
-             return .requestPlain
+        case .theTvdbFindShow(let name):
+            return .requestParameters(parameters: ["name": name], encoding: URLEncoding.default)
         }
     }
     

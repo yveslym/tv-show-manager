@@ -9,9 +9,6 @@ public enum Task {
     /// A requests body set with data.
     case requestData(Data)
 
-    /// A request body set with `Encodable` type
-    case requestJSONEncodable(Encodable)
-
     /// A requests body set with encoded parameters.
     case requestParameters(parameters: [String: Any], encoding: ParameterEncoding)
 

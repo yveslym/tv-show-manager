@@ -16,6 +16,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        NetworkAdapter.request(target: .bestRateTvShow(api_key: "427d56490d26ac41ba7eb76387dcf1fe", language: "en-US"), success:
+        { (reponse) in
+            
+            let returnData = String(data: reponse.data, encoding: .utf8)
+            print(returnData)
+        }, error: { (error) in
+            print(error)
+        }) { (faile) in
+            print(faile)
+        }
+        
         return true
     }
 
