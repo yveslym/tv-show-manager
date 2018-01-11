@@ -7,3 +7,24 @@
 //
 
 import Foundation
+import Mapper
+
+struct Episodes: Mappable{
+    
+    var episodeName: String?
+    var overview: String?
+    var airedDate: String?
+    var seasonNumber: Int?
+    var episodeNumber: Int?
+    
+    init(map: Mapper) throws {
+        episodeName = try map.from("episodeName")
+        overview = try map.from("overview")
+        airedDate = try map.from("firstAired")
+        seasonNumber = try map.from("airedSeason")
+        episodeNumber = try map.from("airedEpisodeNumber")
+    }
+    
+    
+}
+

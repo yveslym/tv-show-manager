@@ -17,17 +17,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        NetworkAdapter.request(target: .bestRateTvShow(api_key: "427d56490d26ac41ba7eb76387dcf1fe", language: "en-US"), success:
-        { (reponse) in
-            
-            let returnData = String(data: reponse.data, encoding: .utf8)
-            print(returnData)
-        }, error: { (error) in
-            print(error)
-        }) { (faile) in
-            print(faile)
-        }
         
+        ApiConfiguration.TVShow(themoviedbApiKey: "427d56490d26ac41ba7eb76387dcf1fe", thetvdbUsername: "yveslym", thetvdbUserKey: "D0DFD1EBB2AC406B", theTvDbApiKey: "63BACB580FC7C248")
+
+        NetworkAdapter.request(target: .findTvShow(query: "game of thrones", language: .english), success: { (response) in
+            print(response.statusCode)
+           let data = String(data: response.data, encoding: .utf8)
+            print(data)
+        }, error: { (error) in
+            
+        }) { (error) in
+            
+        }
+         
         return true
     }
 

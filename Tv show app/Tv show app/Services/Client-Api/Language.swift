@@ -7,3 +7,6 @@
 //
 
 import Foundation
+enum Language: String{
+    case english = "US-en"
+}

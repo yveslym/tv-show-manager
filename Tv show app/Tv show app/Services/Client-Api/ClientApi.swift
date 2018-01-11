@@ -10,12 +10,12 @@ import Foundation
 import Moya
 
 enum TvShowApi{
-    case popularTvShow (language: String)
-    case similarTvShow(id: Int, language: String)
-    case bestRateTvShow ( language: String)
-    case getVideos(id: Int, language: String)
+    case popularTvShow (language: Language)
+    case similarTvShow(id: Int, language: Language)
+    case bestRateTvShow ( language: Language)
+    case getVideos(id: Int, language: Language)
     
-    case findTvShow(query: String,language: String)
+    case findTvShow(query: String,language: Language)
     case theTvDBLogin
     case theTvDBEpisode(episodeId: Int, Authorization: String)
     case theTvdbFindShow(name:String, authorization: String)

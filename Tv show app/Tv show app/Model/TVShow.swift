@@ -21,8 +21,7 @@ struct TVSHow: Mappable{
     var overview: String?
     var posterPath:String?
     var image: String?
-    var video : videoModel?
-    
+   
     init(map: Mapper) throws {
         try id = map.from("id")
         try popularity = map.from("popularity")
@@ -34,26 +33,6 @@ struct TVSHow: Mappable{
         try firstAirDate = map.from("first_air_date")
         let imageBaselink = "https://image.tmdb.org/t/p/w500"
         image = imageBaselink+posterPath!
-        
-        NetworkAdapter.request(target: .getVideos(id: <#T##Int#>, api_key: <#T##String#>, language: <#T##String#>),
-                               
-        success: { (response) in
-            do{
-                
-                let videos = try response.mapJSON() as? videoModel
-            
-                
-            }catch{}
-        
-        },
-        
-        error: { (<#Error#>) in
-            <#code#>
-        })
-        { (<#MoyaError#>) in
-            <#code#>
-        }
-        
     }
 }
 struct videoModel: Mappable{
@@ -61,6 +40,13 @@ struct videoModel: Mappable{
     var link: String?
     var size: String?
     var type: String?
+    init(){
+        key = ""
+        link = ""
+        size = ""
+        type = ""
+
+    }
     init(map: Mapper) throws {
         let baseLink: String = "https://www.youtube.com/watch?v="
         try key = map.from("key")
@@ -68,8 +54,6 @@ struct videoModel: Mappable{
         try type = map.from("type")
         link = baseLink+key!
     }
-    
-
 }
 
 

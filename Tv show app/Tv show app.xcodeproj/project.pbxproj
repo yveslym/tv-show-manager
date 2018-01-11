@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		20AF761C2007E0AF001A32F6 /* ApiConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF761B2007E0AF001A32F6 /* ApiConfiguration.swift */; };
+		20AF761E2007FE77001A32F6 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF761D2007FE77001A32F6 /* Language.swift */; };
 		20CFE5FA20054A5B00876855 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CFE5F920054A5B00876855 /* AppDelegate.swift */; };
 		20CFE5FC20054A5B00876855 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CFE5FB20054A5B00876855 /* ViewController.swift */; };
 		20CFE5FF20054A5B00876855 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20CFE5FD20054A5B00876855 /* Main.storyboard */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		20AF761B2007E0AF001A32F6 /* ApiConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiConfiguration.swift; sourceTree = "<group>"; };
+		20AF761D2007FE77001A32F6 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		20CFE5F620054A5B00876855 /* Tv show app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tv show app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		20CFE5F920054A5B00876855 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		20CFE5FB20054A5B00876855 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				20CFE61820075D2900876855 /* NetworkAdapter.swift */,
 				20CFE61A200773C300876855 /* TVShowManager.swift */,
 				20AF761B2007E0AF001A32F6 /* ApiConfiguration.swift */,
+				20AF761D2007FE77001A32F6 /* Language.swift */,
 			);
 			path = "Client-Api";
 			sourceTree = "<group>";
@@ -315,6 +318,7 @@
 				20CFE6172005E23C00876855 /* URL+Extension.swift in Sources */,
 				20CFE61F2007754600876855 /* Episode.swift in Sources */,
 				20CFE61120054AD000876855 /* ClientApi.swift in Sources */,
+				20AF761E2007FE77001A32F6 /* Language.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
