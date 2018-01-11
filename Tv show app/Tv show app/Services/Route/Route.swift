@@ -19,7 +19,7 @@ enum DBRoute: String{
     case getVideos = "https://api.themoviedb.org/3/tv/1399/videos"
     case findTvShow = "https://api.themoviedb.org/3/search/tv"
     case thetvdbLogin = "https://api.thetvdb.com/login"
-    case tvShowEpisode = "https://api.thetvdb.com/series/"
+    case findEpisode = "https://api.thetvdb.com/series/"
     case theTvdbFindShow = "https://api.thetvdb.com/search/series"
     
     
@@ -40,7 +40,7 @@ enum DBRoute: String{
             ]
             let data = try! JSONEncoder().encode(body)
             return data
-        case .tvShowEpisode:
+        case .findEpisode:
             return nil
         }
     }
@@ -92,7 +92,7 @@ enum DBRoute: String{
                     "name": tvShowName,
                     ]
                 return URLParams as? [String : String]
-            case .tvShowEpisode:
+            case .findEpisode:
                 return nil
             }
         }
@@ -113,7 +113,7 @@ enum DBRoute: String{
             return nil
         case .thetvdbLogin:
             return nil
-        case .tvShowEpisode:
+        case .findEpisode:
             let extra = ("\(tvShowId)/episodes")
             return extra
         case .theTvdbFindShow:
@@ -137,7 +137,7 @@ enum DBRoute: String{
             return nil
         case .thetvdbLogin:
             return ["application/json":"Content-Type"]
-        case .tvShowEpisode:
+        case .findEpisode:
             return ["application/json":"Content-Type",
                     Authorization!:"Authorization"]
         case .theTvdbFindShow:
