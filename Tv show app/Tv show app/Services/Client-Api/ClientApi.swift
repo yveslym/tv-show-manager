@@ -10,19 +10,19 @@ import Foundation
 import Moya
 
 enum TvShowApi{
-    case popularTvShow
-    case similarTvShow(id: Int)
-    case bestRateTvShow
-    case getVideos(id: Int)
+    case popularTvShow (api_key: String, language: String)
+    case similarTvShow(id: Int, api_key: String, language: String)
+    case bestRateTvShow (api_key: String, language: String)
+    case getVideos(id: Int, api_key: String, language: String)
     
-    case findTvShow(title: String)
-    case theTvDBLogin
-    case findEpisode(episodeId: Int)
+    case findTvShow(api_key: String, query: String,language: String)
+    case theTvDBLogin (userkey: String, username: String, apikey: String)
+    case theTvDBEpisode(episodeId: Int, Authorization: String)
     case theTvdbFindShow(id: Int, authorization: String)
 }
 
 extension TvShowApi:  TargetType{
-    
+    // propertie to get the base url
     public var baseURL: URL{
         switch self{
             
@@ -38,14 +38,14 @@ extension TvShowApi:  TargetType{
             return URL(string: "https://api.themoviedb.org")!
         case .theTvDBLogin:
             return URL(string: "https://api.thetvdb.com")!
-        case .findEpisode:
-            return URL(string: "https://api.thetvdb.com/series/")!
+        case .theTvDBEpisode:
+            return URL(string: "https://api.thetvdb.com")!
         case .theTvdbFindShow:
-            return URL(string: "https://api.thetvdb.com/search/series")!
+            return URL(string: "https://api.thetvdb.com")!
         }
     }
-    
-    var path: String {
+    // propertie to get the path
+    public var path: String {
         switch self{
             
         case .popularTvShow:
@@ -60,14 +60,14 @@ extension TvShowApi:  TargetType{
             return "/3/search/tv"
         case .theTvDBLogin:
             return "/login"
-        case .findEpisode(let id):
-             return "/series/\(id)/episodes"
+        case .theTvDBEpisode(let episodeId, _):
+             return "/series/\(episodeId)/episodes"
         case .theTvdbFindShow(let id, _):
              return "/series/\(id)"
         }
     }
-    
-    var method: Moya.Method {
+    // properties to get the method
+    public var method: Moya.Method {
         switch self{
             
         case .popularTvShow:
@@ -82,7 +82,7 @@ extension TvShowApi:  TargetType{
         case .findTvShow:
             return .get
        
-        case .findEpisode:
+        case .theTvDBEpisode:
             return .get
         case .theTvdbFindShow:
             return .get
@@ -92,52 +92,75 @@ extension TvShowApi:  TargetType{
         }
     }
     
-    var sampleData: Data {
+    // i have no idea what it does
+    public var sampleData: Data {
         switch self{
             
-        case .popularTvShow:
-            <#code#>
-        case .similarTvShow:
-            <#code#>
-        case .bestRateTvShow:
-            <#code#>
-        case .getVideos:
-            <#code#>
         
+        case .popularTvShow:
+             return "{}".data(using: String.Encoding.utf8)!
+        case .similarTvShow:
+             return "{}".data(using: String.Encoding.utf8)!
+        case .bestRateTvShow:
+             return "{}".data(using: String.Encoding.utf8)!
+        case .getVideos:
+             return "{}".data(using: String.Encoding.utf8)!
         case .findTvShow:
-            <#code#>
+             return "{}".data(using: String.Encoding.utf8)!
         case .theTvDBLogin:
-            <#code#>
-        case .findEpisode:
-            <#code#>
+             return "{}".data(using: String.Encoding.utf8)!
+        case .theTvDBEpisode:
+             return "{}".data(using: String.Encoding.utf8)!
         case .theTvdbFindShow:
-            <#code#>
+             return "{}".data(using: String.Encoding.utf8)!
         }
     }
     
-    var task: Task {
-        <#code#>
+    // properties to get parameter
+    public var task: Task {
+        switch self{
+            
+        case .popularTvShow(let api_key, let language):
+            return .requestParameters(parameters: ["api_key": api_key, "language": language, "page": 1], encoding: URLEncoding.default)
+        case .similarTvShow(_,let api_key, let language):
+            return .requestParameters(parameters: ["api_key": api_key, "language": language, "page": 1], encoding: URLEncoding.default)
+        case .bestRateTvShow(let api_key, let language):
+            return .requestParameters(parameters: ["api_key": api_key, "language": language, "page": 1], encoding: URLEncoding.default)
+        case .getVideos(_,let api_key, let language):
+            return .requestParameters(parameters: ["api_key": api_key, "language": language], encoding: URLEncoding.default)
+        case .findTvShow(let api_key, let query,let language):
+            return .requestParameters(parameters: ["api_key": api_key, "language": language, "query": query, "page": 1], encoding: URLEncoding.default)
+            
+        case .theTvDBLogin(let userkey, let username, let apikey):
+             return .requestParameters(parameters: ["userkey": userkey, "username": username, "apikey": apikey], encoding: URLEncoding.default)
+        case .theTvDBEpisode:
+            return .requestPlain
+
+        case .theTvdbFindShow:
+             return .requestPlain
+        }
     }
     
-    var headers: [String : String]? {
+    public var headers: [String : String]? {
         switch self{
             
         case .popularTvShow:
-            <#code#>
+            return [:]
         case .similarTvShow:
-            <#code#>
+            return [:]
         case .bestRateTvShow:
-            <#code#>
+            return [:]
         case .getVideos:
-            <#code#>
+            return [:]
        
         case .findTvShow:
-            <#code#>
+            return [:]
         case .theTvDBLogin:
             return ["Cookie" : "__cfduid=df47b370f57362bb39426d245aace88f11515483423",
                     "Content-Type" : "application/json"]
-        case .findEpisode:
-            <#code#>
+        case .theTvDBEpisode(_, let authorization):
+            return ["Authorization" : authorization,
+                    "Content-Type" : "application/json"]
         case .theTvdbFindShow( _, let authorization):
             return ["Authorization" : authorization,
                     "Content-Type" : "application/json"]
