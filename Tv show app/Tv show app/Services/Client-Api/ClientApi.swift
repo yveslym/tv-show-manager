@@ -14,11 +14,11 @@ enum TvShowApi{
     case similarTvShow(id: Int)
     case bestRateTvShow
     case getVideos(id: Int)
-    case getImage
+    
     case findTvShow(title: String)
     case theTvDBLogin
     case findEpisode(episodeId: Int)
-    case theTvdbFindShow(title: Int)
+    case theTvdbFindShow(id: Int, authorization: String)
 }
 
 extension TvShowApi:  TargetType{
@@ -34,8 +34,6 @@ extension TvShowApi:  TargetType{
             return URL(string: "https://api.themoviedb.org")!
         case .getVideos:
             return URL(string: "https://api.themoviedb.org")!
-        case .getImage:
-            return URL(string: <#T##String#>)!
         case .findTvShow:
             return URL(string: "https://api.themoviedb.org")!
         case .theTvDBLogin:
@@ -58,15 +56,13 @@ extension TvShowApi:  TargetType{
             return "/3/tv/top_rated"
         case .getVideos(let id):
             return "/3/tv/\(id)/videos"
-        case .getImage:
-            <#code#>
         case .findTvShow:
             return "/3/search/tv"
         case .theTvDBLogin:
             return "/login"
         case .findEpisode(let id):
              return "/series/\(id)/episodes"
-        case .theTvdbFindShow(let id):
+        case .theTvdbFindShow(let id, _):
              return "/series/\(id)"
         }
     }
@@ -75,23 +71,24 @@ extension TvShowApi:  TargetType{
         switch self{
             
         case .popularTvShow:
-            <#code#>
+            return .get
         case .similarTvShow:
-            <#code#>
+            return .get
         case .bestRateTvShow:
-            <#code#>
+            return .get
         case .getVideos:
-            <#code#>
-        case .getImage:
-            <#code#>
+            return .get
+       
         case .findTvShow:
-            <#code#>
-        case .theTvDBLogin:
-            <#code#>
+            return .get
+       
         case .findEpisode:
-            <#code#>
+            return .get
         case .theTvdbFindShow:
-            <#code#>
+            return .get
+        
+        case .theTvDBLogin:
+            return .post
         }
     }
     
@@ -106,8 +103,7 @@ extension TvShowApi:  TargetType{
             <#code#>
         case .getVideos:
             <#code#>
-        case .getImage:
-            <#code#>
+        
         case .findTvShow:
             <#code#>
         case .theTvDBLogin:
@@ -134,16 +130,17 @@ extension TvShowApi:  TargetType{
             <#code#>
         case .getVideos:
             <#code#>
-        case .getImage:
-            <#code#>
+       
         case .findTvShow:
             <#code#>
         case .theTvDBLogin:
-            <#code#>
+            return ["Cookie" : "__cfduid=df47b370f57362bb39426d245aace88f11515483423",
+                    "Content-Type" : "application/json"]
         case .findEpisode:
             <#code#>
-        case .theTvdbFindShow:
-            <#code#>
+        case .theTvdbFindShow( _, let authorization):
+            return ["Authorization" : authorization,
+                    "Content-Type" : "application/json"]
         }
     }
     
