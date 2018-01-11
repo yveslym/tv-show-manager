@@ -141,6 +141,7 @@ extension TvShowApi:  TargetType{
         }
     }
     
+    // propertie to get header
     public var headers: [String : String]? {
         switch self{
             
@@ -166,5 +167,4 @@ extension TvShowApi:  TargetType{
                     "Content-Type" : "application/json"]
         }
     }
-    
 }
