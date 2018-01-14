@@ -21,18 +21,30 @@ struct TVSHow: Mappable{
     var overview: String?
     var posterPath:String?
     var image: String?
+    var genres: [Genre]?
+    var homepage: String?
+      var numberOfSeasons: Int?
+    var seasons = [Season]()
+    private var manager = TVSHowManager()
    
     init(map: Mapper) throws {
-        try id = map.from("id")
-        try popularity = map.from("popularity")
-        try name = map.from("name")
-        try vote = map.from("vote_count")
-        try voteAverage = map.from("vote_average")
-        try overview = map.from("overview")
-        try posterPath = map.from("poster_path")
-        try firstAirDate = map.from("first_air_date")
+        id = try map.from("id")
+        popularity = try map.from("popularity")
+        name = try map.from("name")
+        vote = try map.from("vote_count")
+        voteAverage = try map.from("vote_average")
+        overview = try map.from("overview")
+        posterPath = try map.from("poster_path")
+        firstAirDate = try map.from("first_air_date")
+        numberOfSeasons = try map.from("number_of_seasons")
+        genres = try map.from("genres")
+        homepage = try map.from("homepage")
         let imageBaselink = "https://image.tmdb.org/t/p/w500"
         image = imageBaselink+posterPath!
+        
+        
+        
+        
     }
 }
 struct videoModel: Mappable{
@@ -53,6 +65,12 @@ struct videoModel: Mappable{
         try size = map.from("size")
         try type = map.from("type")
         link = baseLink+key!
+    }
+}
+struct TVShowResult: Mappable{
+    var result: [TVSHow]?
+    init(map: Mapper) throws {
+        result = try map.from("results")
     }
 }
 

@@ -18,7 +18,7 @@ struct NetworkAdapter{
                 
             case .success(let response):
                 if response.statusCode >= 200 && response.statusCode <= 300{
-                    successCallBack(response)
+                    return successCallBack(response)
                 }
                 else{
                     fatalError("code error not api")

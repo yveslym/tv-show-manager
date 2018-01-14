@@ -20,16 +20,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         ApiConfiguration.TVShow(themoviedbApiKey: "427d56490d26ac41ba7eb76387dcf1fe", thetvdbUsername: "yveslym", thetvdbUserKey: "D0DFD1EBB2AC406B", theTvDbApiKey: "63BACB580FC7C248")
 
-        NetworkAdapter.request(target: .findTvShow(query: "game of thrones", language: .english), success: { (response) in
-            print(response.statusCode)
-           let data = String(data: response.data, encoding: .utf8)
-            print(data)
-        }, error: { (error) in
-            
-        }) { (error) in
-            
+        let manager = TVSHowManager()
+        manager.findTvShow(title: "game of thrones") { (tvshow) in
+            print(tvshow)            
         }
-         
+        
+        
         return true
     }
 
