@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         
         
-        ApiConfiguration.TVShow(themoviedbApiKey: "427d56490d26ac41ba7eb76387dcf1fe", thetvdbUsername: "yveslym", thetvdbUserKey: "D0DFD1EBB2AC406B", theTvDbApiKey: "63BACB580FC7C248")
+        ApiConfiguration.TVShow(themoviedbApiKey: "ba61b7a133d03578fcb757842f1d9e79")
         return true
     }
 

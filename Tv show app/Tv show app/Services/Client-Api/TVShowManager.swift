@@ -44,7 +44,7 @@ struct TVSHowManager{
     }
     
      /// method to find tv show with seasons and episodes
-    func findTV(title: String,completionHandler: @escaping([TVSHow])-> Void){
+    func SearchTV(title: String,completionHandler: @escaping([TVSHow])-> Void){
         
         
         var tvshows = [TVSHow]()
@@ -149,7 +149,7 @@ struct TVSHowManager{
     }
     
     /// Method that return list of popular tvshow
-    func popularTvShow(completionHandler: @escaping([TVSHow]?)-> Void){
+    func popularTV(completionHandler: @escaping([TVSHow]?)-> Void){
         NetworkAdapter.request(target: .popularTvShow(language: .english), success: { (response) in
             
             do {
@@ -171,7 +171,7 @@ struct TVSHowManager{
         }
     }
     /// method to get best rated tv show
-    func bestRateTvShow(completionHandler: @escaping([TVSHow]?)-> Void){
+    func bestRateTV(completionHandler: @escaping([TVSHow]?)-> Void){
         NetworkAdapter.request(target: .popularTvShow(language: .english), success: { (response) in
             
             do {
@@ -191,7 +191,7 @@ struct TVSHowManager{
         }
     }
     ///method to get simalar tv show to a given tv show
-    func similarTvShow(tvShow id: Int,completionHandler: @escaping([TVSHow]?)-> Void ){
+    func similarTV(tvShowID id: Int,completionHandler: @escaping([TVSHow]?)-> Void ){
         NetworkAdapter.request(target: .similarTvShow(id: id, language: .english),success: { (response) in
             do {
                 let tvShowResult: TVShowResult = try response.map(to: TVShowResult.self)

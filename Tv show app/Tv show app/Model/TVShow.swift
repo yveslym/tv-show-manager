@@ -20,7 +20,7 @@ struct TVSHow: Mappable{
     var voteAverage: Double?
     var overview: String?
     var posterPath:String?
-    var image: String?
+    var imageURL: URL?
     var genres: [Genre]?
     var homepage: String?
       var numberOfSeasons: Int?
@@ -40,7 +40,7 @@ struct TVSHow: Mappable{
         homepage =  map.optionalFrom("homepage")
         let imageBaselink = "https://image.tmdb.org/t/p/w500"
         if posterPath != nil{
-        image = imageBaselink+posterPath!
+            imageURL = URL(string: imageBaselink+posterPath!)
         }
     }
    

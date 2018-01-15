@@ -13,26 +13,14 @@ class ApiConfiguration{
     /// propertie to hold the themoviedb Api key
      var themoviedbApiKey: String?
     
-    /// propertie to hold thetvdb username
-     var thetvdbUsername: String?
-    
-    /// propertie to hold thetvdb user Key
-     var thetvdbUserKey: String?
-    
-    /// propertie to hold thetvdb api Key
-     var theTvDbApiKey: String?
-    
-    ///
+    ///configuration propertie
     static var config = ApiConfiguration()
     
-    
     /// function to configure the TV Show Api
-    static func TVShow(themoviedbApiKey: String, thetvdbUsername: String, thetvdbUserKey: String, theTvDbApiKey: String){
+    static func TVShow(themoviedbApiKey: String){
     
         self.config.themoviedbApiKey = themoviedbApiKey
-        self.config.theTvDbApiKey = theTvDbApiKey
-        self.config.thetvdbUserKey = thetvdbUserKey
-        self.config.thetvdbUsername = thetvdbUsername
+       
     }
 }
 

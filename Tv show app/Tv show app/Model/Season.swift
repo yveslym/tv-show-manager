@@ -21,11 +21,11 @@ struct Season: Mappable{
     
     
     init(map: Mapper) throws {
-        airDate = try map.from("air_date") ?? nil
-        id = try map.from("id") ?? nil
-        overview = try map.from("overview") ?? nil
+        airDate = map.optionalFrom("air_date") ?? nil
+        id =  map.optionalFrom("id") ?? nil
+        overview =  map.optionalFrom("overview") ?? nil
         posterPath = map.optionalFrom("poster_path")
-        seasonNumber = try map.from("season_number") ?? nil
+        seasonNumber =  map.optionalFrom("season_number") ?? nil
          episodes = map.optionalFrom("episodes")
         let imageBaseLink = "https://image.tmdb.org/t/p/w500"
         if posterPath != nil{ imageURL = URL(string: imageBaseLink+posterPath!) }
