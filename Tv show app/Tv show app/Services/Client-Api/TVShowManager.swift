@@ -12,15 +12,14 @@ import Mapper
 import Moya_ModelMapper
 
 struct TVSHowManager{
-    /// method to find tv show
-    func findTvShow(title:  String, completionHandler: @escaping([TVSHow]?)-> Void){
+   /// An helper method tofind tv without season in it
+    private func findTvShow(title:  String, completionHandler: @escaping([TVSHow]?)-> Void){
         var tvShows = [TVSHow]()
         var idResult = [ShowsID]()
         let dg = DispatchGroup()
         
         
-        //let queue1 = DispatchQueue(label: "com.yveslym.queue1", qos: .userInteractive, attributes: .concurrent, autoreleaseFrequency: .inherit, target: DispatchQueue.main)
-        
+      
         self.tvShowIDs(title: title) { (tvshowIDResult) in
             
             guard let tvshowidResult = tvshowIDResult else {return completionHandler(nil)}
@@ -37,28 +36,29 @@ struct TVSHowManager{
                 })
                 
                 dg.notify(queue: DispatchQueue.main, execute: {
-                     completionHandler(tvShows)
+                    completionHandler(tvShows)
                 })
             }
             
         }
     }
     
+     /// method to find tv show with seasons and episodes
     func findTV(title: String,completionHandler: @escaping([TVSHow])-> Void){
         
-       
+        
         var tvshows = [TVSHow]()
         let dg = DispatchGroup()
-        var index = 0
+        
         self.findTvShow(title: title) { (tvshow) in
-//            tvshows = tvshow!
+            
             tvshow?.forEach{
                 var newtv = $0
                 dg.enter()
                 self.seasons(tvshow: $0.id!, numberofseason: $0.numberOfSeasons!, completionHandler: { (seasons) in
                     newtv.seasons = seasons
                     tvshows.append(newtv)
-        
+                    
                     dg.leave()
                 })
                 dg.notify(queue: .main, execute: {
@@ -69,7 +69,8 @@ struct TVSHowManager{
         }
     }
     
-    func seasons(tvshow id: Int, numberofseason: Int, completionHandler:@escaping([Season]?)-> Void){
+    // helper method to find season and episode
+    private func seasons(tvshow id: Int, numberofseason: Int, completionHandler:@escaping([Season]?)-> Void){
         let numberofseason = self.createArray(number: numberofseason)
         let dg = DispatchGroup()
         var seasons = [Season]()
@@ -79,7 +80,7 @@ struct TVSHowManager{
                 seasons.append(season!)
                 dg.leave()
             })
-           
+            
         }
         dg.notify(queue: .main, execute: {
             completionHandler(seasons)
@@ -106,28 +107,28 @@ struct TVSHowManager{
         }
     }
     
-    /// method to find season of tvshow
+    /// an Helper method to find season of tvshow
     private func tvShowSeason(tvShows id: Int, season number: Int, completionHandler:@escaping(Season?)-> Void) {
-            NetworkAdapter.request(target: .getSeasons(tvShowID: id, seasonNumber: number, language: .english), success: { (response) in
-                do{
-                   
-                    let newSeason: Season = try response.map(to: Season.self)
-                    completionHandler(newSeason)
-                  
-                }
-                    
-                catch{
-                    print("something goes wrong when decoding json on getSeasons method")
-                }
-            }, error: { (error) in
-                print("error occured: check the apiconfig is correct")
-                completionHandler(nil)
-            }) { (error) in
-                print("error occured: check your internet connection")
-                completionHandler(nil)
+        NetworkAdapter.request(target: .getSeasons(tvShowID: id, seasonNumber: number, language: .english), success: { (response) in
+            do{
+                
+                let newSeason: Season = try response.map(to: Season.self)
+                completionHandler(newSeason)
+                
             }
-}
-    /// method to get tv show details
+                
+            catch{
+                print("something goes wrong when decoding json on getSeasons method")
+            }
+        }, error: { (error) in
+            print("error occured: check the apiconfig is correct")
+            completionHandler(nil)
+        }) { (error) in
+            print("error occured: check your internet connection")
+            completionHandler(nil)
+        }
+    }
+    /// helper method to get tv show details
     private func tvShowDetails(id: Int, completionHandler: @escaping(TVSHow?)->Void){
         NetworkAdapter.request(target: .TVShowDetail(id: id, language: .english), success: { (response) in
             

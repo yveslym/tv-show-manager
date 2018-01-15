@@ -14,10 +14,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         let manager = TVSHowManager()
       
-        manager.findTV(title: "game of thrones") { (tvshow) in
-            DispatchQueue.main.async {
-                 print(tvshow)
-            }
+        manager.findTV(title: "vikings") { (tvshow) in
+        print(tvshow)
            
         }
     }
