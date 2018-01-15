@@ -24,29 +24,34 @@ struct TVSHow: Mappable{
     var genres: [Genre]?
     var homepage: String?
       var numberOfSeasons: Int?
-    var seasons = [Season]()
-    private var manager = TVSHowManager()
+    var seasons : [Season]?
    
     init(map: Mapper) throws {
-        id = try map.from("id")
-        popularity = try map.from("popularity")
-        name = try map.from("name")
-        vote = try map.from("vote_count")
-        voteAverage = try map.from("vote_average")
-        overview = try map.from("overview")
-        posterPath = try map.from("poster_path")
-        firstAirDate = try map.from("first_air_date")
-        numberOfSeasons = try map.from("number_of_seasons")
-        genres = try map.from("genres")
-        homepage = try map.from("homepage")
+        id = map.optionalFrom("id")
+        popularity =  map.optionalFrom("popularity")
+        name =  map.optionalFrom("name")
+        vote =  map.optionalFrom("vote_count")
+        voteAverage =  map.optionalFrom("vote_average")
+        overview =  map.optionalFrom("overview")
+        posterPath = map.optionalFrom("poster_path") ?? nil
+        firstAirDate =  map.optionalFrom("first_air_date")
+        numberOfSeasons =  map.optionalFrom("number_of_seasons")
+        genres =  map.optionalFrom("genres")
+        homepage =  map.optionalFrom("homepage")
         let imageBaselink = "https://image.tmdb.org/t/p/w500"
+        if posterPath != nil{
         image = imageBaselink+posterPath!
-        
-        
-        
+        }
+    }
+   
+}
+
+extension TVSHow {
+    init(){
         
     }
 }
+
 struct videoModel: Mappable{
     var key: String?
     var link: String?

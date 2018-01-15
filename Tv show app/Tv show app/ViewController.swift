@@ -12,7 +12,14 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        let manager = TVSHowManager()
+      
+        manager.findTV(title: "game of thrones") { (tvshow) in
+            DispatchQueue.main.async {
+                 print(tvshow)
+            }
+           
+        }
     }
 
     override func didReceiveMemoryWarning() {

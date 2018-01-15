@@ -19,13 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         ApiConfiguration.TVShow(themoviedbApiKey: "427d56490d26ac41ba7eb76387dcf1fe", thetvdbUsername: "yveslym", thetvdbUserKey: "D0DFD1EBB2AC406B", theTvDbApiKey: "63BACB580FC7C248")
-
-        let manager = TVSHowManager()
-        manager.findTvShow(title: "game of thrones") { (tvshow) in
-            print(tvshow)            
-        }
-        
-        
         return true
     }
 

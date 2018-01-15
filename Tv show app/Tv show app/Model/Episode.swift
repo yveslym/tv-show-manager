@@ -23,17 +23,19 @@ struct Episodes: Mappable{
     var imageURL: URL?
     
     init(map: Mapper) throws {
-        name = try map.from("name")
-        overview = try map.from("overview")
-        airedDate = try map.from("air_date")
-        seasonNumber = try map.from("season_number")
-        episodeNumber = try map.from("episode_number")
-        id = try map.from("id")
-        voteCount = try map.from("vote_count")
-        voteAverage = try map.from("vote_average")
-        still_path = try map.from("still_path")
+        name = try map.from("name") ?? nil
+        overview = try map.from("overview") ?? nil
+        airedDate = try map.from("air_date") ?? nil
+        seasonNumber = try map.from("season_number") ?? nil
+        episodeNumber = try map.from("episode_number") ?? nil
+        id = try map.from("id") ?? nil
+        voteCount = try map.from("vote_count") ?? nil
+        voteAverage = try map.from("vote_average") ?? nil
+        still_path =  map.optionalFrom("still_path") ?? nil
         let imageBaseLink = "https://image.tmdb.org/t/p/w500"
+        if still_path != nil{
         imageURL = URL(string: imageBaseLink+still_path!)
+        }
     }
     
     
