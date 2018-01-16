@@ -13,6 +13,7 @@ struct Season: Mappable{
     
     var airDate: String?
     var id: Int?
+    var name: String?
     var overview: String?
     var imageURL: URL?
     var seasonNumber: Int?
@@ -27,6 +28,7 @@ struct Season: Mappable{
         posterPath = map.optionalFrom("poster_path")
         seasonNumber =  map.optionalFrom("season_number") ?? nil
          episodes = map.optionalFrom("episodes")
+        name = map.optionalFrom("name")
         let imageBaseLink = "https://image.tmdb.org/t/p/w500"
         if posterPath != nil{ imageURL = URL(string: imageBaseLink+posterPath!) }
     }

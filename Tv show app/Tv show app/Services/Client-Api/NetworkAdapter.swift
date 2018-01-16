@@ -21,7 +21,9 @@ struct NetworkAdapter{
                     return successCallBack(response)
                 }
                 else{
-                    fatalError("code error not api")
+                    //fatalError("code error not api")
+                    let resp = String(data: response.data, encoding: .utf8)
+                    print(resp)
                 }
             case .failure(let error):
                 errorCallBack(error)

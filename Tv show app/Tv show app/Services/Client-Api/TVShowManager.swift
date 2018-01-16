@@ -69,8 +69,30 @@ struct TVSHowManager{
         }
     }
     
+    func tvShowComplet(tvShow: TVSHow, completionHandler: @escaping(TVSHow?, [Season]?)-> Void){
+        
+        //let dg = DispatchGroup()
+        
+        //var newTV = TVSHow()
+        self.tvShowDetails(id: tvShow.id!) { (tv) in
+            //newTV = tv!
+            //dg.enter()
+            self.seasons(tvshow: tvShow.id!, numberofseason: (tv?.numberOfSeasons!)!, completionHandler: { (seasons) in
+                //newTV.seasons = seasons!
+               // dg.leave()
+                completionHandler(tv,seasons)
+            })
+//            dg.notify(queue: .main, execute: {
+//                completionHandler(newTV)
+//            })
+        }
+    }
+
+    
+    
+    
     // helper method to find season and episode
-    private func seasons(tvshow id: Int, numberofseason: Int, completionHandler:@escaping([Season]?)-> Void){
+    func seasons(tvshow id: Int, numberofseason: Int, completionHandler:@escaping([Season]?)-> Void){
         let numberofseason = self.createArray(number: numberofseason)
         let dg = DispatchGroup()
         var seasons = [Season]()
@@ -129,7 +151,7 @@ struct TVSHowManager{
         }
     }
     /// helper method to get tv show details
-    private func tvShowDetails(id: Int, completionHandler: @escaping(TVSHow?)->Void){
+    func tvShowDetails(id: Int, completionHandler: @escaping(TVSHow?)->Void){
         NetworkAdapter.request(target: .TVShowDetail(id: id, language: .english), success: { (response) in
             
             do{
@@ -223,6 +245,18 @@ struct TVSHowManager{
             
         }) { (error) in
             print("error occured: check your internet connection")
+            
+        }
+    }
+    
+    func getVideos(withId id: Int, completionHandler: @escaping([videoModel]?) -> Void){
+        NetworkAdapter.request(target: .getVideos(id: id, language: .english), success: { (response) in
+            
+            let video = try! response.map(to: [videoModel].self, keyPath: "results")
+            completionHandler(video)
+        }, error: { (error) in
+            
+        }) { (error) in
             
         }
     }

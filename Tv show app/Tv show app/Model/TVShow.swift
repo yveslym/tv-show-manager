@@ -22,11 +22,17 @@ struct TVSHow: Mappable{
     var posterPath:String?
     var imageURL: URL?
     var genres: [Genre]?
+    var runTime: [Int]?
+    var status: String?
     var homepage: String?
+    var network: String?
       var numberOfSeasons: Int?
     var seasons : [Season]?
    
     init(map: Mapper) throws {
+        network = map.optionalFrom("networks")
+        runTime = map.optionalFrom("episode_run_time")
+        status = map.optionalFrom("status")
         id = map.optionalFrom("id")
         popularity =  map.optionalFrom("popularity")
         name =  map.optionalFrom("name")
@@ -66,9 +72,9 @@ struct videoModel: Mappable{
     }
     init(map: Mapper) throws {
         let baseLink: String = "https://www.youtube.com/watch?v="
-        try key = map.from("key")
-        try size = map.from("size")
-        try type = map.from("type")
+         key = map.optionalFrom("key")
+         size = map.optionalFrom("size")
+         type = map.optionalFrom("type")
         link = baseLink+key!
     }
 }

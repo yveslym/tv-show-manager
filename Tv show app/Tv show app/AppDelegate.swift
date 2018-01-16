@@ -26,6 +26,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         ApiConfiguration.TVShow(themoviedbApiKey: "ba61b7a133d03578fcb757842f1d9e79")
+        
+        
+//        let manager = TVSHowManager()
+//        var tvs = [TVSHow]()
+//        manager.airingTodayTV { (tvshow) in
+//            tvs = tvshow
+//            manager.similarTV(tvShowID: (tvs.first?.id!)!, completionHandler: { (tvshows) in
+//                print(tvshows)
+//            })
+//        }
+        
         return true
     }
 

@@ -15,23 +15,33 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
 
     // Mark: Properties
     
+//    var detailedPopularTV = [TVSHow]()
+//    var detailedAiringTV = [TVSHow]()
+//    var detailedTopRatedTV = [TVSHow]()
     
     var popularTV = [TVSHow](){
         didSet{
             DispatchQueue.main.async {
-                
                 self.popularView.reloadData()
-                
             }
+            
+//            DispatchQueue.global().async {
+//                self.getPopularTVDetails()
+//            }
         }
     }
     // properties to hold top rated tvshow
     var topRatedTV = [TVSHow](){
         didSet{
             DispatchQueue.main.async {
-                
                 self.topRatedView.reloadData()
             }
+            
+            //let when = DispatchTime.now() + 10 // change 2 to desired number of seconds
+            
+//            DispatchQueue.global().asyncAfter(deadline: when) {
+//                self.getTopRatedTVDetails()
+//            }
         }
     }
     
@@ -41,6 +51,11 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
                 
                 self.airingView.reloadData()
             }
+            
+//            let when = DispatchTime.now() + 15// change 2 to desired number of seconds
+//            DispatchQueue.global().asyncAfter(deadline: when) {
+//                 self.getAiringTVDetails()
+//            }
         }
     }
     
@@ -124,8 +139,48 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         }
     
     }
+    //download all popular tvshow detail on the background
+//    func getPopularTVDetails(){
+//         let manager = TVSHowManager()
+//
+//        self.popularTV.forEach{
+//            manager.tvShowComplet(tvShow: $0, completionHandler: { (tvshow, seasons) in
+//                var tv = tvshow
+//                tv?.seasons = seasons!
+//               // self.detailedPopularTV.append(tv!)
+//            })
+//        }
+//    }
+//
+    //download all topRated tvshow detail
+//    func getTopRatedTVDetails(){
+//        let manager = TVSHowManager()
+//        self.topRatedTV.forEach{
+//            manager.tvShowComplet(tvShow: $0, completionHandler: { (tvshow, seasons) in
+//                var tv = tvshow
+//                tv?.seasons = seasons!
+//                //self.detailedTopRatedTV.append(tv!)
+//
+//            })
+//
+//        }
+//    }
     
-    override func viewDidAppear(_ animated: Bool) {
+//    //download all topRated tvshow detail
+//    func getAiringTVDetails(){
+//        let manager = TVSHowManager()
+//        self.airingTV.forEach{
+//            manager.tvShowComplet(tvShow: $0, completionHandler: { (tvshow, seasons) in
+//                var tv = tvshow
+//                tv?.seasons = seasons!
+//               // self.detailedAiringTV.append(tv!)
+//            })
+//        }
+//    }
+//
+   
+    
+    override func viewWillAppear(_ animated: Bool) {
        
         let dq = DispatchQueue(label: "yveslym", qos: .userInteractive, attributes: .concurrent, autoreleaseFrequency: .inherit, target: DispatchQueue.global())
         
@@ -139,6 +194,26 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
             self.getAiringToday()
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destination = segue.destination as? TVShowDetailsTableViewController
+        let pagerView = sender as! FSPagerView
+        
+        switch pagerView.tag {
+        case 1:
+            destination?.tvShow = self.popularTV[pagerView.currentIndex]
+            destination?.posterImage = self.popularImage[pagerView.currentIndex]
+        case 2:
+            destination?.tvShow = self.topRatedTV[pagerView.currentIndex]
+            destination?.posterImage = self.topRatedImage[pagerView.currentIndex]
+        case 3:
+            destination?.tvShow = self.airingTV[pagerView.currentIndex]
+            destination?.posterImage = self.airingImage[pagerView.currentIndex]
+        default:
+            break
+        }
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -217,8 +292,11 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
             cell.imageView?.image = self.popularImage[index]
             return cell
         }
-        
-        
+    }
+    
+    func pagerView(_ pagerView: FSPagerView, didSelectItemAt index: Int) {
+         self.performSegue(withIdentifier: "tvshow", sender: pagerView)
+        }
     }
 
     
@@ -289,4 +367,4 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
     }
     */
 
-}
+

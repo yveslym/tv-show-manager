@@ -36,11 +36,11 @@ extension TvShowApi:  TargetType{
             
         case .popularTvShow:
             return "/3/tv/popular"
-        case .similarTvShow(let id):
+        case .similarTvShow(let id, _):
             return "/3/tv/\(id)/similar"
         case .bestRateTvShow:
             return "/3/tv/top_rated"
-        case .getVideos(let id):
+        case .getVideos(let id, _):
             return "/3/tv/\(id)/videos"
         case .findTvShow:
             return "/3/search/tv"
