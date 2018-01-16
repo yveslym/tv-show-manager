@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		202D4606200CADF000A48384 /* FSPagerCollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D4605200CADF000A48384 /* FSPagerCollectionView+Extension.swift */; };
 		20A13752200AAD8800CED7DF /* Season.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A13751200AAD8800CED7DF /* Season.swift */; };
+		20A13754200CA05500CED7DF /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A13753200CA05500CED7DF /* MainTableViewController.swift */; };
 		20AF761C2007E0AF001A32F6 /* ApiConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF761B2007E0AF001A32F6 /* ApiConfiguration.swift */; };
 		20AF761E2007FE77001A32F6 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF761D2007FE77001A32F6 /* Language.swift */; };
 		20CFE5FA20054A5B00876855 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CFE5F920054A5B00876855 /* AppDelegate.swift */; };
@@ -26,7 +28,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		202D4605200CADF000A48384 /* FSPagerCollectionView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FSPagerCollectionView+Extension.swift"; sourceTree = "<group>"; };
 		20A13751200AAD8800CED7DF /* Season.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Season.swift; sourceTree = "<group>"; };
+		20A13753200CA05500CED7DF /* MainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		20AF761B2007E0AF001A32F6 /* ApiConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiConfiguration.swift; sourceTree = "<group>"; };
 		20AF761D2007FE77001A32F6 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		20CFE5F620054A5B00876855 /* Tv show app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tv show app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,6 +120,7 @@
 		20CFE60D20054A8600876855 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				20A13753200CA05500CED7DF /* MainTableViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -153,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				20CFE6162005E23C00876855 /* URL+Extension.swift */,
+				202D4605200CADF000A48384 /* FSPagerCollectionView+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -286,6 +292,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Tv show app/Pods-Tv show app-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/FSPagerView/FSPagerView.framework",
 				"${BUILT_PRODUCTS_DIR}/ModelMapper/Mapper.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya-ModelMapper/Moya_ModelMapper.framework",
@@ -294,6 +301,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSPagerView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya_ModelMapper.framework",
@@ -312,11 +320,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				20CFE61920075D2900876855 /* NetworkAdapter.swift in Sources */,
+				20A13754200CA05500CED7DF /* MainTableViewController.swift in Sources */,
 				20CFE5FC20054A5B00876855 /* ViewController.swift in Sources */,
 				20CFE61D2007753000876855 /* TVShow.swift in Sources */,
 				20AF761C2007E0AF001A32F6 /* ApiConfiguration.swift in Sources */,
 				20A13752200AAD8800CED7DF /* Season.swift in Sources */,
 				20CFE61B200773C400876855 /* TVShowManager.swift in Sources */,
+				202D4606200CADF000A48384 /* FSPagerCollectionView+Extension.swift in Sources */,
 				20CFE61420054AEF00876855 /* Route.swift in Sources */,
 				20CFE5FA20054A5B00876855 /* AppDelegate.swift in Sources */,
 				20CFE6172005E23C00876855 /* URL+Extension.swift in Sources */,

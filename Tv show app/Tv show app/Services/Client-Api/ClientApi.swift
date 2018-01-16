@@ -17,6 +17,7 @@ enum TvShowApi{
     case getSeasons(tvShowID: Int, seasonNumber: Int,language: Language)
     case findTvShow(query: String,language: Language)
     case TVShowDetail(id: Int, language: Language)
+    case airingToday(language: Language)
 }
 
 extension TvShowApi:  TargetType{
@@ -24,8 +25,9 @@ extension TvShowApi:  TargetType{
     public var baseURL: URL{
         switch self{
             
-        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons:
+        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons,.airingToday:
             return URL(string: "https://api.themoviedb.org")!
+        
         }
     }
     // propertie to get the path
@@ -47,13 +49,15 @@ extension TvShowApi:  TargetType{
        
         case .TVShowDetail(let id,_):
              return "/3/tv/\(id)"
+        case .airingToday:
+            return "/3/tv/airing_today"
         }
     }
     // properties to get the method
     public var method: Moya.Method {
         switch self{
             
-        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons:
+        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons, .airingToday:
             return .get
         }
     }
@@ -62,7 +66,7 @@ extension TvShowApi:  TargetType{
     public var sampleData: Data {
         switch self{
             
-        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons:
+        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons, .airingToday:
             return "{}".data(using: String.Encoding.utf8)!
         }
     }
@@ -87,15 +91,19 @@ extension TvShowApi:  TargetType{
         case .getSeasons(_,_, let language):
             return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language], encoding: URLEncoding.default)
        
+            
         case .TVShowDetail(_, let language):
             return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language], encoding: URLEncoding.default)
+            
+        case .airingToday(let language):
+             return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language], encoding: URLEncoding.default)
         }
     }
     
     // propertie to get header
     public var headers: [String : String]? {
         switch self{
-         case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons:
+         case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons, .airingToday:
             return [:]
         }
     }

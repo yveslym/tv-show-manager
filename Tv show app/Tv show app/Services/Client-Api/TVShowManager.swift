@@ -172,7 +172,7 @@ struct TVSHowManager{
     }
     /// method to get best rated tv show
     func bestRateTV(completionHandler: @escaping([TVSHow]?)-> Void){
-        NetworkAdapter.request(target: .popularTvShow(language: .english), success: { (response) in
+        NetworkAdapter.request(target: .bestRateTvShow(language: .english), success: { (response) in
             
             do {
                 let tvShowResult: TVShowResult = try response.map(to: TVShowResult.self)
@@ -207,6 +207,23 @@ struct TVSHowManager{
         }) { (error) in
             print("error occured: check your internet connection")
             completionHandler(nil)
+        }
+    }
+    
+    func airingTodayTV(completionHandler: @escaping([TVSHow])-> Void){
+        NetworkAdapter.request(target: .airingToday(language: .english), success: { (response) in
+            do{
+            let tvshowResult = try response.map(to: TVShowResult.self)
+                completionHandler(tvshowResult.result!)
+            }catch{
+                print("couldn't decode tvshow")
+            }
+        }, error: { (error) in
+            print("error occured: check the apiconfig is correct")
+            
+        }) { (error) in
+            print("error occured: check your internet connection")
+            
         }
     }
     
