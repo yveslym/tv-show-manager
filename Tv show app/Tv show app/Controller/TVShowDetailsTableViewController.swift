@@ -8,6 +8,8 @@
 
 import UIKit
 import FSPagerView
+import youtube_ios_player_helper
+
 
 class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelegate, FSPagerViewDataSource {
     
@@ -152,12 +154,21 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
         
         let manager = TVSHowManager()
         manager.getVideos(withId: self.tvShow.id!) { (videos) in
-            let viewController = UIViewController()
-            let webView = UIWebView(frame: viewController.view.frame)
-            let youtubeURL = URL(string: (videos?.first?.link!)!)
-            webView.loadRequest(URLRequest(url: youtubeURL!))
-            viewController.view.addSubview(webView)
-            self.present(viewController, animated: true, completion: nil)
+             let viewController = UIViewController()
+            let playerView = YTPlayerView(frame: viewController.view.frame)
+            
+            
+            playerView.load(withVideoId: (videos?.first?.key!)!)
+            playerView.playVideo()
+            
+            self.navigationController?.viewControllers = [viewController]
+            //viewController.navigationItem
+            
+            viewController.view.addSubview(playerView)
+            self.present(viewController, animated: true, completion: {
+                playerView.playVideo()
+                
+            })
         }
        
     }
