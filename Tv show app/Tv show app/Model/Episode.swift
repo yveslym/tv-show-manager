@@ -24,6 +24,7 @@ struct Episodes: Mappable{
     
     init(map: Mapper) throws {
         name = try map.from("name") ?? nil
+       
         overview = try map.from("overview") ?? nil
         airedDate = try map.from("air_date") ?? nil
         seasonNumber = try map.from("season_number") ?? nil
