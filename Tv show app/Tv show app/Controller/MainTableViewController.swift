@@ -10,24 +10,18 @@ import UIKit
 import FSPagerView
 
 
-class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPagerViewDataSource {
+class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPagerViewDataSource, TVShowDelegate {
     
 
     // Mark: Properties
     
-//    var detailedPopularTV = [TVSHow]()
-//    var detailedAiringTV = [TVSHow]()
-//    var detailedTopRatedTV = [TVSHow]()
-    
+    let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    var delegate: TVShowDelegate!
     var popularTV = [TVSHow](){
         didSet{
             DispatchQueue.main.async {
                 self.popularView.reloadData()
             }
-            
-//            DispatchQueue.global().async {
-//                self.getPopularTVDetails()
-//            }
         }
     }
     // properties to hold top rated tvshow
@@ -36,12 +30,6 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
             DispatchQueue.main.async {
                 self.topRatedView.reloadData()
             }
-            
-            //let when = DispatchTime.now() + 10 // change 2 to desired number of seconds
-            
-//            DispatchQueue.global().asyncAfter(deadline: when) {
-//                self.getTopRatedTVDetails()
-//            }
         }
     }
     
@@ -52,10 +40,6 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
                 self.airingView.reloadData()
             }
             
-//            let when = DispatchTime.now() + 15// change 2 to desired number of seconds
-//            DispatchQueue.global().asyncAfter(deadline: when) {
-//                 self.getAiringTVDetails()
-//            }
         }
     }
     
@@ -127,9 +111,15 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         manager.airingTodayTV{ (tvshow) in
             tvshow.forEach{
                 do{
+                    //guard $0.imageURL != nil else {return}
+                    if $0.imageURL != nil{
                     let data = try  Data(contentsOf: $0.imageURL!)
                     let image = UIImage(data: data)
                     self.airingImage.append(image!)
+                    }else{
+                        let image = UIImage(named:"search")
+                        self.airingImage.append(image!)
+                    }
                 }catch{
                     print("couldn't load image")
                 }
@@ -139,45 +129,7 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         }
     
     }
-    //download all popular tvshow detail on the background
-//    func getPopularTVDetails(){
-//         let manager = TVSHowManager()
-//
-//        self.popularTV.forEach{
-//            manager.tvShowComplet(tvShow: $0, completionHandler: { (tvshow, seasons) in
-//                var tv = tvshow
-//                tv?.seasons = seasons!
-//               // self.detailedPopularTV.append(tv!)
-//            })
-//        }
-//    }
-//
-    //download all topRated tvshow detail
-//    func getTopRatedTVDetails(){
-//        let manager = TVSHowManager()
-//        self.topRatedTV.forEach{
-//            manager.tvShowComplet(tvShow: $0, completionHandler: { (tvshow, seasons) in
-//                var tv = tvshow
-//                tv?.seasons = seasons!
-//                //self.detailedTopRatedTV.append(tv!)
-//
-//            })
-//
-//        }
-//    }
-    
-//    //download all topRated tvshow detail
-//    func getAiringTVDetails(){
-//        let manager = TVSHowManager()
-//        self.airingTV.forEach{
-//            manager.tvShowComplet(tvShow: $0, completionHandler: { (tvshow, seasons) in
-//                var tv = tvshow
-//                tv?.seasons = seasons!
-//               // self.detailedAiringTV.append(tv!)
-//            })
-//        }
-//    }
-//
+
    
     
     override func viewWillAppear(_ animated: Bool) {
@@ -217,6 +169,9 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        self.delegate = self
         self.airingView.dataSource = self
         self.airingView.delegate = self
         self.topRatedView.dataSource = self
@@ -224,23 +179,32 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         self.popularView.dataSource = self
         self.popularView.delegate = self
        
+        // configure the spinner
+        
+        spinner.frame = CGRect(x: 20.0, y: 6.0, width: 40.0, height: 40.0)
+        spinner.startAnimating()
+        spinner.alpha = 0.0
+//        self.airingView.addSubview(spinner)
+//        self.popularView.addSubview(spinner)
+//        self.topRatedView.addSubview(spinner)
+        
         // configure popular view
         self.popularView.transformer = FSPagerViewTransformer(type: .overlap)
         popularView.itemSize = CGSize(width: 300, height: 300)
         popularView.isInfinite = true
-        popularView.interitemSpacing = 10
+        popularView.interitemSpacing = 5
         
         //configure topRated view
         self.topRatedView.transformer = FSPagerViewTransformer(type: .overlap)
         topRatedView.itemSize = CGSize(width: 200, height: 200)
         topRatedView.isInfinite = true
-        topRatedView.interitemSpacing = 10
+        topRatedView.interitemSpacing = 5
         
         //configure airing view
         self.airingView.transformer = FSPagerViewTransformer(type: .overlap)
         airingView.itemSize = CGSize(width: 200, height: 200)
         airingView.isInfinite = true
-        airingView.interitemSpacing = 10
+        airingView.interitemSpacing = 5
         
         
         
@@ -295,7 +259,26 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
     }
     
     func pagerView(_ pagerView: FSPagerView, didSelectItemAt index: Int) {
-         self.performSegue(withIdentifier: "tvshow", sender: pagerView)
+        view.endEditing(true)
+        
+        self.spinner.center = CGPoint(x:  pagerView.frame.size.width/2, y: pagerView.frame.size.height/2)
+        self.spinner.alpha = 1.0
+       pagerView.addSubview(spinner)
+        
+        switch pagerView.tag{
+        case 1:
+            
+                self.delegate.TVShowDetailViewController(tvShow: self.popularTV[index])
+        case 2:
+            
+                self.delegate.TVShowDetailViewController(tvShow: self.topRatedTV[index])
+        
+        case 3:
+            
+                self.delegate.TVShowDetailViewController(tvShow: self.airingTV[index])
+
+        default:
+            print("oups")
         }
     }
 
@@ -366,5 +349,5 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         // Pass the selected object to the new view controller.
     }
     */
-
+}
 

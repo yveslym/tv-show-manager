@@ -1,6 +1,7 @@
 PODS:
   - Alamofire (4.5.1)
   - FSPagerView (0.7.1)
+  - MIBlurPopup (0.1.2)
   - ModelMapper (7.2.0)
   - Moya (9.0.0):
     - Moya/Core (= 9.0.0)
@@ -17,18 +18,20 @@ PODS:
 
 DEPENDENCIES:
   - FSPagerView
+  - MIBlurPopup
   - Moya-ModelMapper
   - youtube-ios-player-helper
 
 SPEC CHECKSUMS:
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
   FSPagerView: 958aba39684e1573755ddcfcc29f7eebb8413cee
+  MIBlurPopup: 80334286d2af757ba47c1ecda17f1adecf7243b1
   ModelMapper: bef729f9c7095cadffc3c2ef9432fc5e21d8fc60
   Moya: cf5e6ee93af526532f92614004b8ad2ea60fd845
   Moya-ModelMapper: fc14d8c7d6466f11aea83e785c7f2c4c521fead6
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 89b3942f58e97835d295f6261334423e1c4f6527
+PODFILE CHECKSUM: b992f50ddf05a122a25e9d89837a7a0ee33f52f4
 
 COCOAPODS: 1.3.1

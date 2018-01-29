@@ -14,6 +14,8 @@
 		20A13754200CA05500CED7DF /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A13753200CA05500CED7DF /* MainTableViewController.swift */; };
 		20AF761C2007E0AF001A32F6 /* ApiConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF761B2007E0AF001A32F6 /* ApiConfiguration.swift */; };
 		20AF761E2007FE77001A32F6 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF761D2007FE77001A32F6 /* Language.swift */; };
+		20C90819201E8F630070FEE4 /* TVShowDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C90818201E8F630070FEE4 /* TVShowDelegate.swift */; };
+		20C9081D201EEE340070FEE4 /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C9081C201EEE340070FEE4 /* VideoViewController.swift */; };
 		20CFE5FA20054A5B00876855 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CFE5F920054A5B00876855 /* AppDelegate.swift */; };
 		20CFE5FC20054A5B00876855 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CFE5FB20054A5B00876855 /* ViewController.swift */; };
 		20CFE5FF20054A5B00876855 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20CFE5FD20054A5B00876855 /* Main.storyboard */; };
@@ -37,6 +39,8 @@
 		20A13753200CA05500CED7DF /* MainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		20AF761B2007E0AF001A32F6 /* ApiConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiConfiguration.swift; sourceTree = "<group>"; };
 		20AF761D2007FE77001A32F6 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
+		20C90818201E8F630070FEE4 /* TVShowDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVShowDelegate.swift; sourceTree = "<group>"; };
+		20C9081C201EEE340070FEE4 /* VideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
 		20CFE5F620054A5B00876855 /* Tv show app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Tv show app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		20CFE5F920054A5B00876855 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		20CFE5FB20054A5B00876855 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -68,6 +72,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		20C90817201E8F3B0070FEE4 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				20C90818201E8F630070FEE4 /* TVShowDelegate.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		20CFE5ED20054A5A00876855 = {
 			isa = PBXGroup;
 			children = (
@@ -89,6 +101,7 @@
 		20CFE5F820054A5B00876855 /* Tv show app */ = {
 			isa = PBXGroup;
 			children = (
+				20C90817201E8F3B0070FEE4 /* Protocols */,
 				20CFE6152005E22400876855 /* Extension */,
 				20CFE60E20054A9400876855 /* Services */,
 				20CFE60D20054A8600876855 /* Controller */,
@@ -126,6 +139,7 @@
 			children = (
 				20A13753200CA05500CED7DF /* MainTableViewController.swift */,
 				202D4607200DA55C00A48384 /* TVShowDetailsTableViewController.swift */,
+				20C9081C201EEE340070FEE4 /* VideoViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -299,6 +313,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Tv show app/Pods-Tv show app-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/FSPagerView/FSPagerView.framework",
+				"${BUILT_PRODUCTS_DIR}/MIBlurPopup/MIBlurPopup.framework",
 				"${BUILT_PRODUCTS_DIR}/ModelMapper/Mapper.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya-ModelMapper/Moya_ModelMapper.framework",
@@ -309,6 +324,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSPagerView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MIBlurPopup.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya_ModelMapper.framework",
@@ -329,6 +345,7 @@
 			files = (
 				20CFE61920075D2900876855 /* NetworkAdapter.swift in Sources */,
 				20A13754200CA05500CED7DF /* MainTableViewController.swift in Sources */,
+				20C9081D201EEE340070FEE4 /* VideoViewController.swift in Sources */,
 				202D4608200DA55C00A48384 /* TVShowDetailsTableViewController.swift in Sources */,
 				20CFE5FC20054A5B00876855 /* ViewController.swift in Sources */,
 				20CFE61D2007753000876855 /* TVShow.swift in Sources */,
@@ -338,6 +355,7 @@
 				202D4606200CADF000A48384 /* FSPagerCollectionView+Extension.swift in Sources */,
 				20CFE61420054AEF00876855 /* Route.swift in Sources */,
 				20CFE5FA20054A5B00876855 /* AppDelegate.swift in Sources */,
+				20C90819201E8F630070FEE4 /* TVShowDelegate.swift in Sources */,
 				202D460A200DE8FF00A48384 /* Image+Extension.swift in Sources */,
 				20CFE6172005E23C00876855 /* URL+Extension.swift in Sources */,
 				20CFE61F2007754600876855 /* Episode.swift in Sources */,

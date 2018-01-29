@@ -11,7 +11,7 @@ import FSPagerView
 import youtube_ios_player_helper
 
 
-class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelegate, FSPagerViewDataSource {
+class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelegate, FSPagerViewDataSource,TVShowDelegate {
     
     @IBOutlet weak var filterImg: UIImageView!
     @IBOutlet weak var tvShowCoverImage: UIImageView!
@@ -20,13 +20,15 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
     @IBOutlet weak var tvShowRunTime: UILabel!
     @IBOutlet weak var tvShowNetwork: UILabel!
     @IBOutlet weak var tvShowStatus: UILabel!
-    @IBOutlet weak var similarTVTitleLabel: UILabel!
-    @IBOutlet weak var seasonTitleLabel: UILabel!
-    
+//    @IBOutlet weak var similarTVTitleLabel: UILabel!
+//    @IBOutlet weak var seasonTitleLabel: UILabel!
+    @IBOutlet weak var similarTVCell: UITableViewCell!
     @IBOutlet weak var overView: UITextView!
-
+    
+    
     // Mark: Properties
     
+    var delegate: TVShowDelegate!
     var coverImage = UIImage()
     var posterImage = UIImage()
     var similarTVName = [String]()
@@ -77,35 +79,7 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
     // Mark: - Methods
     
     
-    func getDetailedTV(){
-        
-        let dq1 = DispatchQueue(label: "yveslym", qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: DispatchQueue.global())
-        
-        dq1.async {
-            
-            let manager = TVSHowManager()
-            manager.tvShowComplet(tvShow: self.tvShow, completionHandler: { (tvshow, season) in
-                var tv = tvshow
-                tv?.seasons = season!
-                self.tvShow = tv!
-                self.getSeasonImage()
-                do{
-                    let data = try Data(contentsOf: (self.tvShow.seasons?[0].episodes?[0].imageURL!)!)
-                    let image = UIImage(data: data)
-                    self.coverImage = image!
-                }catch{
-                    self.coverImage = UIImage(named: "search")!
-                }
-                
-                DispatchQueue.main.async {
-                    self.similarTVShowView.reloadData()
-                    self.tableView.reloadData()
-                }
-            })
-          
-        }
-
-    }
+    
     
     // method to get similar tvshow and all images
     func getSimilarTV(){
@@ -130,45 +104,47 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
         }
         
     }
-    func getSeasonImage(){
-        var pic = [UIImage]()
-        self.tvShow.seasons?.forEach{
-            do{
-            let data = try Data(contentsOf: $0.imageURL!)
-            let image = UIImage(data: data)
-                pic.append(image!)
-            }catch{
-                let image = UIImage(named: "search")
-                self.seasonImage.append(image!)
-            }
-        }
-        self.seasonImage = pic
-        DispatchQueue.main.async {
-            self.tvShowSeasonsView.reloadData()
-        }
-    }
+    
     
     // Mark: - IBAction
     
+    @IBAction func closeViewController(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let mainvc = storyboard.instantiateViewController(withIdentifier: "main") as! MainTableViewController
+        self.present(mainvc, animated: true, completion: nil)
+    }
     @IBAction func playTrailer(_ sender: Any) {
         
         let manager = TVSHowManager()
         manager.getVideos(withId: self.tvShow.id!) { (videos) in
-             let viewController = UIViewController()
-            let playerView = YTPlayerView(frame: viewController.view.frame)
             
+        let videoView = UIAlertController()
+//            videoView.view.frame = CGRect(x: Double(self.view.center.x), y: Double(self.view.center.y), width: Double(self.view.frame.width/0.9), height: Double(self.view.frame.height/0.6))
+//    videoView.view.center = CGPoint(x: self.view.frame.size.width/2, y:  self.view.frame.size.height/2)
             
+            let cancel = UIAlertAction(title: self.tvShow.name, style: .cancel, handler: nil)
+            videoView.addAction(cancel)
+            let playerView = YTPlayerView(frame: videoView.view.frame)
             playerView.load(withVideoId: (videos?.first?.key!)!)
             playerView.playVideo()
+            self.present(videoView, animated: true, completion: nil)
             
-            self.navigationController?.viewControllers = [viewController]
-            //viewController.navigationItem
             
-            viewController.view.addSubview(playerView)
-            self.present(viewController, animated: true, completion: {
-                playerView.playVideo()
-                
-            })
+//             let viewController = UIViewController()
+//            let playerView = YTPlayerView(frame: viewController.view.frame)
+//
+//
+//            playerView.load(withVideoId: (videos?.first?.key!)!)
+//            playerView.playVideo()
+//
+//            self.navigationController?.viewControllers = [viewController]
+//            //viewController.navigationItem
+//
+//            viewController.view.addSubview(playerView)
+//            self.present(viewController, animated: true, completion: {
+//                playerView.playVideo()
+//
+//            })
         }
        
     }
@@ -176,20 +152,29 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
     // Mark: - Table view life cycle
     
     override func viewWillAppear(_ animated: Bool) {
-        let dq = DispatchQueue(label: "yveslym", qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: DispatchQueue.global())
-       
-       
+        // self.similarTVCell.isHidden = true
     }
-    
     override func viewDidAppear(_ animated: Bool) {
-        self.tvShowTitleLabel.text = tvShow.name
-        self.tvShowStatus.text = tvShow.status
-        self.tvShowNetwork.text = tvShow.network
-        self.overView.text = self.tvShow.overview
         
-        self.tvShowPosterImage.image = posterImage
-       // let blurImage = UIImage.blurEffect(image: posterImage)
-       // self.tvShowCoverImage.image = blurImage
+//        self.tvShowTitleLabel.text = tvShow.name
+//        self.tvShowStatus.text = tvShow.status
+//        self.tvShowNetwork.text = tvShow.network
+//        self.overView.text = self.tvShow.overview
+//
+            self.tvShowPosterImage.image = self.posterImage
+        
+            delegate = self
+            self.tvShowTitleLabel.text = self.tvShow.name
+            self.tvShowStatus.text = self.tvShow.status
+            self.tvShowNetwork.text = self.tvShow.network
+            self.overView.text = self.tvShow.overview
+            self.tvShowCoverImage.image = self.coverImage
+            let runtime:Int = (self.tvShow.runTime?.first)!
+            self.tvShowRunTime.text = String("\(runtime) min")
+        
+        
+
+       
         
         DispatchQueue.global().async {
             let manager = TVSHowManager()
@@ -211,77 +196,24 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
                 
                 DispatchQueue.main.async {
                     self.similarTVShowView.reloadData()
+                    self.similarTVCell.isHidden = false
                 }
             })
-            
-            manager.tvShowComplet(tvShow: self.tvShow, completionHandler: { (tvshow, season) in
-                let sortedSeason = season?.sorted{$0.seasonNumber! < $1.seasonNumber!}
-                self.tvShow = tvshow!
-                self.tvShow.seasons = sortedSeason!
-                
-               
-                self.tvShow.seasons?.forEach{
-                    do{
-                        if let url = $0.imageURL{
-                        let data = try Data(contentsOf: url)
-                        let image = UIImage(data: data)
-                       self.seasonImage.append(image!)
-                        }
-                        else{
-                            self.seasonImage.append(self.posterImage)
-                        }
-                    }catch{
-                        let image = UIImage(named: "search")
-                        self.seasonImage.append(image!)
-                    }
-                }
-                
-                if self.tvShow.seasons?[0].episodes?[0].imageURL == nil{
-                    let blur = UIImage.blurEffect(image: self.posterImage)
-                    self.coverImage = blur
-                }else{
-                
-                    
-                do{
-                    let data = try Data(contentsOf: (self.tvShow.seasons?[0].episodes?[0].imageURL!)!)
-                    let image = UIImage(data: data)
-                    self.coverImage = image!
-                }catch{
-                    self.coverImage = UIImage(named: "search")!
-                    }
-                    
-                }
-                
-                DispatchQueue.main.async {
-                    self.tvShowSeasonsView.reloadData()
-                    self.tvShowTitleLabel.text = self.tvShow.name
-                    self.tvShowStatus.text = self.tvShow.status
-                    self.tvShowNetwork.text = self.tvShow.network
-                    self.overView.text = self.tvShow.overview
-                    self.tvShowCoverImage.image = self.coverImage
-                    let rt:Int = (tvshow?.runTime?.first)!
-                    self.tvShowRunTime.text = String("\(rt) min")
-                }
-               
-                
-            })
-            
-
         }
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //configure season view
         self.tvShowSeasonsView.transformer = FSPagerViewTransformer(type: .overlap)
-        tvShowSeasonsView.itemSize = CGSize(width: 300, height: 150)
-        //tvShowSeasonsView.isInfinite = true
-        tvShowSeasonsView.interitemSpacing = 10
+        tvShowSeasonsView.itemSize = CGSize(width: 200, height: 150)
+        tvShowSeasonsView.interitemSpacing = 5
         
         //configure season view
         self.similarTVShowView.transformer = FSPagerViewTransformer(type: .overlap)
-        similarTVShowView.itemSize = CGSize(width: 300, height: 150)
-        //similarTVShowView.isInfinite = true
-        similarTVShowView.interitemSpacing = 10
+        similarTVShowView.itemSize = CGSize(width: 250, height: 200)
+        similarTVShowView.isInfinite = true
+        similarTVShowView.interitemSpacing = 5
         
         similarTVShowView.delegate = self
         similarTVShowView.dataSource = self
@@ -329,6 +261,21 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
             let cell = pagerView.dequeueReusableCell(withReuseIdentifier: "cell", at: index)
             cell.imageView?.image = self.similarImage[index]
             return cell
+        }
+    }
+    
+    func pagerView(_ pagerView: FSPagerView, didSelectItemAt index: Int) {
+        
+        let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        spinner.frame = CGRect(x: 20.0, y: 6.0, width: 40.0, height: 40.0)
+        spinner.center = CGPoint(x:  pagerView.frame.size.width/2, y: pagerView.frame.size.height/2)
+       
+        pagerView.addSubview(spinner)
+        switch pagerView.tag{
+        case 2:
+            spinner.startAnimating()
+            delegate.TVShowDetailViewController(tvShow: similarTV[index])
+        default: print("sorry pal")
         }
     }
     
@@ -390,3 +337,5 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
     */
 
 }
+
+
