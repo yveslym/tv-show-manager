@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,27 +16,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
         
-        //UINavigationBar.appearance().tintColor = .white
-        UINavigationBar.appearance().barTintColor = UIColor(red: 51/255, green: 51/255, blue: 51/255, alpha: 0.0)
-        //UINavigationBar.appearance().backgroundColor = UIColor(red: 51/255, green: 51/255, blue: 51/255, alpha: 1)
-        //UITabBar.appearance()
-        UINavigationBar.appearance().isTranslucent = true
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
-        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge]) { (permitionGranted, error) in
+            
+        }
         
         ApiConfiguration.TVShow(themoviedbApiKey: "ba61b7a133d03578fcb757842f1d9e79")
+        Notification.generateNotification()
         
-        
-//        let manager = TVSHowManager()
-//        var tvs = [TVSHow]()
-//        manager.airingTodayTV { (tvshow) in
-//            tvs = tvshow
-//            manager.similarTV(tvShowID: (tvs.first?.id!)!, completionHandler: { (tvshows) in
-//                print(tvshows)
-//            })
-//        }
         
         return true
     }

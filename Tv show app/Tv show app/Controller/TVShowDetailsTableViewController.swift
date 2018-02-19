@@ -9,10 +9,13 @@
 import UIKit
 import FSPagerView
 import youtube_ios_player_helper
+import MIBlurPopup
+import  DOFavoriteButton
 
 
 class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelegate, FSPagerViewDataSource,TVShowDelegate {
     
+    @IBOutlet var tableview: UITableView!
     @IBOutlet weak var filterImg: UIImageView!
     @IBOutlet weak var tvShowCoverImage: UIImageView!
     @IBOutlet weak var tvShowPosterImage: UIImageView!
@@ -24,7 +27,7 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
 //    @IBOutlet weak var seasonTitleLabel: UILabel!
     @IBOutlet weak var similarTVCell: UITableViewCell!
     @IBOutlet weak var overView: UITextView!
-    
+    @IBOutlet weak var favoriteButton: UIButton!
     
     // Mark: Properties
     
@@ -32,6 +35,9 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
     var coverImage = UIImage()
     var posterImage = UIImage()
     var similarTVName = [String]()
+    let defaults = UserDefaults.standard
+    var favoriteID = UserDefaults.standard.array(forKey: "favoriteID")  as? [Int] ?? [Int]()
+
     var tvShow = TVSHow(){
         didSet{
             
@@ -63,7 +69,9 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
     
     // Mark: IBOUtlet
     
+    //@IBOutlet weak var favoriteButtom: DOFavoriteButton!
     
+   
     @IBOutlet weak var tvShowSeasonsView: FSPagerView!{
         didSet {
             self.tvShowSeasonsView.register(FSPagerViewCell.self, forCellWithReuseIdentifier: "cell")
@@ -89,9 +97,15 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
             self.similarTV = similar!
             similar?.forEach{
                 do{
+                    if $0.imageURL != nil{
                 let data = try Data(contentsOf: $0.imageURL!)
                     let image = UIImage(data: data)
                     self.similarImage.append(image!)
+                    }
+                    else{
+                        let image = UIImage(named:"search")
+                        self.similarImage.append(image!)
+                    }
                 }catch{
                     let image = UIImage(named: "search")
                      self.similarImage.append(image!)
@@ -108,51 +122,88 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
     
     // Mark: - IBAction
     
-    @IBAction func closeViewController(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let mainvc = storyboard.instantiateViewController(withIdentifier: "main") as! MainTableViewController
-        self.present(mainvc, animated: true, completion: nil)
-    }
-    @IBAction func playTrailer(_ sender: Any) {
+    @IBAction func favoriteButtonTapped(_ sender: UIButton) {
+       
+        sender.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
         
-        let manager = TVSHowManager()
-        manager.getVideos(withId: self.tvShow.id!) { (videos) in
-            
-        let videoView = UIAlertController()
-//            videoView.view.frame = CGRect(x: Double(self.view.center.x), y: Double(self.view.center.y), width: Double(self.view.frame.width/0.9), height: Double(self.view.frame.height/0.6))
-//    videoView.view.center = CGPoint(x: self.view.frame.size.width/2, y:  self.view.frame.size.height/2)
-            
-            let cancel = UIAlertAction(title: self.tvShow.name, style: .cancel, handler: nil)
-            videoView.addAction(cancel)
-            let playerView = YTPlayerView(frame: videoView.view.frame)
-            playerView.load(withVideoId: (videos?.first?.key!)!)
-            playerView.playVideo()
-            self.present(videoView, animated: true, completion: nil)
-            
-            
-//             let viewController = UIViewController()
-//            let playerView = YTPlayerView(frame: viewController.view.frame)
-//
-//
-//            playerView.load(withVideoId: (videos?.first?.key!)!)
-//            playerView.playVideo()
-//
-//            self.navigationController?.viewControllers = [viewController]
-//            //viewController.navigationItem
-//
-//            viewController.view.addSubview(playerView)
-//            self.present(viewController, animated: true, completion: {
-//                playerView.playVideo()
-//
-//            })
-        }
+        UIView.animate(withDuration: 2.0,
+                       delay: 0,
+                       usingSpringWithDamping: CGFloat(0.20),
+                       initialSpringVelocity: CGFloat(6.0),
+                       options: UIViewAnimationOptions.allowUserInteraction,
+                       animations: {
+                        sender.transform = CGAffineTransform.identity
+                        
+                        switch self.favoriteID.isEmpty{
+                        case true:
+                            self.favoriteID.append(self.tvShow.id!)
+                            self.defaults.set(self.favoriteID, forKey: "favoriteID")
+                            sender.imageView?.image = UIImage(named: "yellow-start")
+                            
+                        case false:
+                            if let index = self.favoriteID.index(of:self.tvShow.id!) {
+                                self.favoriteID.remove(at: index)
+                                self.self.defaults.set(self.favoriteID, forKey: "favoriteID")
+                                sender.imageView?.image = UIImage(named: "favorite")
+                            }
+                            else{
+                                self.favoriteID.append(self.tvShow.id!)
+                                self.defaults.set(self.favoriteID, forKey: "favoriteID")
+                                sender.imageView?.image = UIImage(named: "yellow-start")
+                            }
+                            
+                        }
+                        
+        },
+completion: { Void in()  })
+        
        
     }
     
+    @IBAction func closeViewController(_ sender: UIButton) {
+
+        sender.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+        
+        UIView.animate(withDuration: 2.0,
+                       delay: 0,
+                       usingSpringWithDamping: CGFloat(0.20),
+                       initialSpringVelocity: CGFloat(6.0),
+                       options: UIViewAnimationOptions.allowUserInteraction,
+                       animations: {
+                        sender.transform = CGAffineTransform.identity
+        },
+                       completion: { Void in()  }
+        )
+        if let vc3 = self.storyboard?.instantiateViewController(withIdentifier: "home tab") {
+           // let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            present(vc3, animated: true, completion: nil)
+        }
+
+    }
+    @IBAction func playTrailer(_ sender: Any) {
+        self.performSegue(withIdentifier: "video", sender: self)
+       
+    }
+    
+
+    
+    
+    
+    
     // Mark: - Table view life cycle
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "video"{
+        let videoVC = segue.destination as! VideoViewController
+        videoVC.tvShow = self.tvShow
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
-        // self.similarTVCell.isHidden = true
+        if favoriteID.index(of:tvShow.id!) != nil {
+            
+            self.favoriteButton.imageView?.image = UIImage(named: "yellow-start")
+        }
     }
     override func viewDidAppear(_ animated: Bool) {
         
@@ -162,14 +213,14 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
 //        self.overView.text = self.tvShow.overview
 //
             self.tvShowPosterImage.image = self.posterImage
-        
+            self.tvShowPosterImage.dropShadow()
             delegate = self
             self.tvShowTitleLabel.text = self.tvShow.name
             self.tvShowStatus.text = self.tvShow.status
             self.tvShowNetwork.text = self.tvShow.network
             self.overView.text = self.tvShow.overview
             self.tvShowCoverImage.image = self.coverImage
-            let runtime:Int = (self.tvShow.runTime?.first)!
+            let runtime:Int = (self.tvShow.runTime?.first) ?? 0
             self.tvShowRunTime.text = String("\(runtime) min")
         
         
@@ -184,13 +235,22 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
                 
                 self.similarTV.forEach{
                     do{
+                        if $0.imageURL != nil{
                         self.similarTVName.append($0.name!)
                         let data = try Data(contentsOf: $0.imageURL!)
                         let image = UIImage(data: data)
                         self.similarImage.append(image!)
+                        }
+                        else{
+                            let image = UIImage(named: "search")
+                             self.similarImage.append(image!)
+                        }
                     }catch{
                         let image = UIImage(named: "search")
                         self.similarImage.append(image!)
+                    }
+                    if $0.name == nil{
+                        self.similarTVName.append("")
                     }
                 }
                 
@@ -204,6 +264,8 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tvShowCoverImage.alpha = 0.5
         //configure season view
         self.tvShowSeasonsView.transformer = FSPagerViewTransformer(type: .overlap)
         tvShowSeasonsView.itemSize = CGSize(width: 200, height: 150)
@@ -219,6 +281,12 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
         similarTVShowView.dataSource = self
         tvShowSeasonsView.delegate = self
         tvShowSeasonsView.dataSource = self
+        
+        //favoriteButtom.addTarget(self, action: #selector(self.favoriteButtomTapped(_:)), for: .touchDown)
+        //let starButton = DOFavoriteButton(frame: favoriteButtom.frame)
+        //starButton.image = UIImage(named: "love")
+        //starButton.addTarget(self, action: #selector(self.favoriteButtomTapped(_:)), for: .touchUpInside)
+        //favoriteButtom = starButton
     }
 
    
@@ -248,7 +316,7 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
         case 2:
              let cell = pagerView.dequeueReusableCell(withReuseIdentifier: "cell", at: index)
             
-             cell.textLabel?.text =  self.similarTVName[index]
+             //cell.textLabel?.text =  self.similarTVName[index]
              cell.imageView?.image = self.similarImage[index]
              
 //             if self.similarTV.indices.contains(index-1){
@@ -274,68 +342,9 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
         switch pagerView.tag{
         case 2:
             spinner.startAnimating()
-            delegate.TVShowDetailViewController(tvShow: similarTV[index])
+            self.delegate.TVShowDetailViewController(tvShow: similarTV[pagerView.currentIndex])
         default: print("sorry pal")
         }
     }
-    
-
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
-
 

@@ -12,38 +12,39 @@ import Mapper
 import Moya_ModelMapper
 
 struct TVSHowManager{
-   /// An helper method tofind tv without season in it
+    /// An helper method tofind tv without season in it
     private func findTvShow(title:  String, completionHandler: @escaping([TVSHow]?)-> Void){
         var tvShows = [TVSHow]()
         var idResult = [ShowsID]()
         let dg = DispatchGroup()
         
-        
-      
         self.tvShowIDs(title: title) { (tvshowIDResult) in
             
             guard let tvshowidResult = tvshowIDResult else {return completionHandler(nil)}
             idResult = tvshowidResult.results!
             
-            idResult.forEach{
-                dg.enter()
-                // get tvshow info
-                self.tvShowDetails(id: $0.id!, completionHandler: { (tvshow) in
-                    guard let tvShow = tvshow else {return completionHandler(nil)}
-                    tvShows.append(tvShow)
-                    dg.leave()
+            DispatchQueue.global().async {
+                idResult.forEach{
+                    dg.enter()
+                    // get tvshow info
+                    self.tvShowDetails(id: $0.id!, completionHandler: { (tvshow) in
+                        guard let tvShow = tvshow else {return completionHandler(nil)}
+                        tvShows.append(tvShow)
+                        dg.leave()
+                        
+                    })
                     
-                })
-                
-                dg.notify(queue: DispatchQueue.main, execute: {
-                    completionHandler(tvShows)
-                })
+                    dg.notify(queue: DispatchQueue.global(), execute: {
+                        completionHandler(tvShows)
+                    })
+                }
             }
+            
             
         }
     }
     
-     /// method to find tv show with seasons and episodes
+    /// method to find tv show with seasons and episodes
     func SearchTV(title: String,completionHandler: @escaping([TVSHow])-> Void){
         
         
@@ -52,42 +53,39 @@ struct TVSHowManager{
         
         self.findTvShow(title: title) { (tvshow) in
             
-            tvshow?.forEach{
-                var newtv = $0
-                dg.enter()
-                self.seasons(tvshow: $0.id!, numberofseason: $0.numberOfSeasons!, completionHandler: { (seasons) in
-                    newtv.seasons = seasons
-                    tvshows.append(newtv)
-                    
-                    dg.leave()
-                })
-                dg.notify(queue: .main, execute: {
-                    completionHandler(tvshows)
-                })
+            DispatchQueue.global().async {
+                
+                
+                tvshow?.forEach{
+                    var newtv = $0
+                    dg.enter()
+                    self.seasons(tvshow: $0.id!, numberofseason: $0.numberOfSeasons!, completionHandler: { (seasons) in
+                        newtv.seasons = seasons
+                        tvshows.append(newtv)
+                        
+                        dg.leave()
+                    })
+                    dg.notify(queue: .global(), execute: {
+                        completionHandler(tvshows)
+                    })
+                }
             }
-            
         }
     }
     
     func tvShowComplet(tvShow: TVSHow, completionHandler: @escaping(TVSHow?, [Season]?)-> Void){
         
-        //let dg = DispatchGroup()
         
-        //var newTV = TVSHow()
         self.tvShowDetails(id: tvShow.id!) { (tv) in
             //newTV = tv!
             //dg.enter()
             self.seasons(tvshow: tvShow.id!, numberofseason: (tv?.numberOfSeasons!)!, completionHandler: { (seasons) in
-                //newTV.seasons = seasons!
-               // dg.leave()
                 completionHandler(tv,seasons)
             })
-//            dg.notify(queue: .main, execute: {
-//                completionHandler(newTV)
-//            })
+            
         }
     }
-
+    
     
     
     
@@ -96,17 +94,21 @@ struct TVSHowManager{
         let numberofseason = self.createArray(number: numberofseason)
         let dg = DispatchGroup()
         var seasons = [Season]()
-        numberofseason.forEach{
-            dg.enter()
-            self.tvShowSeason(tvShows: id, season: $0, completionHandler: { (season) in
-                seasons.append(season!)
-                dg.leave()
-            })
+        DispatchQueue.global().async {
             
+            
+            numberofseason.forEach{
+                dg.enter()
+                self.tvShowSeason(tvShows: id, season: $0, completionHandler: { (season) in
+                    seasons.append(season!)
+                    dg.leave()
+                })
+                
+            }
+            dg.notify(queue: .main, execute: {
+                completionHandler(seasons)
+            })
         }
-        dg.notify(queue: .main, execute: {
-            completionHandler(seasons)
-        })
     }
     
     // method to return id of tv show
@@ -152,26 +154,34 @@ struct TVSHowManager{
     }
     /// helper method to get tv show details
     func tvShowDetails(id: Int, completionHandler: @escaping(TVSHow?)->Void){
-        NetworkAdapter.request(target: .TVShowDetail(id: id, language: .english), success: { (response) in
+        
+        DispatchQueue.global().async {
             
-            do{
-                let tvshows = try response.map(to: TVSHow.self)
-                completionHandler(tvshows)
+            
+            NetworkAdapter.request(target: .TVShowDetail(id: id, language: .english), success: { (response) in
                 
-            }catch{
-                print("something goes wrong when decoding json tvshow detail")
+                do{
+                    let tvshows = try response.map(to: TVSHow.self)
+                    completionHandler(tvshows)
+                    
+                }catch{
+                    print("something goes wrong when decoding json tvshow detail")
+                }
+            }, error: { (error) in
+                print("error occured: check the apiconfig is correct")
+                return completionHandler(nil)
+            }) { (error) in
+                print("error occured: check your internet connection")
+                return completionHandler(nil)
             }
-        }, error: { (error) in
-            print("error occured: check the apiconfig is correct")
-            return completionHandler(nil)
-        }) { (error) in
-            print("error occured: check your internet connection")
-            return completionHandler(nil)
         }
     }
     
     /// Method that return list of popular tvshow
     func popularTV(completionHandler: @escaping([TVSHow]?)-> Void){
+        DispatchQueue.global().async {
+            
+        
         NetworkAdapter.request(target: .popularTvShow(language: .english), success: { (response) in
             
             do {
@@ -192,60 +202,68 @@ struct TVSHowManager{
             return completionHandler(nil)
         }
     }
+}
     /// method to get best rated tv show
     func bestRateTV(completionHandler: @escaping([TVSHow]?)-> Void){
-        NetworkAdapter.request(target: .bestRateTvShow(language: .english), success: { (response) in
+        DispatchQueue.global().async {
             
-            do {
-                let tvShowResult: TVShowResult = try response.map(to: TVShowResult.self)
-                guard let tvShows: [TVSHow] = tvShowResult.result else {return}
-                return completionHandler(tvShows)
-            } catch{
-                print("couldn't decode tvshow")
+            
+            NetworkAdapter.request(target: .bestRateTvShow(language: .english), success: { (response) in
+                do {
+                    let tvShowResult: TVShowResult = try response.map(to: TVShowResult.self)
+                    guard let tvShows: [TVSHow] = tvShowResult.result else {return}
+                    return completionHandler(tvShows)
+                } catch {
+                    print("couldn't decode tvshow")
+                }
+                
+            }, error: { (error) in
+                print("error occured: check the apiconfig is correct")
+                completionHandler(nil)
+            }) { (error) in
+                print("error occured: check your internet connection")
+                completionHandler(nil)
             }
-            
-        }, error: { (error) in
-            print("error occured: check the apiconfig is correct")
-            completionHandler(nil)
-        }) { (error) in
-            print("error occured: check your internet connection")
-            completionHandler(nil)
         }
     }
     ///method to get simalar tv show to a given tv show
     func similarTV(tvShowID id: Int,completionHandler: @escaping([TVSHow]?)-> Void ){
-        NetworkAdapter.request(target: .similarTvShow(id: id, language: .english),success: { (response) in
-            do {
-                let tvShowResult: TVShowResult = try response.map(to: TVShowResult.self)
-                guard let tvShows: [TVSHow] = tvShowResult.result else {return}
-                return completionHandler(tvShows)
-            } catch{
-                print("couldn't decode tvshow")
+        DispatchQueue.global().async {
+            NetworkAdapter.request(target: .similarTvShow(id: id, language: .english),success: { (response) in
+                do {
+                    let tvShowResult: TVShowResult = try response.map(to: TVShowResult.self)
+                    guard let tvShows: [TVSHow] = tvShowResult.result else {return}
+                    return completionHandler(tvShows)
+                } catch{
+                    print("couldn't decode tvshow")
+                }
+                
+            }, error: { (error) in
+                print("error occured: check the apiconfig is correct")
+                completionHandler(nil)
+            }) { (error) in
+                print("error occured: check your internet connection")
+                completionHandler(nil)
             }
-            
-        }, error: { (error) in
-            print("error occured: check the apiconfig is correct")
-            completionHandler(nil)
-        }) { (error) in
-            print("error occured: check your internet connection")
-            completionHandler(nil)
         }
     }
     
     func airingTodayTV(completionHandler: @escaping([TVSHow])-> Void){
-        NetworkAdapter.request(target: .airingToday(language: .english), success: { (response) in
-            do{
-            let tvshowResult = try response.map(to: TVShowResult.self)
-                completionHandler(tvshowResult.result!)
-            }catch{
-                print("couldn't decode tvshow")
+        DispatchQueue.global().async {
+            NetworkAdapter.request(target: .airingToday(language: .english), success: { (response) in
+                do{
+                    let tvshowResult = try response.map(to: TVShowResult.self)
+                    completionHandler(tvshowResult.result!)
+                }catch{
+                    print("couldn't decode tvshow")
+                }
+            }, error: { (error) in
+                print("error occured: check the apiconfig is correct")
+                
+            }) { (error) in
+                print("error occured: check your internet connection")
+                
             }
-        }, error: { (error) in
-            print("error occured: check the apiconfig is correct")
-            
-        }) { (error) in
-            print("error occured: check your internet connection")
-            
         }
     }
     
@@ -261,6 +279,19 @@ struct TVSHowManager{
         }
     }
     
+    func discoverShow(completionHandler: @escaping([TVSHow])-> Void){
+        DispatchQueue.global().async {
+            NetworkAdapter.request(target: .discover(language: .english, page: 1), success: { (response) in
+                let discover = try! response.map(to: [TVSHow].self, keyPath: "results")
+                completionHandler(discover)
+            }, error: { (error) in
+                
+            }) { (error) in
+                
+            }
+        }
+    }
+    
     private func createArray(number: Int) ->[Int]{
         var index = 1
         var array = [Int]()
@@ -273,12 +304,3 @@ struct TVSHowManager{
         return array
     }
 }
-
-
-
-
-
-
-
-
-

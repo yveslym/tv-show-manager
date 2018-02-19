@@ -18,6 +18,8 @@ enum TvShowApi{
     case findTvShow(query: String,language: Language)
     case TVShowDetail(id: Int, language: Language)
     case airingToday(language: Language)
+    case discover (language: Language, page: Int)
+    
 }
 
 extension TvShowApi:  TargetType{
@@ -25,9 +27,8 @@ extension TvShowApi:  TargetType{
     public var baseURL: URL{
         switch self{
             
-        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons,.airingToday:
+        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons,.airingToday, .discover:
             return URL(string: "https://api.themoviedb.org")!
-        
         }
     }
     // propertie to get the path
@@ -51,14 +52,17 @@ extension TvShowApi:  TargetType{
              return "/3/tv/\(id)"
         case .airingToday:
             return "/3/tv/airing_today"
+        case .discover:
+            return "/3/discover/tv"
         }
     }
     // properties to get the method
     public var method: Moya.Method {
         switch self{
             
-        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons, .airingToday:
+        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons, .airingToday, .discover:
             return .get
+       
         }
     }
     
@@ -66,8 +70,9 @@ extension TvShowApi:  TargetType{
     public var sampleData: Data {
         switch self{
             
-        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons, .airingToday:
+        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons, .airingToday, .discover:
             return "{}".data(using: String.Encoding.utf8)!
+       
         }
     }
     
@@ -78,11 +83,11 @@ extension TvShowApi:  TargetType{
         switch self{
         
         case .popularTvShow(let language):
-            return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language, "page": 1], encoding: URLEncoding.default)
+            return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language, "page": 1,"with_runtime.gte": "40"], encoding: URLEncoding.default)
         case .similarTvShow(let language):
-            return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language, "page": 1], encoding: URLEncoding.default)
+            return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language, "page": 1, "with_runtime.gte": "40"], encoding: URLEncoding.default)
         case .bestRateTvShow(let language):
-            return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language, "page": 1], encoding: URLEncoding.default)
+            return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language, "page": 1, "with_runtime.gte": "40"], encoding: URLEncoding.default)
         case .getVideos(let language):
             return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language], encoding: URLEncoding.default)
         case .findTvShow(let query,let language):
@@ -96,7 +101,16 @@ extension TvShowApi:  TargetType{
             return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language], encoding: URLEncoding.default)
             
         case .airingToday(let language):
-             return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language], encoding: URLEncoding.default)
+             return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language, "with_runtime.gte": "40"], encoding: URLEncoding.default)
+        case .discover( let language, let page):
+            let sort = ["popularity.desc","vote_average.desc",]
+            let date = ["2010","2011","2012","2013","2014","2015"]
+            let genre = ["18","10759","10765"]
+            let sortRan = arc4random_uniform(2)
+            
+           
+            return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language, "sort_by": sort[Int(sortRan)], "page": page, "with_genres": genre[Int(arc4random_uniform(3))], "with_runtime.gte": "40", "air_date.gte": date[Int(arc4random_uniform(6))]], encoding: URLEncoding.default)
+            
         }
     }
     
@@ -104,6 +118,8 @@ extension TvShowApi:  TargetType{
     public var headers: [String : String]? {
         switch self{
          case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons, .airingToday:
+            return [:]
+        case .discover:
             return [:]
         }
     }

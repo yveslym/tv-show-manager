@@ -7,11 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		201C73152039F94600EFFD03 /* favoriteTVTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201C73142039F94600EFFD03 /* favoriteTVTableViewCell.swift */; };
+		201C7318203A3FF000EFFD03 /* Notification Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201C7317203A3FF000EFFD03 /* Notification Center.swift */; };
 		202D4606200CADF000A48384 /* FSPagerCollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D4605200CADF000A48384 /* FSPagerCollectionView+Extension.swift */; };
 		202D4608200DA55C00A48384 /* TVShowDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D4607200DA55C00A48384 /* TVShowDetailsTableViewController.swift */; };
 		202D460A200DE8FF00A48384 /* Image+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D4609200DE8FF00A48384 /* Image+Extension.swift */; };
 		20A13752200AAD8800CED7DF /* Season.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A13751200AAD8800CED7DF /* Season.swift */; };
 		20A13754200CA05500CED7DF /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A13753200CA05500CED7DF /* MainTableViewController.swift */; };
+		20A626AA2037A4A50001C065 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A626A92037A4A50001C065 /* Date+Extension.swift */; };
+		20A626AC2037A8270001C065 /* FavoriteShowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A626AB2037A8270001C065 /* FavoriteShowViewController.swift */; };
+		20A626AF2037A91F0001C065 /* Preferences.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 20A626AD2037A91F0001C065 /* Preferences.xcdatamodeld */; };
 		20AF761C2007E0AF001A32F6 /* ApiConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF761B2007E0AF001A32F6 /* ApiConfiguration.swift */; };
 		20AF761E2007FE77001A32F6 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20AF761D2007FE77001A32F6 /* Language.swift */; };
 		20C90819201E8F630070FEE4 /* TVShowDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C90818201E8F630070FEE4 /* TVShowDelegate.swift */; };
@@ -32,11 +37,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		201C73142039F94600EFFD03 /* favoriteTVTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = favoriteTVTableViewCell.swift; path = "Tv show app/view/favoriteTVTableViewCell.swift"; sourceTree = SOURCE_ROOT; };
+		201C7317203A3FF000EFFD03 /* Notification Center.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification Center.swift"; sourceTree = "<group>"; };
 		202D4605200CADF000A48384 /* FSPagerCollectionView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FSPagerCollectionView+Extension.swift"; sourceTree = "<group>"; };
 		202D4607200DA55C00A48384 /* TVShowDetailsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVShowDetailsTableViewController.swift; sourceTree = "<group>"; };
 		202D4609200DE8FF00A48384 /* Image+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Extension.swift"; sourceTree = "<group>"; };
 		20A13751200AAD8800CED7DF /* Season.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Season.swift; sourceTree = "<group>"; };
 		20A13753200CA05500CED7DF /* MainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
+		20A626A92037A4A50001C065 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		20A626AB2037A8270001C065 /* FavoriteShowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteShowViewController.swift; sourceTree = "<group>"; };
+		20A626AE2037A91F0001C065 /* Preferences.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Preferences.xcdatamodel; sourceTree = "<group>"; };
 		20AF761B2007E0AF001A32F6 /* ApiConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiConfiguration.swift; sourceTree = "<group>"; };
 		20AF761D2007FE77001A32F6 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		20C90818201E8F630070FEE4 /* TVShowDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVShowDelegate.swift; sourceTree = "<group>"; };
@@ -72,6 +82,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		201C7316203A3FDC00EFFD03 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				201C7317203A3FF000EFFD03 /* Notification Center.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
 		20C90817201E8F3B0070FEE4 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -101,6 +119,7 @@
 		20CFE5F820054A5B00876855 /* Tv show app */ = {
 			isa = PBXGroup;
 			children = (
+				201C7316203A3FDC00EFFD03 /* Helper */,
 				20C90817201E8F3B0070FEE4 /* Protocols */,
 				20CFE6152005E22400876855 /* Extension */,
 				20CFE60E20054A9400876855 /* Services */,
@@ -110,6 +129,7 @@
 				20CFE5F920054A5B00876855 /* AppDelegate.swift */,
 				20CFE5FB20054A5B00876855 /* ViewController.swift */,
 				20CFE5FD20054A5B00876855 /* Main.storyboard */,
+				20A626AD2037A91F0001C065 /* Preferences.xcdatamodeld */,
 				20CFE60020054A5B00876855 /* Assets.xcassets */,
 				20CFE60220054A5B00876855 /* LaunchScreen.storyboard */,
 				20CFE60520054A5B00876855 /* Info.plist */,
@@ -130,6 +150,7 @@
 		20CFE60C20054A7D00876855 /* view */ = {
 			isa = PBXGroup;
 			children = (
+				201C73142039F94600EFFD03 /* favoriteTVTableViewCell.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -140,6 +161,7 @@
 				20A13753200CA05500CED7DF /* MainTableViewController.swift */,
 				202D4607200DA55C00A48384 /* TVShowDetailsTableViewController.swift */,
 				20C9081C201EEE340070FEE4 /* VideoViewController.swift */,
+				20A626AB2037A8270001C065 /* FavoriteShowViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -179,6 +201,7 @@
 				20CFE6162005E23C00876855 /* URL+Extension.swift */,
 				202D4605200CADF000A48384 /* FSPagerCollectionView+Extension.swift */,
 				202D4609200DE8FF00A48384 /* Image+Extension.swift */,
+				20A626A92037A4A50001C065 /* Date+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -312,6 +335,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Tv show app/Pods-Tv show app-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/DOFavoriteButton/DOFavoriteButton.framework",
 				"${BUILT_PRODUCTS_DIR}/FSPagerView/FSPagerView.framework",
 				"${BUILT_PRODUCTS_DIR}/MIBlurPopup/MIBlurPopup.framework",
 				"${BUILT_PRODUCTS_DIR}/ModelMapper/Mapper.framework",
@@ -323,6 +347,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DOFavoriteButton.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSPagerView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MIBlurPopup.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapper.framework",
@@ -349,17 +374,22 @@
 				202D4608200DA55C00A48384 /* TVShowDetailsTableViewController.swift in Sources */,
 				20CFE5FC20054A5B00876855 /* ViewController.swift in Sources */,
 				20CFE61D2007753000876855 /* TVShow.swift in Sources */,
+				20A626AC2037A8270001C065 /* FavoriteShowViewController.swift in Sources */,
 				20AF761C2007E0AF001A32F6 /* ApiConfiguration.swift in Sources */,
 				20A13752200AAD8800CED7DF /* Season.swift in Sources */,
+				201C73152039F94600EFFD03 /* favoriteTVTableViewCell.swift in Sources */,
 				20CFE61B200773C400876855 /* TVShowManager.swift in Sources */,
+				201C7318203A3FF000EFFD03 /* Notification Center.swift in Sources */,
 				202D4606200CADF000A48384 /* FSPagerCollectionView+Extension.swift in Sources */,
 				20CFE61420054AEF00876855 /* Route.swift in Sources */,
+				20A626AF2037A91F0001C065 /* Preferences.xcdatamodeld in Sources */,
 				20CFE5FA20054A5B00876855 /* AppDelegate.swift in Sources */,
 				20C90819201E8F630070FEE4 /* TVShowDelegate.swift in Sources */,
 				202D460A200DE8FF00A48384 /* Image+Extension.swift in Sources */,
 				20CFE6172005E23C00876855 /* URL+Extension.swift in Sources */,
 				20CFE61F2007754600876855 /* Episode.swift in Sources */,
 				20CFE61120054AD000876855 /* ClientApi.swift in Sources */,
+				20A626AA2037A4A50001C065 /* Date+Extension.swift in Sources */,
 				20AF761E2007FE77001A32F6 /* Language.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -547,6 +577,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		20A626AD2037A91F0001C065 /* Preferences.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				20A626AE2037A91F0001C065 /* Preferences.xcdatamodel */,
+			);
+			currentVersion = 20A626AE2037A91F0001C065 /* Preferences.xcdatamodel */;
+			path = Preferences.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 20CFE5EE20054A5A00876855 /* Project object */;
 }

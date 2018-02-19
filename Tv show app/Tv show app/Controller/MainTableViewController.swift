@@ -8,6 +8,7 @@
 
 import UIKit
 import FSPagerView
+import UserNotifications
 
 
 class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPagerViewDataSource, TVShowDelegate {
@@ -15,8 +16,14 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
 
     // Mark: Properties
     
+    var waitView: UIView!
+    var waitView2: UIView!
+    var waitView3: UIView!
+    
+    /// the activity indicator
     let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     var delegate: TVShowDelegate!
+    /// propertie to hold popular tv show
     var popularTV = [TVSHow](){
         didSet{
             DispatchQueue.main.async {
@@ -32,7 +39,7 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
             }
         }
     }
-    
+    // properties to hold top airing tvshow
     var airingTV = [TVSHow](){
         didSet{
             DispatchQueue.main.async {
@@ -43,37 +50,61 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         }
     }
     
+    // properties to hold top airing tvshow
+    var discoverTV = [TVSHow](){
+        didSet{
+            DispatchQueue.main.async {
+                
+                self.discoverTVView.reloadData()
+            }
+            
+        }
+    }
+    
+    
+    
     var topRatedImage = [UIImage]()
     var popularImage = [UIImage]()
     var airingImage = [UIImage]()
+    var discoverImage = [UIImage]()
     // Mark: IBOutlets
    
     @IBOutlet weak var popularView: FSPagerView!{
         didSet {
             self.popularView.register(FSPagerViewCell.self, forCellWithReuseIdentifier: "cell")
-            self.popularView.tag = 1
+            self.popularView.tag = 3
         }
     }
     
    
+    @IBOutlet weak var discoverTVView: FSPagerView!{
+        didSet {
+            self.discoverTVView.register(FSPagerViewCell.self, forCellWithReuseIdentifier: "cell")
+            self.discoverTVView.tag = 2
+        }
+    }
+    
     
     @IBOutlet weak var topRatedView: FSPagerView!{
         didSet {
             self.topRatedView.register(FSPagerViewCell.self, forCellWithReuseIdentifier: "cell")
-            self.topRatedView.tag = 2
+            self.topRatedView.tag = 4
         }
     }
     
     @IBOutlet weak var airingView: FSPagerView!{
         didSet {
             self.airingView.register(FSPagerViewCell.self, forCellWithReuseIdentifier: "cell")
-            self.airingView.tag = 3
+            self.airingView.tag = 1
         }
     }
-    
+    /// method to get popular tv show
     func getPopularTV(){
          let manager = TVSHowManager()
-            manager.popularTV { (tvshow) in
+        DispatchQueue.global().async {
+            
+        
+        manager.popularTV { (tvshow) in
                 tvshow?.forEach{
                     do{
                         let data = try  Data(contentsOf: $0.imageURL!)
@@ -85,10 +116,12 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
                 }
                 self.popularTV = tvshow!
             }
+        }
     }
     
     //function toget top rated tv
     func getTopRated(){
+        DispatchQueue.global().async {
          let manager = TVSHowManager()
             manager.bestRateTV{ (tvshow) in
                 tvshow?.forEach{
@@ -103,15 +136,15 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
                
                 self.topRatedTV = tvshow!
         }
+        }
     }
-    
+    /// method to get airing tv show
     func getAiringToday(){
-        
+        DispatchQueue.global().async {
         let manager = TVSHowManager()
         manager.airingTodayTV{ (tvshow) in
             tvshow.forEach{
                 do{
-                    //guard $0.imageURL != nil else {return}
                     if $0.imageURL != nil{
                     let data = try  Data(contentsOf: $0.imageURL!)
                     let image = UIImage(data: data)
@@ -122,19 +155,60 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
                     }
                 }catch{
                     print("couldn't load image")
+                    let image = UIImage(named:"search")
+                    self.airingImage.append(image!)
                 }
             }
-            
             self.airingTV = tvshow
         }
-    
+        }
     }
+    
+    func getDiscoverTV(){
+        
+        let manager = TVSHowManager()
+        DispatchQueue.global().async {
+        manager.discoverShow{ (tvshow) in
+            tvshow.forEach{
+                do{
+                    if $0.imageURL != nil{
+                        let data = try  Data(contentsOf: $0.imageURL!)
+                        let image = UIImage(data: data)
+                        self.discoverImage.append(image!)
+                    }else{
+                        let image = UIImage(named:"search")
+                        self.discoverImage.append(image!)
+                    }
+                }catch{
+                    print("couldn't load image")
+                    let image = UIImage(named:"search")
+                    self.discoverImage.append(image!)
+                }
+            }
+            if let viewWithTag = self.view.viewWithTag(100) {
+                viewWithTag.removeFromSuperview()
+                self.waitView.removeFromSuperview()
+            }
+            self.waitView2.removeFromSuperview()
+             self.waitView3.removeFromSuperview()
+            
+            self.discoverTV = tvshow
+        }
+    }
+}
+
 
    
     
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
        
-        let dq = DispatchQueue(label: "yveslym", qos: .userInteractive, attributes: .concurrent, autoreleaseFrequency: .inherit, target: DispatchQueue.global())
+        self.view.addSubview(self.waitView)
+         self.view.addSubview(self.waitView2)
+         self.view.addSubview(self.waitView3)
+        self.waitView.getRandomColor(alpha: CGFloat( 0.2))
+        self.waitView2.getRandomColor(alpha: CGFloat( 0.4))
+        self.waitView3.getRandomColor(alpha: CGFloat( 0.3))
+        let dq = DispatchQueue(label: "yveslym", qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: DispatchQueue.global())
         
         dq.async {
               self.getTopRated()
@@ -145,30 +219,41 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         dq.async {
             self.getAiringToday()
         }
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let destination = segue.destination as? TVShowDetailsTableViewController
-        let pagerView = sender as! FSPagerView
-        
-        switch pagerView.tag {
-        case 1:
-            destination?.tvShow = self.popularTV[pagerView.currentIndex]
-            destination?.posterImage = self.popularImage[pagerView.currentIndex]
-        case 2:
-            destination?.tvShow = self.topRatedTV[pagerView.currentIndex]
-            destination?.posterImage = self.topRatedImage[pagerView.currentIndex]
-        case 3:
-            destination?.tvShow = self.airingTV[pagerView.currentIndex]
-            destination?.posterImage = self.airingImage[pagerView.currentIndex]
-        default:
-            break
+        dq.async {
+            self.getDiscoverTV()
         }
+       
     }
     
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        let destination = segue.destination as? TVShowDetailsTableViewController
+//        let pagerView = sender as! FSPagerView
+//
+//        switch pagerView.tag {
+//        case 1:
+//            destination?.tvShow = self.popularTV[pagerView.currentIndex]
+//            destination?.posterImage = self.popularImage[pagerView.currentIndex]
+//        case 2:
+//            destination?.tvShow = self.topRatedTV[pagerView.currentIndex]
+//            destination?.posterImage = self.topRatedImage[pagerView.currentIndex]
+//        case 3:
+//            destination?.tvShow = self.airingTV[pagerView.currentIndex]
+//            destination?.posterImage = self.airingImage[pagerView.currentIndex]
+//        default:
+//            break
+//        }
+//    }
+//
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.waitView = UIView(frame: self.view.frame)
+        self.waitView2 =  UIView(frame: self.view.frame)
+        self.waitView3 =  UIView(frame: self.view.frame)
+        self.waitView.tag = 100
+        self.waitView.getRandomColor(alpha: CGFloat( 0.2))
+        self.waitView2.getRandomColor(alpha: CGFloat( 0.4))
+        self.waitView3.getRandomColor(alpha: CGFloat( 0.3))
         
         
         self.delegate = self
@@ -189,22 +274,28 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
 //        self.topRatedView.addSubview(spinner)
         
         // configure popular view
-        self.popularView.transformer = FSPagerViewTransformer(type: .overlap)
-        popularView.itemSize = CGSize(width: 300, height: 300)
+        self.airingView.transformer = FSPagerViewTransformer(type: .linear)
+        airingView.itemSize = CGSize(width: 300, height: 180)
+        airingView.isInfinite = true
+        airingView.interitemSpacing = 5
+        
+        //configure topRated view
+        self.topRatedView.transformer = FSPagerViewTransformer(type: .linear)
+        topRatedView.itemSize = CGSize(width: 150, height: 180)
+        topRatedView.isInfinite = true
+        topRatedView.interitemSpacing = 0
+        
+        //configure airing view
+        self.popularView.transformer = FSPagerViewTransformer(type: .linear)
+        popularView.itemSize = CGSize(width: 150, height: 180)
         popularView.isInfinite = true
         popularView.interitemSpacing = 5
         
-        //configure topRated view
-        self.topRatedView.transformer = FSPagerViewTransformer(type: .overlap)
-        topRatedView.itemSize = CGSize(width: 200, height: 200)
-        topRatedView.isInfinite = true
-        topRatedView.interitemSpacing = 5
-        
-        //configure airing view
-        self.airingView.transformer = FSPagerViewTransformer(type: .overlap)
-        airingView.itemSize = CGSize(width: 200, height: 200)
-        airingView.isInfinite = true
-        airingView.interitemSpacing = 5
+        //configure discover view
+        self.discoverTVView.transformer = FSPagerViewTransformer(type: .linear)
+        discoverTVView.itemSize = CGSize(width: 150, height: 180)
+        discoverTVView.isInfinite = true
+        discoverTVView.interitemSpacing = 5
         
         
         
@@ -224,11 +315,13 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         
         switch pagerView.tag{
         case 1:
-            return self.popularTV.count
-        case 2:
-            return self.topRatedTV.count
-        case 3:
             return self.airingTV.count
+        case 2:
+            return self.discoverTV.count
+        case 3:
+             return self.popularTV.count
+        case 4:
+             return self.topRatedTV.count
         default:
             return 0
         }
@@ -236,21 +329,52 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
     
     func pagerView(_ pagerView: FSPagerView, cellForItemAt index: Int) -> FSPagerViewCell {
         
+        let view = UIView()
+        let title = UILabel()
+        let year = UILabel()
+        let stack = UIStackView()
+       
+        view.backgroundColor = UIColor.black
+        view.alpha = 0.2
+       view.frame = CGRect(x: 0, y: 0, width: pagerView.frame.width, height: pagerView.frame.height/3)
+        view.center = pagerView.center
+         stack.frame = view.frame
+        stack.alignment = .fill
+        stack.distribution = .fillEqually
+        stack.axis = .vertical
+        stack.addSubview(year)
+        stack.addSubview(title)
+        view.addSubview(stack)
         
         switch pagerView.tag{
         case 1:
             let cell = pagerView.dequeueReusableCell(withReuseIdentifier: "cell", at: index)
-            cell.imageView?.image = self.popularImage[index]
+            cell.imageView?.image = self.airingImage[index]
+            cell.textLabel?.text = self.airingTV[index].name
             return cell
         case 2:
             let cells = pagerView.dequeueReusableCell(withReuseIdentifier: "cell", at: index)
-            cells.imageView?.image = self.topRatedImage[index]
+            cells.imageView?.image = self.discoverImage[index]
+            cells.textLabel?.text = self.discoverTV[index].name
+
             return cells
         case 3:
             
             let cells = pagerView.dequeueReusableCell(withReuseIdentifier: "cell", at: index)
-            cells.imageView?.image = self.airingImage[index]
+            cells.imageView?.image = self.popularImage[index]
+            cells.textLabel?.text = self.popularTV[index].name
+
             return cells
+            
+        case 4:
+            
+            let cells = pagerView.dequeueReusableCell(withReuseIdentifier: "cell", at: index)
+            cells.imageView?.image = self.topRatedImage[index]
+            cells.textLabel?.text = self.topRatedTV[index].name
+            
+            return cells
+            
+            
         default:
             let cell = pagerView.dequeueReusableCell(withReuseIdentifier: "popular", at: index)
             cell.imageView?.image = self.popularImage[index]
@@ -267,87 +391,18 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         
         switch pagerView.tag{
         case 1:
-            
-                self.delegate.TVShowDetailViewController(tvShow: self.popularTV[index])
-        case 2:
-            
-                self.delegate.TVShowDetailViewController(tvShow: self.topRatedTV[index])
-        
-        case 3:
-            
                 self.delegate.TVShowDetailViewController(tvShow: self.airingTV[index])
+        case 2:
+                self.delegate.TVShowDetailViewController(tvShow: self.discoverTV[index])
+        case 3:
+                self.delegate.TVShowDetailViewController(tvShow: self.popularTV[index])
+        case 4:
+            self.delegate.TVShowDetailViewController(tvShow: self.topRatedTV[index])
+
 
         default:
             print("oups")
         }
     }
-
-    
-    // MARK: - Table view data source
-
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        // #warning Incomplete implementation, return the number of sections
-//        return 0
-//    }
-
-//    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        // #warning Incomplete implementation, return the number of rows
-//        return 0
-//    }
-
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
-    }
-    */
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 }
 

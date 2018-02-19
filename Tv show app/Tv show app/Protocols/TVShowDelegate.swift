@@ -22,8 +22,8 @@ extension TVShowDelegate where Self: UIViewController{
                 var completTv = tv!
                 completTv.seasons = seasons!
                  //let tvDetailViewController = TVShowDetailsTableViewController()
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let tvDetailViewController = storyboard.instantiateViewController(withIdentifier: "tvshow") as! TVShowDetailsTableViewController
+               // let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let tvDetailViewController = self.storyboard?.instantiateViewController(withIdentifier: "tvshow") as! TVShowDetailsTableViewController
                 
                 
                 completTv.seasons?.forEach{
@@ -46,13 +46,13 @@ extension TVShowDelegate where Self: UIViewController{
                 if seasons?.first?.episodes?.first?.imageURL != nil{
                 let data = try! Data(contentsOf: (seasons?.first?.episodes?.first?.imageURL)!)
                 let image = UIImage(data: data)
-                    let blurImage = UIImage.blurImage(image: image!)
-                    tvDetailViewController.coverImage = blurImage!
+                    //let blurImage = UIImage.blurImage(image: image!)
+                    tvDetailViewController.coverImage = image!
                 }else{
-                    let data = try! Data(contentsOf: (seasons?.first?.imageURL)!)
+                    let data = try! Data(contentsOf: (tv?.imageURL)!)
                     let image = UIImage(data: data)
-                    let blurImage = UIImage.blurEffect(image: image!)
-                    tvDetailViewController.coverImage = blurImage
+                
+                    tvDetailViewController.coverImage = image!
                 }
                 
                 // load poster image
@@ -61,8 +61,14 @@ extension TVShowDelegate where Self: UIViewController{
                 tvDetailViewController.posterImage = poster!
                 
                 tvDetailViewController.tvShow = completTv
+                //let nav = UINavigationController(rootViewController: tvDetailViewController)
 
+                
+                
+//                    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//                    appDelegate.window?.rootViewController!.present(tvDetailViewController, animated: true, completion: nil)
                 self.present(tvDetailViewController, animated: true, completion: nil)
+                
             })
         }
         

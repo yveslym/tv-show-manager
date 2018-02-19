@@ -17,6 +17,7 @@ struct TVSHow: Mappable{
     var popularity: Double?
     var vote: Int?
     var firstAirDate: String?
+    var lastAirDate: String?
     var voteAverage: Double?
     var overview: String?
     var posterPath:String?
@@ -41,6 +42,8 @@ struct TVSHow: Mappable{
         overview =  map.optionalFrom("overview")
         posterPath = map.optionalFrom("poster_path") ?? nil
         firstAirDate =  map.optionalFrom("first_air_date")
+        lastAirDate =  map.optionalFrom("last_air_date")
+
         numberOfSeasons =  map.optionalFrom("number_of_seasons")
         genres =  map.optionalFrom("genres")
         homepage =  map.optionalFrom("homepage")
