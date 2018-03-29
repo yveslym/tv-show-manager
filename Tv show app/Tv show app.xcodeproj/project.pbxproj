@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2012F3E8206C275300789955 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2012F3E7206C275300789955 /* Helpers.swift */; };
+		2012F3EA206CAB2800789955 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2012F3E9206CAB2800789955 /* UIColor+Extension.swift */; };
 		201C73152039F94600EFFD03 /* favoriteTVTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201C73142039F94600EFFD03 /* favoriteTVTableViewCell.swift */; };
 		201C7318203A3FF000EFFD03 /* Notification Center.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201C7317203A3FF000EFFD03 /* Notification Center.swift */; };
 		202D4606200CADF000A48384 /* FSPagerCollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D4605200CADF000A48384 /* FSPagerCollectionView+Extension.swift */; };
@@ -41,6 +42,7 @@
 
 /* Begin PBXFileReference section */
 		2012F3E7206C275300789955 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		2012F3E9206CAB2800789955 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		201C73142039F94600EFFD03 /* favoriteTVTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = favoriteTVTableViewCell.swift; path = "Tv show app/view/favoriteTVTableViewCell.swift"; sourceTree = SOURCE_ROOT; };
 		201C7317203A3FF000EFFD03 /* Notification Center.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification Center.swift"; sourceTree = "<group>"; };
 		202D4605200CADF000A48384 /* FSPagerCollectionView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FSPagerCollectionView+Extension.swift"; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				202D4605200CADF000A48384 /* FSPagerCollectionView+Extension.swift */,
 				202D4609200DE8FF00A48384 /* Image+Extension.swift */,
 				20A626A92037A4A50001C065 /* Date+Extension.swift */,
+				2012F3E9206CAB2800789955 /* UIColor+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -376,6 +379,7 @@
 				20CFE61920075D2900876855 /* NetworkAdapter.swift in Sources */,
 				20A13754200CA05500CED7DF /* MainTableViewController.swift in Sources */,
 				20C9081D201EEE340070FEE4 /* VideoViewController.swift in Sources */,
+				2012F3EA206CAB2800789955 /* UIColor+Extension.swift in Sources */,
 				202D4608200DA55C00A48384 /* TVShowDetailsTableViewController.swift in Sources */,
 				20CFE5FC20054A5B00876855 /* ViewController.swift in Sources */,
 				20CFE61D2007753000876855 /* TVShow.swift in Sources */,

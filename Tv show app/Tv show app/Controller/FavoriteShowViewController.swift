@@ -57,7 +57,9 @@ class FavoriteShowViewController: UIViewController {
     
     
 
-    
+    override func viewDidDisappear(_ animated: Bool) {
+        ViewControllerUtils().hideActivityIndicator(uiView: self.view)
+    }
     override func viewDidAppear(_ animated: Bool) {
         self.getfavoriteTV {
             DispatchQueue.main.async {
@@ -69,8 +71,6 @@ class FavoriteShowViewController: UIViewController {
     
     /// Method to get favorite tv
     func getfavoriteTV( completion: @escaping()->()){
-        
-       
         let favoriteTVID = UserDefaults.standard.array(forKey: "favoriteID")  as? [Int] ?? [Int]()
         
         if !favoriteTVID.isEmpty{
@@ -78,11 +78,16 @@ class FavoriteShowViewController: UIViewController {
             self.tvShowImage = []
             let manager = TVSHowManager()
             let dg = DispatchGroup()
+           // let dq = DispatchQueue(label: "yveslym", qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: DispatchQueue.global())
+            
+          //  DispatchQueue.global().async {
+                
             
             favoriteTVID.forEach{
-                dg.enter()
                 
+                dg.enter()
                 manager.tvShowComplet(tvShowId: $0, completionHandler: { (tv, seasons) in
+                   
                     var tvshow = tv
                     tvshow?.seasons = seasons
                     self.tvShow.append(tvshow!)
@@ -102,14 +107,14 @@ class FavoriteShowViewController: UIViewController {
                     }
                     dg.leave()
                 })
-                dg.notify(queue: .global(), execute: {
+                dg.notify(queue: DispatchQueue.main, execute: {
                     
                     completion()
+                    
                 })
             }
         }
     }
-    
     func fetchfavoriteTV(){
         self.getfavoriteTV {
             DispatchQueue.main.async {
@@ -164,6 +169,7 @@ extension FavoriteShowViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     
+        ViewControllerUtils().showActivityIndicator(uiView: self.view)
         self.delegate.TVShowDetailViewController(tvShow: self.tvShow[indexPath.row])
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
