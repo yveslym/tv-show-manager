@@ -101,21 +101,21 @@ extension UIImage{
 
 extension UIImageView {
     
-    func dropShadow() {
-        
-        self.layer.masksToBounds = false
-        self.layer.shadowColor = UIColor.black.cgColor
-        self.layer.shadowOpacity = 0.5
-        self.layer.shadowOffset = CGSize(width: -1, height: 1)
-        self.layer.shadowRadius = 1
-        self.layer.cornerRadius = 5
-        
-        self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
-        self.layer.shouldRasterize = true
-        
-        self.layer.rasterizationScale = UIScreen.main.scale
-        
-    }
+//    func dropShadow() {
+//        
+//        self.layer.masksToBounds = false
+//        self.layer.shadowColor = UIColor.black.cgColor
+//        self.layer.shadowOpacity = 0.5
+//        self.layer.shadowOffset = CGSize(width: -1, height: 1)
+//        self.layer.shadowRadius = 1
+//        self.layer.cornerRadius = 5
+//        
+//        self.layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+//        self.layer.shouldRasterize = true
+//        
+//        self.layer.rasterizationScale = UIScreen.main.scale
+//        
+//    }
 }
 extension UIView{
     func getRandomColor(alpha: CGFloat) {
@@ -128,6 +128,35 @@ extension UIView{
             //self.backgroundColor = UIColor(colorLiteralRed: red, green: green, blue: blue, alpha: alpha)
             self.backgroundColor = UIColor(red: CGFloat(red), green: CGFloat(green), blue: CGFloat(blue), alpha: CGFloat(alpha))
         }, completion:nil)
+    }
+    
+    func dropShadow(scale: Bool = true) {
+        layer.masksToBounds = false
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = 0.5
+        layer.shadowOffset = CGSize(width: -1, height: 1)
+        layer.shadowRadius = 10
+        
+        layer.shadowPath = UIBezierPath(rect: bounds).cgPath
+        layer.shouldRasterize = true
+        layer.rasterizationScale = scale ? UIScreen.main.scale : 1
+    }
+}
+
+extension UIImage {
+    func getPixelColor(pos: CGPoint) -> UIColor {
+        
+        let pixelData = self.cgImage!.dataProvider!.data
+        let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
+        
+        let pixelInfo: Int = ((Int(self.size.width) * Int(pos.y)) + Int(pos.x)) * 4
+        
+        let r = CGFloat(data[pixelInfo]) / CGFloat(255.0)
+        let g = CGFloat(data[pixelInfo+1]) / CGFloat(255.0)
+        let b = CGFloat(data[pixelInfo+2]) / CGFloat(255.0)
+        let a = CGFloat(data[pixelInfo+3]) / CGFloat(255.0)
+        
+        return UIColor(red: r, green: g, blue: b, alpha: a)
     }
 }
 

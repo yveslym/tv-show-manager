@@ -9,8 +9,18 @@
 import UIKit
 import FSPagerView
 import youtube_ios_player_helper
-import MIBlurPopup
-import  DOFavoriteButton
+
+struct ActivitySpinner{
+     static let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+    
+    static func startSpinner(){
+        spinner.startAnimating()
+        spinner.alpha = 1.0
+    }
+    static func stopSpinner(){
+        spinner.alpha = 0.0
+    }
+}
 
 
 class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelegate, FSPagerViewDataSource,TVShowDelegate {
@@ -23,8 +33,6 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
     @IBOutlet weak var tvShowRunTime: UILabel!
     @IBOutlet weak var tvShowNetwork: UILabel!
     @IBOutlet weak var tvShowStatus: UILabel!
-//    @IBOutlet weak var similarTVTitleLabel: UILabel!
-//    @IBOutlet weak var seasonTitleLabel: UILabel!
     @IBOutlet weak var similarTVCell: UITableViewCell!
     @IBOutlet weak var overView: UITextView!
     @IBOutlet weak var favoriteButton: UIButton!
@@ -37,41 +45,42 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
     var similarTVName = [String]()
     let defaults = UserDefaults.standard
     var favoriteID = UserDefaults.standard.array(forKey: "favoriteID")  as? [Int] ?? [Int]()
-
+    var similarImage = [UIImage]()
+    
+    
     var tvShow = TVSHow(){
         didSet{
-            
-        }
-    }
-
-    var similarTV = [TVSHow](){
-        didSet{
-            
-        }
-    }
-  
-    var similarImage = [UIImage](){
-        didSet{
-//            DispatchQueue.main.async {
-//                self.similarTVShowView.reloadData()
-//            }
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+                self.similarTVShowView.reloadData()
+                self.tvShowSeasonsView.reloadData()
+                
+            }
         }
     }
     var seasonImage = [UIImage](){
         didSet{
-//            DispatchQueue.main.async {
-//                self.tvShowSeasonsView.reloadData()
-//            }
+            DispatchQueue.main.async {
+                if !self.seasonImage.isEmpty && self.tvShowSeasonsView != nil {
+                      self.tvShowSeasonsView.reloadData()
+                }
+                
+            }
+        }
+    }
+    
+    /// initialize similar tv show and reload the evrytime there is an new list of similar tv show
+    var similarTV = [TVSHow](){
+        didSet{
+            DispatchQueue.main.async {
+                self.similarTVShowView.reloadData()
+            }
         }
     }
     
     
-    
     // Mark: IBOUtlet
     
-    //@IBOutlet weak var favoriteButtom: DOFavoriteButton!
-    
-   
     @IBOutlet weak var tvShowSeasonsView: FSPagerView!{
         didSet {
             self.tvShowSeasonsView.register(FSPagerViewCell.self, forCellWithReuseIdentifier: "cell")
@@ -86,38 +95,7 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
 }
     // Mark: - Methods
     
-    
-    
-    
-    // method to get similar tvshow and all images
-    func getSimilarTV(){
-        let manager = TVSHowManager()
-        
-        manager.similarTV(tvShowID: self.tvShow.id!) { (similar) in
-            self.similarTV = similar!
-            similar?.forEach{
-                do{
-                    if $0.imageURL != nil{
-                let data = try Data(contentsOf: $0.imageURL!)
-                    let image = UIImage(data: data)
-                    self.similarImage.append(image!)
-                    }
-                    else{
-                        let image = UIImage(named:"search")
-                        self.similarImage.append(image!)
-                    }
-                }catch{
-                    let image = UIImage(named: "search")
-                     self.similarImage.append(image!)
-                }
-            }
-           
-            DispatchQueue.main.async {
-                self.similarTVShowView.reloadData()
-            }
-        }
-        
-    }
+   
     
     
     // Mark: - IBAction
@@ -138,18 +116,18 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
                         case true:
                             self.favoriteID.append(self.tvShow.id!)
                             self.defaults.set(self.favoriteID, forKey: "favoriteID")
-                            sender.imageView?.image = UIImage(named: "yellow-start")
+                            self.favoriteButton.isSelected = true
                             
                         case false:
                             if let index = self.favoriteID.index(of:self.tvShow.id!) {
                                 self.favoriteID.remove(at: index)
                                 self.self.defaults.set(self.favoriteID, forKey: "favoriteID")
-                                sender.imageView?.image = UIImage(named: "favorite")
+                               self.favoriteButton.isSelected = false
                             }
                             else{
                                 self.favoriteID.append(self.tvShow.id!)
                                 self.defaults.set(self.favoriteID, forKey: "favoriteID")
-                                sender.imageView?.image = UIImage(named: "yellow-start")
+                                self.favoriteButton.isSelected = true
                             }
                             
                         }
@@ -176,7 +154,8 @@ completion: { Void in()  })
         )
         if let vc3 = self.storyboard?.instantiateViewController(withIdentifier: "home tab") {
            // let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            present(vc3, animated: true, completion: nil)
+//            present(vc3, animated: true, completion: nil)
+            self.navigationController?.popViewController(animated: true)
         }
 
     }
@@ -184,10 +163,6 @@ completion: { Void in()  })
         self.performSegue(withIdentifier: "video", sender: self)
        
     }
-    
-
-    
-    
     
     
     // Mark: - Table view life cycle
@@ -199,65 +174,62 @@ completion: { Void in()  })
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        if favoriteID.index(of:tvShow.id!) != nil {
-            
-            self.favoriteButton.imageView?.image = UIImage(named: "yellow-start")
-        }
-    }
-    override func viewDidAppear(_ animated: Bool) {
+   
+    
+    override func reloadInputViews() {
         
-//        self.tvShowTitleLabel.text = tvShow.name
-//        self.tvShowStatus.text = tvShow.status
-//        self.tvShowNetwork.text = tvShow.network
-//        self.overView.text = self.tvShow.overview
-//
+        
+        
+        DispatchQueue.main.async {
             self.tvShowPosterImage.image = self.posterImage
-            self.tvShowPosterImage.dropShadow()
-            delegate = self
+            self.tvShowPosterImage.dropShadow(scale: true)
+           
             self.tvShowTitleLabel.text = self.tvShow.name
             self.tvShowStatus.text = self.tvShow.status
-            self.tvShowNetwork.text = self.tvShow.network
+            self.tvShowNetwork.text = self.tvShow.network ?? "\(self.tvShow.voteAverage ?? 0.0)"
             self.overView.text = self.tvShow.overview
             self.tvShowCoverImage.image = self.coverImage
             let runtime:Int = (self.tvShow.runTime?.first) ?? 0
             self.tvShowRunTime.text = String("\(runtime) min")
+            ActivitySpinner.spinner.alpha = 0.0
+            
+            if self.favoriteID.index(of:self.tvShow.id!) != nil {
+                
+                let image = UIImage(named: "yellow-stars")
+                self.favoriteButton.isSelected = true
+                self.favoriteButton.setImage(image, for: .selected)
+                
+            }
+            else{
+                //let image = UIImage(named: "yellow-stars")
+                 self.favoriteButton.isSelected = false
+            }
+            
+            if self.tvShowSeasonsView != nil {
+            self.tvShowSeasonsView.reloadData()
+            }
+        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         
-        
-
-       
-        
+        self.reloadInputViews()
+        self.getSimilarTV {
+            DispatchQueue.main.async {
+                self.similarTVShowView.reloadData()
+                self.similarTVCell.isHidden = false
+                ActivitySpinner.spinner.alpha = 0.0
+            }
+        }
+    }
+    
+    func getSimilarTV(completion: @escaping()->()){
         DispatchQueue.global().async {
             let manager = TVSHowManager()
             manager.similarTV(tvShowID: self.tvShow.id!, completionHandler: { (tvshow) in
-                
                 self.similarTV = tvshow!
-                
-                self.similarTV.forEach{
-                    do{
-                        if $0.imageURL != nil{
-                        self.similarTVName.append($0.name!)
-                        let data = try Data(contentsOf: $0.imageURL!)
-                        let image = UIImage(data: data)
-                        self.similarImage.append(image!)
-                        }
-                        else{
-                            let image = UIImage(named: "search")
-                             self.similarImage.append(image!)
-                        }
-                    }catch{
-                        let image = UIImage(named: "search")
-                        self.similarImage.append(image!)
-                    }
-                    if $0.name == nil{
-                        self.similarTVName.append("")
-                    }
-                }
-                
-                DispatchQueue.main.async {
-                    self.similarTVShowView.reloadData()
-                    self.similarTVCell.isHidden = false
-                }
+               self.similarImage = Helpers.downloadImage(tvShow: tvshow!)
+                return completion()
             })
         }
     }
@@ -273,20 +245,21 @@ completion: { Void in()  })
         
         //configure season view
         self.similarTVShowView.transformer = FSPagerViewTransformer(type: .overlap)
-        similarTVShowView.itemSize = CGSize(width: 250, height: 200)
+        similarTVShowView.itemSize = CGSize(width: 150, height: 180)
         similarTVShowView.isInfinite = true
-        similarTVShowView.interitemSpacing = 5
+        similarTVShowView.interitemSpacing = 10
         
         similarTVShowView.delegate = self
         similarTVShowView.dataSource = self
         tvShowSeasonsView.delegate = self
         tvShowSeasonsView.dataSource = self
         
-        //favoriteButtom.addTarget(self, action: #selector(self.favoriteButtomTapped(_:)), for: .touchDown)
-        //let starButton = DOFavoriteButton(frame: favoriteButtom.frame)
-        //starButton.image = UIImage(named: "love")
-        //starButton.addTarget(self, action: #selector(self.favoriteButtomTapped(_:)), for: .touchUpInside)
-        //favoriteButtom = starButton
+         delegate = self
+        
+        ActivitySpinner.spinner.frame = CGRect(x: 20.0, y: 6.0, width: 40.0, height: 40.0)
+         ActivitySpinner.spinner.center = CGPoint(x:  self.similarTVShowView.frame.size.width/2, y: self.similarTVShowView.frame.size.height/2)
+         ActivitySpinner.spinner.startAnimating()
+         ActivitySpinner.spinner.alpha = 0.0
     }
 
    
@@ -309,8 +282,6 @@ completion: { Void in()  })
         case 1:
             let cell = pagerView.dequeueReusableCell(withReuseIdentifier: "cell", at: index)
             cell.imageView?.image = self.seasonImage[index]
-            
-            
             return cell
             
         case 2:
@@ -334,15 +305,15 @@ completion: { Void in()  })
     
     func pagerView(_ pagerView: FSPagerView, didSelectItemAt index: Int) {
         
-        let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
-        spinner.frame = CGRect(x: 20.0, y: 6.0, width: 40.0, height: 40.0)
-        spinner.center = CGPoint(x:  pagerView.frame.size.width/2, y: pagerView.frame.size.height/2)
        
-        pagerView.addSubview(spinner)
+        pagerView.addSubview(ActivitySpinner.spinner)
         switch pagerView.tag{
         case 2:
-            spinner.startAnimating()
-            self.delegate.TVShowDetailViewController(tvShow: similarTV[pagerView.currentIndex])
+            ActivitySpinner.spinner.alpha = 1.0
+            let similartv = self.similarTV[index]
+            self.delegate.TVShowDetail(tvShow: similartv, tvDetailViewController: self)
+            self.delegate.tvShowSimilar(tvShow: similartv, TVShowController: self)
+            
         default: print("sorry pal")
         }
     }

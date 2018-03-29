@@ -13,7 +13,7 @@ import Moya_ModelMapper
 
 struct TVSHowManager{
     /// An helper method tofind tv without season in it
-    private func findTvShow(title:  String, completionHandler: @escaping([TVSHow]?)-> Void){
+  func findTvShow(title:  String, completionHandler: @escaping([TVSHow]?)-> Void){
         var tvShows = [TVSHow]()
         var idResult = [ShowsID]()
         let dg = DispatchGroup()
@@ -73,13 +73,10 @@ struct TVSHowManager{
         }
     }
     
-    func tvShowComplet(tvShow: TVSHow, completionHandler: @escaping(TVSHow?, [Season]?)-> Void){
+    func tvShowComplet(tvShowId: Int, completionHandler: @escaping(TVSHow?, [Season]?)-> Void){
         
-        
-        self.tvShowDetails(id: tvShow.id!) { (tv) in
-            //newTV = tv!
-            //dg.enter()
-            self.seasons(tvshow: tvShow.id!, numberofseason: (tv?.numberOfSeasons!)!, completionHandler: { (seasons) in
+        self.tvShowDetails(id: tvShowId) { (tv) in
+            self.seasons(tvshow: tvShowId, numberofseason: (tv?.numberOfSeasons!)!, completionHandler: { (seasons) in
                 completionHandler(tv,seasons)
             })
             
@@ -103,6 +100,7 @@ struct TVSHowManager{
                     seasons.append(season!)
                     dg.leave()
                 })
+                
                 
             }
             dg.notify(queue: .main, execute: {
@@ -179,9 +177,9 @@ struct TVSHowManager{
     
     /// Method that return list of popular tvshow
     func popularTV(completionHandler: @escaping([TVSHow]?)-> Void){
-        DispatchQueue.global().async {
+        let dq = DispatchQueue(label: "backgroud", qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: DispatchQueue.global())
+        dq.async {
             
-        
         NetworkAdapter.request(target: .popularTvShow(language: .english), success: { (response) in
             
             do {

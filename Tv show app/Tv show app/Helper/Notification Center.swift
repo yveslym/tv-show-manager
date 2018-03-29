@@ -14,30 +14,45 @@ struct Notification{
       
        // let defaults = UserDefaults.standard
         let dg = DispatchGroup()
-        var favoriteTVID = UserDefaults.standard.array(forKey: "favoriteID")  as? [Int] ?? [Int]()
+        let favoriteTVID = UserDefaults.standard.array(forKey: "favoriteID")  as? [Int] ?? [Int]()
         let manager = TVSHowManager()
         var tvShow: [TVSHow] = []
         if !favoriteTVID.isEmpty{
-            favoriteTVID.forEach{
-                dg.enter()
-                manager.tvShowDetails(id: $0, completionHandler: { (tvshow) in
-                    if Date.dayLeft(day: (tvshow?.lastAirDate?.toDate())!).day == 0{
-                        tvShow.append(tvshow!)
-                    }
-                     dg.leave()
-                })
+            
+            
+            DispatchQueue.global().async {
+            
+                favoriteTVID.forEach{
+                    dg.enter()
+                    manager.tvShowDetails(id: $0, completionHandler: { (tvshow) in
+                        
+                        // check if the airing date is today for each favorite tv show
+                        if Date.dayLeft(day: (tvshow?.lastAirDate?.toDate())!).day == 0{
+                            tvShow.append(tvshow!)
+                             print(tvshow?.name! ?? " no name ", " airing tonight")
+                        }
+                        else{
+                            print(tvshow?.name! ?? " no name ", " NO")
+                        }
+                        dg.leave()
+                    })
+                    
+                    
+                }
                 dg.notify(queue: .global(), execute: {
-                    completion(tvShow)
+                   completion(tvShow)
                 })
             }
-        }
+
     }
+}
+    
     static func generateNotification(){
         
         let center = UNUserNotificationCenter.current()
         
         Notification.checkFavoriteAiringTV { (tvshow) in
-            if tvshow != nil{
+            if tvshow?.first != nil{
                 var tvshowName = [String]()
                 tvshow?.forEach{
                     tvshowName.append($0.name!)
@@ -45,9 +60,9 @@ struct Notification{
                 // trigger
                 var dateComponents = DateComponents()
                 
-                dateComponents.hour = 16
+                dateComponents.hour = 10
                 
-                dateComponents.minute = 03
+                dateComponents.minute = 00
                 let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
                 
                 // content

@@ -7,10 +7,7 @@ target 'Tv show app' do
 
 pod 'youtube-ios-player-helper'
  pod 'FSPagerView'
-pod 'MIBlurPopup'
-pod 'DOFavoriteButton'
 pod 'Moya-ModelMapper'
-pod "LiquidLoader"
   # Pods for Tv show app
 
 end

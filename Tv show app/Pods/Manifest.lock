@@ -1,8 +1,6 @@
 PODS:
   - Alamofire (4.5.1)
-  - DOFavoriteButton (0.0.4)
   - FSPagerView (0.7.1)
-  - MIBlurPopup (0.1.2)
   - ModelMapper (7.2.0)
   - Moya (9.0.0):
     - Moya/Core (= 9.0.0)
@@ -18,23 +16,19 @@ PODS:
   - youtube-ios-player-helper (0.1.6)
 
 DEPENDENCIES:
-  - DOFavoriteButton
   - FSPagerView
-  - MIBlurPopup
   - Moya-ModelMapper
   - youtube-ios-player-helper
 
 SPEC CHECKSUMS:
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
-  DOFavoriteButton: 866e15af173d2dd5233971a1f657a5f31d2491d5
   FSPagerView: 958aba39684e1573755ddcfcc29f7eebb8413cee
-  MIBlurPopup: 80334286d2af757ba47c1ecda17f1adecf7243b1
   ModelMapper: bef729f9c7095cadffc3c2ef9432fc5e21d8fc60
   Moya: cf5e6ee93af526532f92614004b8ad2ea60fd845
   Moya-ModelMapper: fc14d8c7d6466f11aea83e785c7f2c4c521fead6
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 4cad0266c4e7f4d3db96c75745b65ba8c396beb4
+PODFILE CHECKSUM: 1fb3d6da13cb6fe3ea6d8b3038c282fdd8960188
 
 COCOAPODS: 1.3.1

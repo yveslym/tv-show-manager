@@ -9,6 +9,9 @@
 import UIKit
 import FSPagerView
 import UserNotifications
+//mport NVActivityIndicatorView
+
+
 
 
 class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPagerViewDataSource, TVShowDelegate {
@@ -19,10 +22,11 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
     var waitView: UIView!
     var waitView2: UIView!
     var waitView3: UIView!
-    
+    var dq = DispatchQueue(label: "backgroud", qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: DispatchQueue.global())
     /// the activity indicator
     let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     var delegate: TVShowDelegate!
+   
     /// propertie to hold popular tv show
     var popularTV = [TVSHow](){
         didSet{
@@ -60,9 +64,6 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
             
         }
     }
-    
-    
-    
     var topRatedImage = [UIImage]()
     var popularImage = [UIImage]()
     var airingImage = [UIImage]()
@@ -101,19 +102,11 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
     /// method to get popular tv show
     func getPopularTV(){
          let manager = TVSHowManager()
-        DispatchQueue.global().async {
+       self.dq.async {
             
         
         manager.popularTV { (tvshow) in
-                tvshow?.forEach{
-                    do{
-                        let data = try  Data(contentsOf: $0.imageURL!)
-                        let image = UIImage(data: data)
-                        self.popularImage.append(image!)
-                    }catch{
-                        print("couldn't load image")
-                    }
-                }
+            self.popularImage = Helpers.downloadImage(tvShow: tvshow!)
                 self.popularTV = tvshow!
             }
         }
@@ -121,129 +114,53 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
     
     //function toget top rated tv
     func getTopRated(){
-        DispatchQueue.global().async {
+        self.dq.async {
          let manager = TVSHowManager()
             manager.bestRateTV{ (tvshow) in
-                tvshow?.forEach{
-                    do{
-                        let data = try  Data(contentsOf: $0.imageURL!)
-                        let image = UIImage(data: data)
-                        self.topRatedImage.append(image!)
-                    }catch{
-                        print("couldn't load image")
-                    }
-                }
-               
+              self.topRatedImage = Helpers.downloadImage(tvShow: tvshow!)
                 self.topRatedTV = tvshow!
         }
-        }
     }
+}
     /// method to get airing tv show
     func getAiringToday(){
-        DispatchQueue.global().async {
+        self.dq.async {
         let manager = TVSHowManager()
         manager.airingTodayTV{ (tvshow) in
-            tvshow.forEach{
-                do{
-                    if $0.imageURL != nil{
-                    let data = try  Data(contentsOf: $0.imageURL!)
-                    let image = UIImage(data: data)
-                    self.airingImage.append(image!)
-                    }else{
-                        let image = UIImage(named:"search")
-                        self.airingImage.append(image!)
-                    }
-                }catch{
-                    print("couldn't load image")
-                    let image = UIImage(named:"search")
-                    self.airingImage.append(image!)
-                }
-            }
+            self.airingImage = Helpers.downloadImage(tvShow: tvshow)
             self.airingTV = tvshow
         }
-        }
     }
+}
     
     func getDiscoverTV(){
         
         let manager = TVSHowManager()
-        DispatchQueue.global().async {
+       DispatchQueue.global().async {
         manager.discoverShow{ (tvshow) in
-            tvshow.forEach{
-                do{
-                    if $0.imageURL != nil{
-                        let data = try  Data(contentsOf: $0.imageURL!)
-                        let image = UIImage(data: data)
-                        self.discoverImage.append(image!)
-                    }else{
-                        let image = UIImage(named:"search")
-                        self.discoverImage.append(image!)
-                    }
-                }catch{
-                    print("couldn't load image")
-                    let image = UIImage(named:"search")
-                    self.discoverImage.append(image!)
-                }
-            }
-            if let viewWithTag = self.view.viewWithTag(100) {
-                viewWithTag.removeFromSuperview()
-                self.waitView.removeFromSuperview()
-            }
-            self.waitView2.removeFromSuperview()
-             self.waitView3.removeFromSuperview()
-            
+           self.discoverImage = Helpers.downloadImage(tvShow: tvshow)
             self.discoverTV = tvshow
+            self.waitView2.removeFromSuperview()
+            self.waitView3.removeFromSuperview()
         }
     }
 }
-
-
-   
+    // - MARK: VIEW CONTROLLER LIFE CYCLE
     
-    override func viewDidAppear(_ animated: Bool) {
-       
-        self.view.addSubview(self.waitView)
-         self.view.addSubview(self.waitView2)
-         self.view.addSubview(self.waitView3)
-        self.waitView.getRandomColor(alpha: CGFloat( 0.2))
-        self.waitView2.getRandomColor(alpha: CGFloat( 0.4))
-        self.waitView3.getRandomColor(alpha: CGFloat( 0.3))
-        let dq = DispatchQueue(label: "yveslym", qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: DispatchQueue.global())
-        
-        dq.async {
-              self.getTopRated()
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "tvshow"{
+            let destination = segue.destination as! TVShowDetailsTableViewController
+            let tvshowTVC = sender as! TVShowDetailsTableViewController
+            destination.tvShow = tvshowTVC.tvShow
+            destination.posterImage = tvshowTVC.posterImage
+            destination.coverImage = tvshowTVC.coverImage
+            destination.seasonImage = tvshowTVC.seasonImage
+            DispatchQueue.main.async {
+                 self.spinner.stopAnimating()
+            }
+           
         }
-        dq.async {
-             self.getPopularTV()
-        }
-        dq.async {
-            self.getAiringToday()
-        }
-        dq.async {
-            self.getDiscoverTV()
-        }
-       
     }
-    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        let destination = segue.destination as? TVShowDetailsTableViewController
-//        let pagerView = sender as! FSPagerView
-//
-//        switch pagerView.tag {
-//        case 1:
-//            destination?.tvShow = self.popularTV[pagerView.currentIndex]
-//            destination?.posterImage = self.popularImage[pagerView.currentIndex]
-//        case 2:
-//            destination?.tvShow = self.topRatedTV[pagerView.currentIndex]
-//            destination?.posterImage = self.topRatedImage[pagerView.currentIndex]
-//        case 3:
-//            destination?.tvShow = self.airingTV[pagerView.currentIndex]
-//            destination?.posterImage = self.airingImage[pagerView.currentIndex]
-//        default:
-//            break
-//        }
-//    }
-//
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -269,11 +186,8 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         spinner.frame = CGRect(x: 20.0, y: 6.0, width: 40.0, height: 40.0)
         spinner.startAnimating()
         spinner.alpha = 0.0
-//        self.airingView.addSubview(spinner)
-//        self.popularView.addSubview(spinner)
-//        self.topRatedView.addSubview(spinner)
         
-        // configure popular view
+        // configure airing view
         self.airingView.transformer = FSPagerViewTransformer(type: .linear)
         airingView.itemSize = CGSize(width: 300, height: 180)
         airingView.isInfinite = true
@@ -304,6 +218,28 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+    
+//        self.view.addSubview(self.waitView)
+//        self.view.addSubview(self.waitView2)
+//        self.view.addSubview(self.waitView3)
+//        self.waitView.getRandomColor(alpha: CGFloat( 0.2))
+//        self.waitView2.getRandomColor(alpha: CGFloat( 0.4))
+//        self.waitView3.getRandomColor(alpha: CGFloat( 0.3))
+        let dq = DispatchQueue(label: "yveslym", qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: DispatchQueue.global())
+        
+        dq.async {
+            
+            self.getTopRated()
+        }
+        dq.async {
+            self.getPopularTV()
+        }
+        dq.async {
+            self.getAiringToday()
+        }
+        dq.async {
+            self.getDiscoverTV()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -326,7 +262,12 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
             return 0
         }
     }
-    
+    func printTimeElapsedWhenRunningCode(title:String, operation:()->()) {
+        let startTime = CFAbsoluteTimeGetCurrent()
+        operation()
+        let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
+        print("Time elapsed for \(title): \(timeElapsed) s.")
+    }
     func pagerView(_ pagerView: FSPagerView, cellForItemAt index: Int) -> FSPagerViewCell {
         
         let view = UIView()
@@ -346,6 +287,8 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         stack.addSubview(title)
         view.addSubview(stack)
         
+        
+        /// add the tv show on the right cell base on the pagerview tag setup earlier
         switch pagerView.tag{
         case 1:
             let cell = pagerView.dequeueReusableCell(withReuseIdentifier: "cell", at: index)
@@ -387,7 +330,8 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         
         self.spinner.center = CGPoint(x:  pagerView.frame.size.width/2, y: pagerView.frame.size.height/2)
         self.spinner.alpha = 1.0
-       pagerView.addSubview(spinner)
+        self.spinner.startAnimating()
+        pagerView.addSubview(spinner)
         
         switch pagerView.tag{
         case 1:
