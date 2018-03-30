@@ -177,8 +177,8 @@ struct TVSHowManager{
     
     /// Method that return list of popular tvshow
     func popularTV(completionHandler: @escaping([TVSHow]?)-> Void){
-        let dq = DispatchQueue(label: "backgroud", qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: DispatchQueue.global())
-        dq.async {
+        
+        DispatchQueue.global().async {
             
         NetworkAdapter.request(target: .popularTvShow(language: .english), success: { (response) in
             

@@ -30,42 +30,16 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
     private let refreshControls = UIRefreshControl()
     
     /// propertie to hold popular tv show
-    var popularTV = [TVSHow](){
-        didSet{
-            DispatchQueue.main.async {
-                self.popularView.reloadData()
-            }
-        }
-    }
+    var popularTV = [TVSHow]()
     // properties to hold top rated tvshow
-    var topRatedTV = [TVSHow](){
-        didSet{
-            DispatchQueue.main.async {
-                self.topRatedView.reloadData()
-            }
-        }
-    }
+    var topRatedTV = [TVSHow]()
+
     // properties to hold top airing tvshow
-    var airingTV = [TVSHow](){
-        didSet{
-            DispatchQueue.main.async {
-                
-                self.airingView.reloadData()
-            }
-            
-        }
-    }
-    
+    var airingTV = [TVSHow]()
+
     // properties to hold top airing tvshow
-    var discoverTV = [TVSHow](){
-        didSet{
-            DispatchQueue.main.async {
-                
-                self.discoverTVView.reloadData()
-            }
-            
-        }
-    }
+    var discoverTV = [TVSHow]()
+
     var topRatedImage = [UIImage]()
     var popularImage = [UIImage]()
     var airingImage = [UIImage]()
@@ -102,46 +76,57 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         }
     }
     /// method to get popular tv show
-    func getPopularTV(){
+    func getPopularTV(completion:@escaping()->()){
          let manager = TVSHowManager()
-       self.dq.async {
-            
-        
+      DispatchQueue.global().async {
         manager.popularTV { (tvshow) in
             self.popularImage = Helpers.downloadImage(tvShow: tvshow!)
                 self.popularTV = tvshow!
+            
+           // DispatchQueue.main.async {
+                completion()
+            //}
             }
         }
     }
     
     //function toget top rated tv
-    func getTopRated(){
-        self.dq.async {
+    func getTopRated(completion:@escaping()->()){
+        DispatchQueue.global().async {
          let manager = TVSHowManager()
             manager.bestRateTV{ (tvshow) in
               self.topRatedImage = Helpers.downloadImage(tvShow: tvshow!)
                 self.topRatedTV = tvshow!
+                //DispatchQueue.main.async {
+                    completion()
+                //}
         }
     }
 }
     /// method to get airing tv show
-    func getAiringToday(){
-        self.dq.async {
+    func getAiringToday(completion:@escaping()->()){
+        DispatchQueue.global().async {
         let manager = TVSHowManager()
         manager.airingTodayTV{ (tvshow) in
             self.airingImage = Helpers.downloadImage(tvShow: tvshow)
             self.airingTV = tvshow
+            //DispatchQueue.main.async {
+                completion()
+            //}
         }
     }
 }
     
-    func getDiscoverTV(){
+    func getDiscoverTV(completion:@escaping()->()){
         
         let manager = TVSHowManager()
        DispatchQueue.global().async {
         manager.discoverShow{ (tvshow) in
            self.discoverImage = Helpers.downloadImage(tvShow: tvshow)
             self.discoverTV = tvshow
+           // DispatchQueue.main.async {
+                completion()
+            //}
         }
     }
 }
@@ -178,6 +163,8 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = UIColor(rgb: 0x1A1E36)
+         ViewControllerUtils().showActivityIndicator(uiView: self.view)
         self.waitView = UIView(frame: self.view.frame)
         self.waitView2 =  UIView(frame: self.view.frame)
         self.waitView3 =  UIView(frame: self.view.frame)
@@ -239,21 +226,29 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
 //        self.waitView.getRandomColor(alpha: CGFloat( 0.2))
 //        self.waitView2.getRandomColor(alpha: CGFloat( 0.4))
 //        self.waitView3.getRandomColor(alpha: CGFloat( 0.3))
-        let dq = DispatchQueue(label: "yveslym", qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: DispatchQueue.global())
+        _ = DispatchQueue(label: "yveslym", qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: DispatchQueue.global())
         
-        dq.async {
-            
-            self.getTopRated()
-        }
-        dq.async {
-            self.getPopularTV()
-        }
-        dq.async {
-            self.getAiringToday()
-        }
-        dq.async {
-            self.getDiscoverTV()
-        }
+       
+       
+            self.getAiringToday {
+               
+                self.getDiscoverTV {
+                   
+                    self.getTopRated {
+                       
+                        self.getPopularTV {
+                            DispatchQueue.main.async {
+                                 self.airingView.reloadData()
+                                 self.discoverTVView.reloadData()
+                                 self.topRatedView.reloadData()
+                                 self.popularView.reloadData()
+                                ViewControllerUtils().hideActivityIndicator(uiView: self.view)
+                            }
+                        }
+                    }
+                }
+            }
+        
     }
 
     override func didReceiveMemoryWarning() {
