@@ -50,6 +50,7 @@ struct Notification{
     static func generateNotification(){
         
         let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests()
         
         Notification.checkFavoriteAiringTV { (tvshow) in
             if tvshow?.first != nil{

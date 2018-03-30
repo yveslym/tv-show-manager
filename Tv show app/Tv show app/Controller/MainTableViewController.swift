@@ -172,7 +172,9 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         self.waitView.getRandomColor(alpha: CGFloat( 0.2))
         self.waitView2.getRandomColor(alpha: CGFloat( 0.4))
         self.waitView3.getRandomColor(alpha: CGFloat( 0.3))
-        
+        let bg = UIImageView(frame: self.view.frame)
+        bg.image = UIImage(named: "bg1")
+        self.waitView.addSubview(bg)
         
         self.delegate = self
         self.airingView.dataSource = self
@@ -220,7 +222,7 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     
-//        self.view.addSubview(self.waitView)
+        self.view.addSubview(self.waitView)
 //        self.view.addSubview(self.waitView2)
 //        self.view.addSubview(self.waitView3)
 //        self.waitView.getRandomColor(alpha: CGFloat( 0.2))
@@ -242,6 +244,7 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
                                  self.discoverTVView.reloadData()
                                  self.topRatedView.reloadData()
                                  self.popularView.reloadData()
+                                self.view.willRemoveSubview(self.waitView)
                                 ViewControllerUtils().hideActivityIndicator(uiView: self.view)
                             }
                         }

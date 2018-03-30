@@ -125,7 +125,6 @@ extension UIView{
         let alpha = alpha
         
         UIView.animate(withDuration: 1.0, delay: 0.0, options:[.repeat, .autoreverse], animations: {
-            //self.backgroundColor = UIColor(colorLiteralRed: red, green: green, blue: blue, alpha: alpha)
             self.backgroundColor = UIColor(red: CGFloat(red), green: CGFloat(green), blue: CGFloat(blue), alpha: CGFloat(alpha))
         }, completion:nil)
     }

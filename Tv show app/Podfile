@@ -8,6 +8,7 @@ target 'Tv show app' do
 pod 'youtube-ios-player-helper'
  pod 'FSPagerView'
 pod 'Moya-ModelMapper'
+pod 'KeychainSwift', '~> 10.0'
   # Pods for Tv show app
 
 end
