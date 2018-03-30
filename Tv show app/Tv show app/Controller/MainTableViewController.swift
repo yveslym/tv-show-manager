@@ -25,8 +25,10 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
     var dq = DispatchQueue(label: "backgroud", qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: DispatchQueue.global())
     /// the activity indicator
     let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
-    var delegate: TVShowDelegate!
+    weak var delegate: TVShowDelegate!
    
+    private let refreshControls = UIRefreshControl()
+    
     /// propertie to hold popular tv show
     var popularTV = [TVSHow](){
         didSet{
@@ -140,11 +142,23 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         manager.discoverShow{ (tvshow) in
            self.discoverImage = Helpers.downloadImage(tvShow: tvshow)
             self.discoverTV = tvshow
-            self.waitView2.removeFromSuperview()
-            self.waitView3.removeFromSuperview()
         }
     }
 }
+    
+    @objc private func refresfavoriteTV(_ sender: Any) {
+        // Fetch Weather Data
+        
+       
+        
+//        self.getfavoriteTV {
+//            DispatchQueue.main.async {
+//                self.tableView.reloadData()
+//                self.refreshControl.endRefreshing()
+//            }
+//        }
+    }
+    
     // - MARK: VIEW CONTROLLER LIFE CYCLE
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

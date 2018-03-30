@@ -13,6 +13,7 @@ class SearchTVViewController: UIViewController, UISearchBarDelegate {
     var tvShow: [TVSHow] = []
     var tvShowImage: [UIImage] = []
     weak var delegate: TVShowDelegate!
+    var cell : SearchCollectionViewCell!
     
     @IBOutlet weak var searchbar: UISearchBar!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -24,6 +25,7 @@ class SearchTVViewController: UIViewController, UISearchBarDelegate {
         searchbar.delegate = self
         self.hideKeyboardWhenTappedAround()
         delegate = self
+        cell = SearchCollectionViewCell()
         // Do any additional setup after loading the view.
     }
     
@@ -32,12 +34,26 @@ class SearchTVViewController: UIViewController, UISearchBarDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        ViewControllerUtils().hideActivityIndicator(uiView: self.view)
+    }
+    
     @IBAction func cancelButtonTapped(_ sender: Any) {
         
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+       
+        ViewControllerUtils().showActivityIndicator(uiView: self.view)
         searchBar.resignFirstResponder()
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        self.tvShow = []
+        self.tvShowImage = []
+        DispatchQueue.main.async {
+             self.collectionView.reloadData()
+        }
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
@@ -46,8 +62,9 @@ class SearchTVViewController: UIViewController, UISearchBarDelegate {
         
         
         NetworkAdapter.request(target: .findTvShow(query: searchText, language: .english), success: { (response) in
-            let tvshow = try! response.map(to: [TVSHow].self, keyPath: "results")
-            
+            do{
+            let tvshow = try response.map(to: [TVSHow].self, keyPath: "results")
+            self.tvShow = tvshow
             tvshow.forEach{
                 do{
                     if $0.imageURL != nil{
@@ -64,10 +81,14 @@ class SearchTVViewController: UIViewController, UISearchBarDelegate {
                     self.tvShowImage.append(image!)
                 }
             }
-            
+            }
+            catch{
+                
+            }
             DispatchQueue.main.async {
-                self.tvShow = tvshow
+                
                 self.collectionView.reloadData()
+                ViewControllerUtils().hideActivityIndicator(uiView: self.view)
             }
             
         }, error: { (error) in
@@ -88,11 +109,23 @@ extension SearchTVViewController: UICollectionViewDelegate, UICollectionViewData
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SearchCollectionViewCell
         
         cell.poster.image = self.tvShowImage[indexPath.row]
-        cell.poster.dropShadow()
+        cell.poster.roundCornersForAspectFit(radius: 5.0)
+        cell.tvOverview.text = self.tvShow[indexPath.row].overview
+        cell.tvAiringDate.text =  self.tvShow[indexPath.row].firstAirDate
+        cell.tvShowName.text =  self.tvShow[indexPath.row].name
+        let vote =  self.tvShow[indexPath.row].voteAverage?.rounded()
+        cell.tvRated.text = "\(vote ?? 0)"
+        self.cell = cell
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        self.cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! SearchCollectionViewCell
+        DispatchQueue.main.async {
+             ViewControllerUtils().showActivityIndicator(uiView: self.view)
+        }
+       
         self.delegate.TVShowDetailViewController(tvShow: tvShow[indexPath.row])
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -10,5 +10,8 @@ import UIKit
 
 class SearchCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var poster: UIImageView!
-    
+    @IBOutlet weak var tvShowName: UILabel!
+    @IBOutlet weak var tvOverview: UILabel!
+    @IBOutlet weak var tvAiringDate: UILabel!
+    @IBOutlet weak var tvRated: UILabel!
 }

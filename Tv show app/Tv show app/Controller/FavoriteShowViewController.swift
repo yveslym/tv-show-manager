@@ -25,6 +25,10 @@ class FavoriteShowViewController: UIViewController {
     
     @objc private func refresfavoriteTV(_ sender: Any) {
         // Fetch Weather Data
+        
+        self.tvShowImage = []
+        self.tvShow = []
+        
         self.getfavoriteTV {
             DispatchQueue.main.async {
                 self.tableView.reloadData()

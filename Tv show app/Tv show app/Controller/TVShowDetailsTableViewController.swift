@@ -52,7 +52,7 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
         didSet{
             DispatchQueue.main.async {
                 self.tableView.reloadData()
-                self.similarTVShowView.reloadData()
+                
                 self.tvShowSeasonsView.reloadData()
                 
             }
@@ -73,7 +73,7 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
     var similarTV = [TVSHow](){
         didSet{
             DispatchQueue.main.async {
-                self.similarTVShowView.reloadData()
+              //  self.similarTVShowView.reloadData()
             }
         }
     }
@@ -219,8 +219,12 @@ completion: { Void in()  })
                 self.similarTVShowView.reloadData()
                 self.similarTVCell.isHidden = false
                 ActivitySpinner.spinner.alpha = 0.0
+                 ViewControllerUtils().hideActivityIndicator(uiView: self.view)
             }
         }
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        ViewControllerUtils().showActivityIndicator(uiView: self.view)
     }
     
     func getSimilarTV(completion: @escaping()->()){
