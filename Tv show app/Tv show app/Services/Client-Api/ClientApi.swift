@@ -8,6 +8,7 @@
 
 import Foundation
 import Moya
+import KeychainSwift
 
 enum TvShowApi{
     case popularTvShow (language: Language)
@@ -19,7 +20,10 @@ enum TvShowApi{
     case TVShowDetail(id: Int, language: Language)
     case airingToday(language: Language)
     case discover (language: Language, page: Int)
-    
+    case createUser
+    case logOut
+    case getUser
+    case login
 }
 
 extension TvShowApi:  TargetType{
@@ -29,6 +33,10 @@ extension TvShowApi:  TargetType{
             
         case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons,.airingToday, .discover:
             return URL(string: "https://api.themoviedb.org")!
+        case .createUser, .logOut, .getUser:
+            return URL(string:" https://api-show-bix.herokuapp.com")!
+        case .login:
+            return URL(string: "https://api-show-bix.herokuapp.com")!
         }
     }
     // propertie to get the path
@@ -54,15 +62,24 @@ extension TvShowApi:  TargetType{
             return "/3/tv/airing_today"
         case .discover:
             return "/3/discover/tv"
+        case .createUser, .logOut, .getUser:
+            return "/v1/sessions"
+        case .login:
+             return "/v1/login"
         }
     }
     // properties to get the method
     public var method: Moya.Method {
         switch self{
             
-        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons, .airingToday, .discover:
+        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons, .airingToday, .discover, .getUser:
             return .get
        
+        case .createUser, .login:
+            return .post
+        case .logOut:
+            return .delete
+        
         }
     }
     
@@ -70,9 +87,9 @@ extension TvShowApi:  TargetType{
     public var sampleData: Data {
         switch self{
             
-        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons, .airingToday, .discover:
+        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons, .airingToday, .discover, .createUser, .logOut, .getUser, .login:
+           
             return "{}".data(using: String.Encoding.utf8)!
-       
         }
     }
     
@@ -111,6 +128,14 @@ extension TvShowApi:  TargetType{
            
             return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language, "sort_by": sort[Int(sortRan)], "page": page, "with_genres": genre[Int(arc4random_uniform(3))], "with_runtime.gte": "40", "air_date.gte": date[Int(arc4random_uniform(6))]], encoding: URLEncoding.default)
             
+        case .createUser:
+            return .requestParameters(parameters: ["email": User.currentUser.email!, "username":  User.currentUser.userName!, "password":  User.currentUser.password!, "name": User.currentUser.name ?? ""], encoding: URLEncoding.default)
+
+        case .logOut: fallthrough
+        case .getUser:
+             return .requestPlain
+        case .login:
+             return .requestParameters(parameters: ["email":  User.currentUser.email!, "password":  User.currentUser.password!], encoding: URLEncoding.default)
         }
     }
     
@@ -121,6 +146,16 @@ extension TvShowApi:  TargetType{
             return [:]
         case .discover:
             return [:]
+        case .createUser, .login:
+             return ["Content-Type" : "application/json; charset=utf-8"]
+        case .logOut:  fallthrough
+           
+        case .getUser:
+            let email: String? = KeychainSwift().get("email")
+            let token: String? = KeychainSwift().get("email")
+            
+            return ["x-User-Email": email ?? "",
+                    "x-User-Token": token ?? ""]
         }
     }
 }

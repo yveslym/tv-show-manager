@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import KeychainSwift
 class Route{
     
     
@@ -127,14 +128,12 @@ enum DBRoute: String{
         case .bestRateTvShow:
             return nil
         case .getVideos:
-            let extra = ("\(tvShowId)/videos")
+            let extra = ("\(tvShowId ?? 0)/videos")
             return extra
         case .findTvShow:
             return nil
-        //case .thetvdbLogin:
-            return nil
         case .findEpisode:
-            let extra = ("\(tvShowId)/episodes")
+            let extra = ("\(tvShowId ?? 0)/episodes")
             return extra
         case .theTvdbFindShow:
             let id = String(tvShowId!)
@@ -170,11 +169,20 @@ enum DBRoute: String{
              return ["application/json":"Content-Type",
                      Authorization!:"Authorization"]
         case .getUser:
-            <#code#>
+            let email: String? = KeychainSwift().get("email")
+            let token: String? = KeychainSwift().get("email")
+            
+            return ["x-User-Email": email ?? "",
+                    "x-User-Token": token ?? ""]
+            
         case .createAccount:
-            <#code#>
+            return nil
         case .logOut:
-            <#code#>
+            let email: String? = KeychainSwift().get("email")
+            let token: String? = KeychainSwift().get("email")
+            
+            return ["x-User-Email": email ?? "",
+                    "x-User-Token": token ?? ""]
         }
     }
 }
