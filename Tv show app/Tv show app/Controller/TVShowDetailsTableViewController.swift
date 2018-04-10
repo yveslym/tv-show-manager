@@ -214,22 +214,15 @@ completion: { Void in()  })
     
     override func viewDidAppear(_ animated: Bool) {
         
-        self.reloadInputViews()
-        self.getSimilarTV {
-            DispatchQueue.main.async {
-                self.similarTVShowView.reloadData()
-                self.similarTVCell.isHidden = false
-                ActivitySpinner.spinner.alpha = 0.0
-                 ViewControllerUtils().hideActivityIndicator(uiView: self.view)
-            }
-        }
+       
     }
     override func viewWillAppear(_ animated: Bool) {
-        ViewControllerUtils().showActivityIndicator(uiView: self.view)
+        
     }
     
     func getSimilarTV(completion: @escaping()->()){
         DispatchQueue.global().async {
+            ViewControllerUtils().showActivityIndicator(uiView: self.view)
             let manager = TVSHowManager()
             manager.similarTV(tvShowID: self.tvShow.id!, completionHandler: { (tvshow) in
                 self.similarTV = tvshow!
@@ -265,6 +258,16 @@ completion: { Void in()  })
          ActivitySpinner.spinner.center = CGPoint(x:  self.similarTVShowView.frame.size.width/2, y: self.similarTVShowView.frame.size.height/2)
          ActivitySpinner.spinner.startAnimating()
          ActivitySpinner.spinner.alpha = 0.0
+        
+        self.reloadInputViews()
+        self.getSimilarTV {
+            DispatchQueue.main.async {
+                self.similarTVShowView.reloadData()
+                self.similarTVCell.isHidden = false
+                ActivitySpinner.spinner.alpha = 0.0
+                ViewControllerUtils().hideActivityIndicator(uiView: self.view)
+            }
+        }
     }
 
    

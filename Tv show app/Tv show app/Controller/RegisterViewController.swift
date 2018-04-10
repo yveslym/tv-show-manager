@@ -26,7 +26,12 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         signupButtonTapped.configureButton()
         self.hideKeyboardWhenTappedAround()
-        // Do any additional setup after loading the view.
+       
+        usernameLabel.delegate = self
+        emailLabel.delegate = self
+        passwordLabel.delegate = self
+        nameLabel.delegate = self
+        
     }
     
     
@@ -38,30 +43,42 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
     // MARK: TEXTFIELD DELEGATE
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField.text == ""{
+        if textField.text == " " || textField.text == "" || textField.text == nil{
             textField.text = nil
-            textField.placeholder = "can't leave it blank..."
+            textField.placeholder = "You cannot leave this field blank..."
             
         }
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.text = nil
+//        textField.text = nil
     }
     
     // -MARK: IBACTIONS
     
     @IBAction func registerTapped(_ sender: UIButton){
         
-        guard let _ = emailLabel, let _ = passwordLabel,let _ = usernameLabel, let _ = nameLabel else {
+        guard let email = emailLabel.text, let password = passwordLabel.text, let username = usernameLabel.text, let name = nameLabel.text else {
             let alert = UIAlertController(title: "Field Missing", message: "Please fill out all missing field", preferredStyle: .alert)
             let action = UIAlertAction(title: "Return", style: .cancel, handler: nil)
             alert.addAction(action)
             self.present(alert, animated: true, completion: nil)
-            
             return
-            
         }
+        
+        if (emailLabel.text?.count)! < 3 || (passwordLabel.text?.count)! < 3 || (nameLabel.text?.count)! < 2 || (usernameLabel.text?.count)! < 3 {
+            
+            let alert = UIAlertController(title: "Imcompleted field", message: "some field are either too short or empty", preferredStyle: .alert)
+            let action = UIAlertAction(title: "Return", style: .cancel, handler: nil)
+            alert.addAction(action)
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        User.currentUser.email = email
+        User.currentUser.password = password
+        User.currentUser.name = name
+        User.currentUser.username = username
+        ViewControllerUtils().showActivityIndicator(uiView: self.view)
         self.signUp {
             print("signed up")
         }
@@ -80,8 +97,8 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
             let user = try JSONDecoder().decode(User.self, from: response.data)
                 KeychainSwift().set(true, forKey: "isLogin")
                 KeychainSwift().set(user.email!, forKey: "email")
-                KeychainSwift().set(user.userName ?? "", forKey: "username")
-                KeychainSwift().set(user.token!, forKey: "token")
+                KeychainSwift().set(user.username ?? "", forKey: "username")
+                KeychainSwift().set(user.authentication_token!, forKey: "token")
                 DispatchQueue.main.async {
                     self.performSegue(withIdentifier: "home tab", sender: nil)
                 }
@@ -90,19 +107,22 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
                 
             }
             }else{
+                ViewControllerUtils().hideActivityIndicator(uiView: self.view)
                 let alert = UIAlertController(title: "Couldn't create Account", message: "Either your username or Email is already taken, please try with different one", preferredStyle: .alert)
                 let action = UIAlertAction(title: "Return", style: .cancel, handler: nil)
                 alert.addAction(action)
                 self.present(alert, animated: true, completion: nil)
             }
-            
-            
         }, error: { (error) in
             
         }) { (error) in
             
         }
         
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        ViewControllerUtils().hideActivityIndicator(uiView: self.view)
     }
 
 }

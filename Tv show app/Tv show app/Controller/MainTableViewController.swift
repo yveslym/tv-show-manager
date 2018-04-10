@@ -138,11 +138,12 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
     @IBAction func settinhButtonTapped(_ sender: Any) {
         let alert = UIAlertController(title: "Settings", message: "", preferredStyle: .actionSheet)
         let logOut = UIAlertAction(title: "Logout", style: .default) { (logout) in
+             KeychainSwift().set(false, forKey: "isLogin")
             NetworkAdapter.request(target: .logOut, success: { (response) in
                 if response.response?.statusCode == 200{
                     
                     KeychainSwift().set(false, forKey: "isLogin")
-                    let lginPage = UIStoryboard(name: "main", bundle: nil).instantiateViewController(withIdentifier: "login")
+                    let lginPage = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "login")
                     self.present(lginPage, animated: true, completion: nil)
                 }
             }, error: { (error) in

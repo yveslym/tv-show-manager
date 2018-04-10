@@ -12,9 +12,10 @@ struct User: Decodable{
     
     static var currentUser  = User()
     
-    var userName: String?
+    var username: String?
     var email: String?
     var password: String?
     var name: String?
-    var token: String?
+    var authentication_token: String?
+    
 }

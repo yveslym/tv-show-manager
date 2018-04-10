@@ -47,7 +47,7 @@ class FavoriteShowViewController: UIViewController {
         } else {
             tableView.addSubview(refreshControl)
         }
-        ViewControllerUtils().showActivityIndicator(uiView: view)
+        
         // Configure Refresh Control
         refreshControl.addTarget(self, action: #selector(refresfavoriteTV(_:)), for: .valueChanged)
         refreshControl.tintColor = UIColor(red:0.25, green:0.72, blue:0.85, alpha:1.0)
@@ -73,21 +73,26 @@ class FavoriteShowViewController: UIViewController {
         let favoriteTVID = UserDefaults.standard.array(forKey:email)  as? [Int] ?? [Int]()
        
         if !favoriteTVID.isEmpty{
+            
+            ViewControllerUtils().showActivityIndicator(uiView: view)
+            
             DispatchQueue.main.async {
                 if let viewWithTag = self.view.viewWithTag(100) {
                     viewWithTag.removeFromSuperview()
                 }
                 
             }
-        }
+        
         self.getfavoriteTV {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
                 ViewControllerUtils().hideActivityIndicator(uiView: self.view)
+                }
             }
         }
+        
+     
     }
-    
     
     /// Method to get favorite tv
     func getfavoriteTV( completion: @escaping()->()){
@@ -99,10 +104,6 @@ class FavoriteShowViewController: UIViewController {
             self.tvShowImage = []
             let manager = TVSHowManager()
             let dg = DispatchGroup()
-           
-            
-           //self.view.insertSubview(self.previewPage, belowSubview: self.view)
-           
            
             favoriteTVID.forEach{
                 

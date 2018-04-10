@@ -1,6 +1,7 @@
 PODS:
   - Alamofire (4.5.1)
   - FSPagerView (0.7.1)
+  - IQKeyboardManagerSwift (5.0.8)
   - KeychainSwift (10.0.0)
   - ModelMapper (7.2.0)
   - Moya (9.0.0):
@@ -18,6 +19,7 @@ PODS:
 
 DEPENDENCIES:
   - FSPagerView
+  - IQKeyboardManagerSwift
   - KeychainSwift (~> 10.0)
   - Moya-ModelMapper
   - youtube-ios-player-helper
@@ -25,6 +27,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
   FSPagerView: 958aba39684e1573755ddcfcc29f7eebb8413cee
+  IQKeyboardManagerSwift: 2e7dc7f98c111458c1ea2b373f893e8cf95e2b97
   KeychainSwift: f9f7910449a0c0fd2cabc889121530dd2c477c33
   ModelMapper: bef729f9c7095cadffc3c2ef9432fc5e21d8fc60
   Moya: cf5e6ee93af526532f92614004b8ad2ea60fd845
@@ -32,6 +35,6 @@ SPEC CHECKSUMS:
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: caed3d3d56793cb405eeb37460a72b0b7aeb7405
+PODFILE CHECKSUM: 46f7ae8a9b393401b8ec4f57647cf94823b0781c
 
 COCOAPODS: 1.4.0

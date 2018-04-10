@@ -50,24 +50,31 @@ class LoginViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+         ViewControllerUtils().hideActivityIndicator(uiView: self.view)
+    }
 }
 
 extension LoginViewController{
     func loginUser(completion: ()->()){
-        
+        ViewControllerUtils().showActivityIndicator(uiView: self.view)
         NetworkAdapter.request(target: .login, success: { (response) in
             if response.response?.statusCode == 200 {
             let user = try! JSONDecoder().decode(User.self, from: response.data)
             KeychainSwift().set(true, forKey: "isLogin")
             KeychainSwift().set(user.email!, forKey: "email")
-            KeychainSwift().set(user.userName ?? "", forKey: "username")
-            KeychainSwift().set(user.token!, forKey: "token")
+                KeychainSwift().set(user.username ?? "", forKey: "username")
+            KeychainSwift().set(user.authentication_token!, forKey: "token")
             KeychainSwift().set(true, forKey: "isLogin")
                 DispatchQueue.main.async {
                      self.performSegue(withIdentifier: "home tab", sender: nil)
+                   
                 }
+                
             }
             else if response.response?.statusCode == 400{
+                 ViewControllerUtils().hideActivityIndicator(uiView: self.view)
               let alert = UIAlertController(title: "Wrong Credential", message: "Either your email or password is incorrect", preferredStyle: .alert)
                 let cancel = UIAlertAction(title: "Return", style: .cancel, handler: nil)
                 alert.addAction(cancel)

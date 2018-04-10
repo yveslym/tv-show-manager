@@ -128,7 +128,7 @@ extension TvShowApi:  TargetType{
             return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language, "sort_by": sort[Int(sortRan)], "page": page, "with_genres": genre[Int(arc4random_uniform(3))], "with_runtime.gte": "40", "air_date.gte": date[Int(arc4random_uniform(6))]], encoding: URLEncoding.default)
             
         case .createUser:
-            return .requestParameters(parameters: ["email": User.currentUser.email!, "username":  User.currentUser.userName!, "password":  User.currentUser.password!, "name": User.currentUser.name ?? ""], encoding: URLEncoding.default)
+            return .requestParameters(parameters: ["email": User.currentUser.email!, "username":  User.currentUser.username!, "password":  User.currentUser.password!, "name": User.currentUser.name ?? ""], encoding: URLEncoding.queryString)
 
         case .logOut: fallthrough
         case .getUser:
@@ -153,8 +153,8 @@ extension TvShowApi:  TargetType{
             let email: String? = KeychainSwift().get("email")
             let token: String? = KeychainSwift().get("token")
             
-            return ["x-User-Email": email ?? "",
-                    "x-User-Token": token ?? ""]
+            return ["x-User-Email": email!,
+                    "x-User-Token": token!]
         }
     }
 }

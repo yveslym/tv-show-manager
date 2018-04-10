@@ -52,7 +52,7 @@ enum DBRoute: String{
                 "name": User.currentUser.name ?? "",
                 "eamil": User.currentUser.email!,
                 "password": User.currentUser.password!,
-                "userName": User.currentUser.userName!
+                "userName": User.currentUser.username!
             ]
             return try! JSONEncoder().encode(body)
         case .logOut:
