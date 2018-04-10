@@ -9,6 +9,7 @@ pod 'youtube-ios-player-helper'
  pod 'FSPagerView'
 pod 'Moya-ModelMapper'
 pod 'KeychainSwift', '~> 10.0'
+pod 'IQKeyboardManagerSwift'
   # Pods for Tv show app
 
 end

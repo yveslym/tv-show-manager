@@ -14,7 +14,7 @@ struct Notification{
       
        // let defaults = UserDefaults.standard
         let dg = DispatchGroup()
-        let email: String = KeychainSwift().get("email")!
+        guard let email: String = KeychainSwift().get("email") else {return}
         
         let favoriteTVID = UserDefaults.standard.array(forKey: email)  as? [Int] ?? [Int]()
         let manager = TVSHowManager()

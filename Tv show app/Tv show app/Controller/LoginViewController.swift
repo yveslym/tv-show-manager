@@ -34,14 +34,15 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func registerButtonTapped(_ sender: UIButton){
-        self.loginUser {
+       
             self.performSegue(withIdentifier: "register", sender: nil)
-        }
+        
     }
-    
+    @IBAction func unwindToVC1(segue:UIStoryboardSegue) { }
     override func viewDidLoad() {
         super.viewDidLoad()
         loginButton.configureButton()
+        self.hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view.
     }
 
