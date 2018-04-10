@@ -9,7 +9,7 @@
 import UIKit
 import FSPagerView
 import youtube_ios_player_helper
-
+import KeychainSwift
 struct ActivitySpinner{
      static let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     
@@ -44,7 +44,8 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
     var posterImage = UIImage()
     var similarTVName = [String]()
     let defaults = UserDefaults.standard
-    var favoriteID = UserDefaults.standard.array(forKey: "favoriteID")  as? [Int] ?? [Int]()
+    let email: String = KeychainSwift().get("email")!
+    lazy var favoriteID = UserDefaults.standard.array(forKey: self.email)  as? [Int] ?? [Int]()
     var similarImage = [UIImage]()
     
     
@@ -115,18 +116,18 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
                         switch self.favoriteID.isEmpty{
                         case true:
                             self.favoriteID.append(self.tvShow.id!)
-                            self.defaults.set(self.favoriteID, forKey: "favoriteID")
+                            self.defaults.set(self.favoriteID, forKey: self.email)
                             self.favoriteButton.isSelected = true
                             
                         case false:
                             if let index = self.favoriteID.index(of:self.tvShow.id!) {
                                 self.favoriteID.remove(at: index)
-                                self.self.defaults.set(self.favoriteID, forKey: "favoriteID")
+                                self.self.defaults.set(self.favoriteID, forKey: self.email)
                                self.favoriteButton.isSelected = false
                             }
                             else{
                                 self.favoriteID.append(self.tvShow.id!)
-                                self.defaults.set(self.favoriteID, forKey: "favoriteID")
+                                self.defaults.set(self.favoriteID, forKey: self.email)
                                 self.favoriteButton.isSelected = true
                             }
                             

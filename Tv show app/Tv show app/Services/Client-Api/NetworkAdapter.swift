@@ -17,14 +17,14 @@ struct NetworkAdapter{
             switch result{
                 
             case .success(let response):
-                if response.statusCode >= 200 && response.statusCode <= 300{
+               // if response.statusCode >= 200 && response.statusCode <= 300{
                     return successCallBack(response)
-                }
-                else{
+               // }
+                //else{
                     //fatalError("code error not api")
-                    let resp = String(data: response.data, encoding: .utf8)
-                    print(resp)
-                }
+                   // let resp = String(data: response.data, encoding: .utf8)
+                    //print(resp)
+               // }
             case .failure(let error):
                 errorCallBack(error)
             }

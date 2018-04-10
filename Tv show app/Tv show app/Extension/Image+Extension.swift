@@ -158,4 +158,10 @@ extension UIImage {
         return UIColor(red: r, green: g, blue: b, alpha: a)
     }
 }
+extension UIButton {
+    func configureButton(cornerRadius: Double = 6) {
+        self.layer.cornerRadius = CGFloat(cornerRadius)
+        self.clipsToBounds = true
+    }
+}
 

@@ -17,6 +17,7 @@
 		20491889203AB2DD000274A1 /* SearchTVViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20491888203AB2DD000274A1 /* SearchTVViewController.swift */; };
 		2049188B203ABE59000274A1 /* SearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2049188A203ABE59000274A1 /* SearchCollectionViewCell.swift */; };
 		206FD9AE206E3791008D00BE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206FD9AD206E3791008D00BE /* User.swift */; };
+		206FD9B0206EC40E008D00BE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 206FD9AF206EC40E008D00BE /* LoginViewController.swift */; };
 		20A13752200AAD8800CED7DF /* Season.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A13751200AAD8800CED7DF /* Season.swift */; };
 		20A13754200CA05500CED7DF /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A13753200CA05500CED7DF /* MainTableViewController.swift */; };
 		20A626AA2037A4A50001C065 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A626A92037A4A50001C065 /* Date+Extension.swift */; };
@@ -52,6 +53,7 @@
 		20491888203AB2DD000274A1 /* SearchTVViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTVViewController.swift; sourceTree = "<group>"; };
 		2049188A203ABE59000274A1 /* SearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewCell.swift; sourceTree = "<group>"; };
 		206FD9AD206E3791008D00BE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		206FD9AF206EC40E008D00BE /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		20A13751200AAD8800CED7DF /* Season.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Season.swift; sourceTree = "<group>"; };
 		20A13753200CA05500CED7DF /* MainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewController.swift; sourceTree = "<group>"; };
 		20A626A92037A4A50001C065 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
@@ -184,6 +186,7 @@
 				20C9081C201EEE340070FEE4 /* VideoViewController.swift */,
 				20A626AB2037A8270001C065 /* FavoriteShowViewController.swift */,
 				20491888203AB2DD000274A1 /* SearchTVViewController.swift */,
+				206FD9AF206EC40E008D00BE /* LoginViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -386,6 +389,7 @@
 				20C9081D201EEE340070FEE4 /* VideoViewController.swift in Sources */,
 				2012F3EA206CAB2800789955 /* UIColor+Extension.swift in Sources */,
 				202D4608200DA55C00A48384 /* TVShowDetailsTableViewController.swift in Sources */,
+				206FD9B0206EC40E008D00BE /* LoginViewController.swift in Sources */,
 				20CFE5FC20054A5B00876855 /* ViewController.swift in Sources */,
 				20CFE61D2007753000876855 /* TVShow.swift in Sources */,
 				20A626AC2037A8270001C065 /* FavoriteShowViewController.swift in Sources */,

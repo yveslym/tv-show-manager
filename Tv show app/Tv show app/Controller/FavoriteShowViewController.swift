@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import KeychainSwift
 
 class FavoriteShowViewController: UIViewController {
     
@@ -15,6 +16,7 @@ class FavoriteShowViewController: UIViewController {
 
     // - MARK: IBOUTLET
     
+    @IBOutlet weak var previewPage: UIView!
     @IBOutlet weak var tableView: UITableView!
     // - MARK: PROPERTIES
      let defaults = UserDefaults.standard
@@ -39,13 +41,13 @@ class FavoriteShowViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         if #available(iOS 10.0, *) {
             tableView.refreshControl = refreshControl
         } else {
             tableView.addSubview(refreshControl)
         }
-        
+        ViewControllerUtils().showActivityIndicator(uiView: view)
         // Configure Refresh Control
         refreshControl.addTarget(self, action: #selector(refresfavoriteTV(_:)), for: .valueChanged)
         refreshControl.tintColor = UIColor(red:0.25, green:0.72, blue:0.85, alpha:1.0)
@@ -56,6 +58,7 @@ class FavoriteShowViewController: UIViewController {
         tableView.delegate = self
         delegate = self
         
+        
        
     }
     
@@ -65,9 +68,22 @@ class FavoriteShowViewController: UIViewController {
         ViewControllerUtils().hideActivityIndicator(uiView: self.view)
     }
     override func viewDidAppear(_ animated: Bool) {
+        
+        guard let email = KeychainSwift().get("email") else {return}
+        let favoriteTVID = UserDefaults.standard.array(forKey:email)  as? [Int] ?? [Int]()
+       
+        if !favoriteTVID.isEmpty{
+            DispatchQueue.main.async {
+                if let viewWithTag = self.view.viewWithTag(100) {
+                    viewWithTag.removeFromSuperview()
+                }
+                
+            }
+        }
         self.getfavoriteTV {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
+                ViewControllerUtils().hideActivityIndicator(uiView: self.view)
             }
         }
     }
@@ -75,18 +91,19 @@ class FavoriteShowViewController: UIViewController {
     
     /// Method to get favorite tv
     func getfavoriteTV( completion: @escaping()->()){
-        let favoriteTVID = UserDefaults.standard.array(forKey: "favoriteID")  as? [Int] ?? [Int]()
+        guard let email = KeychainSwift().get("email") else {return}
+        let favoriteTVID = UserDefaults.standard.array(forKey:email)  as? [Int] ?? [Int]()
         
         if !favoriteTVID.isEmpty{
             self.tvShow = []
             self.tvShowImage = []
             let manager = TVSHowManager()
             let dg = DispatchGroup()
-           // let dq = DispatchQueue(label: "yveslym", qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: DispatchQueue.global())
+           
             
-          //  DispatchQueue.global().async {
-                
-            
+           //self.view.insertSubview(self.previewPage, belowSubview: self.view)
+           
+           
             favoriteTVID.forEach{
                 
                 dg.enter()
@@ -118,6 +135,9 @@ class FavoriteShowViewController: UIViewController {
                 })
             }
         }
+        else{
+            ViewControllerUtils().hideActivityIndicator(uiView: self.view)
+        }
     }
     func fetchfavoriteTV(){
         self.getfavoriteTV {
@@ -144,14 +164,32 @@ extension FavoriteShowViewController: UITableViewDelegate, UITableViewDataSource
 //        cell.tvAiringDate.text = tv.lastAirDate
         cell.tvPoster.image = self.tvShowImage[indexPath.row]
         let day = Date.dayLeft(day: (tv.lastAirDate?.toDate())!).day
-        cell.tvStatus.text = tv.status?.components(separatedBy: " ").first
+        let serieStatus = tv.status?.components(separatedBy: " ").first
+        if serieStatus == "Returning"{
+            cell.tvStatus.text = serieStatus ?? ""}
+           
+        else{
+            cell.tvStatus.text = serieStatus ?? ""
+            cell.tvStatus.textColor = UIColor.red
+        }
         
         let lastEpisode = tv.seasons?.last?.episodes?.filter{$0.airedDate == tv.lastAirDate}
         let currentSeasonNumber = lastEpisode?.first?.seasonNumber
         let currentSeason = tv.seasons?.filter{$0.seasonNumber == currentSeasonNumber}.first
         
         cell.seasonName.text = currentSeason?.name
-        cell.episodeDescription.text = lastEpisode?.first?.overview
+//        if (lastEpisode?.first?.overview != "") { astEpisode?.first?.overview ! " There's no description for this episode yet" //lastEpisode?.first?.overview ?? " There's no description for this episode yet"
+        
+        
+        if lastEpisode?.first?.overview != ""{
+            cell.episodeDescription.text = lastEpisode?.first?.overview
+        }
+        else if lastEpisode?.first?.overview == nil{
+            cell.episodeDescription.text = tvShow[indexPath.row].overview
+        }
+        else{
+            cell.episodeDescription.text = tvShow[indexPath.row].overview
+        }
         cell.episodeName.text = lastEpisode?.first?.name
         
         
@@ -160,13 +198,16 @@ extension FavoriteShowViewController: UITableViewDelegate, UITableViewDataSource
         }
         else if day! == 0{
               cell.tvAiringTimeLeft.text = "Today"
+            cell.tvAiringTimeLeft.textColor = UIColor.blue
         }
         else if day! == 1{
             cell.tvAiringTimeLeft.text = "Tomorow"
             //add bagde color as well
+             cell.tvAiringTimeLeft.textColor = UIColor.cyan
         }
         else{
              cell.tvAiringTimeLeft.text = " Not published"
+             cell.tvAiringTimeLeft.textColor = UIColor.brown
         }
         return cell
     }

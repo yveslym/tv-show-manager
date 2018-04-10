@@ -8,13 +8,15 @@
 
 import Foundation
 import UserNotifications
-
+import KeychainSwift
 struct Notification{
     static func checkFavoriteAiringTV(completion:@escaping([TVSHow]?)-> Void){
       
        // let defaults = UserDefaults.standard
         let dg = DispatchGroup()
-        let favoriteTVID = UserDefaults.standard.array(forKey: "favoriteID")  as? [Int] ?? [Int]()
+        let email: String = KeychainSwift().get("email")!
+        
+        let favoriteTVID = UserDefaults.standard.array(forKey: email)  as? [Int] ?? [Int]()
         let manager = TVSHowManager()
         var tvShow: [TVSHow] = []
         if !favoriteTVID.isEmpty{

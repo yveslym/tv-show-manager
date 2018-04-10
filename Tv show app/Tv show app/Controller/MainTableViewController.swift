@@ -9,6 +9,7 @@
 import UIKit
 import FSPagerView
 import UserNotifications
+import KeychainSwift
 //mport NVActivityIndicatorView
 
 
@@ -90,6 +91,8 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         }
     }
     
+    
+    
     //function toget top rated tv
     func getTopRated(completion:@escaping()->()){
         DispatchQueue.global().async {
@@ -116,7 +119,6 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         }
     }
 }
-    
     func getDiscoverTV(completion:@escaping()->()){
         
         let manager = TVSHowManager()
@@ -130,6 +132,36 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         }
     }
 }
+    
+    
+    
+    @IBAction func settinhButtonTapped(_ sender: Any) {
+        let alert = UIAlertController(title: "Settings", message: "", preferredStyle: .actionSheet)
+        let logOut = UIAlertAction(title: "Logout", style: .default) { (logout) in
+            NetworkAdapter.request(target: .logOut, success: { (response) in
+                if response.response?.statusCode == 200{
+                    
+                    KeychainSwift().set(false, forKey: "isLogin")
+                    let lginPage = UIStoryboard(name: "main", bundle: nil).instantiateViewController(withIdentifier: "login")
+                    self.present(lginPage, animated: true, completion: nil)
+                }
+            }, error: { (error) in
+                
+            }, failure: { (error) in
+                
+            })
+        }
+        
+        let about = UIAlertAction(title: "About Us", style: .default) { (about) in
+            
+        }
+        let cancel =  UIAlertAction(title: "cancel", style: .cancel, handler: nil)
+        
+        alert.addAction(cancel)
+        alert.addAction(about)
+        alert.addAction(logOut)
+        self.present(alert, animated: true, completion: nil)
+    }
     
     @objc private func refresfavoriteTV(_ sender: Any) {
         // Fetch Weather Data

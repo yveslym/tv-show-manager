@@ -33,10 +33,9 @@ extension TvShowApi:  TargetType{
             
         case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons,.airingToday, .discover:
             return URL(string: "https://api.themoviedb.org")!
-        case .createUser, .logOut, .getUser:
-            return URL(string:" https://api-show-bix.herokuapp.com")!
-        case .login:
-            return URL(string: "https://api-show-bix.herokuapp.com")!
+        case .createUser, .logOut, .getUser, .login:
+            return URL(string:"https://api-show-bix.herokuapp.com")!
+      
         }
     }
     // propertie to get the path
@@ -135,7 +134,7 @@ extension TvShowApi:  TargetType{
         case .getUser:
              return .requestPlain
         case .login:
-             return .requestParameters(parameters: ["email":  User.currentUser.email!, "password":  User.currentUser.password!], encoding: URLEncoding.default)
+             return .requestParameters(parameters: ["email":  User.currentUser.email!, "password":  User.currentUser.password!], encoding: URLEncoding.queryString)
         }
     }
     
@@ -152,7 +151,7 @@ extension TvShowApi:  TargetType{
            
         case .getUser:
             let email: String? = KeychainSwift().get("email")
-            let token: String? = KeychainSwift().get("email")
+            let token: String? = KeychainSwift().get("token")
             
             return ["x-User-Email": email ?? "",
                     "x-User-Token": token ?? ""]

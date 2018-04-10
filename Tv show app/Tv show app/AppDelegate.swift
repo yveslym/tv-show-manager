@@ -8,6 +8,7 @@
 
 import UIKit
 import UserNotifications
+import KeychainSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,6 +20,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge]) { (permitionGranted, error) in
             Notification.generateNotification()
+        }
+        if let login: Bool = KeychainSwift().getBool("isLogin") {
+        
+        if login {
+             ApiConfiguration.TVShow(themoviedbApiKey: "ba61b7a133d03578fcb757842f1d9e79")
+            
+            let mainStoryBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let rootController = mainStoryBoard.instantiateViewController(withIdentifier: "home tab")
+            window?.rootViewController = rootController
+            
+           window?.makeKeyAndVisible()
+        }
         }
         
         ApiConfiguration.TVShow(themoviedbApiKey: "ba61b7a133d03578fcb757842f1d9e79")

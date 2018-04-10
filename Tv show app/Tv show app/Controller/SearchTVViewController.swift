@@ -81,7 +81,7 @@ class SearchTVViewController: UIViewController, UISearchBarDelegate {
                     self.tvShowImage.append(image!)
                 }
             }
-            }
+        }
             catch{
                 
             }
