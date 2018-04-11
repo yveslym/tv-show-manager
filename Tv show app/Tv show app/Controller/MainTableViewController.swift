@@ -19,11 +19,11 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
     
 
     // Mark: Properties
-    
+    var blankView: UIView!
     var waitView: UIView!
     var waitView2: UIView!
     var waitView3: UIView!
-    var dq = DispatchQueue(label: "backgroud", qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: DispatchQueue.global())
+   
     /// the activity indicator
     let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     weak var delegate: TVShowDelegate!
@@ -81,12 +81,11 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
          let manager = TVSHowManager()
       DispatchQueue.global().async {
         manager.popularTV { (tvshow) in
-            self.popularImage = Helpers.downloadImage(tvShow: tvshow!)
-                self.popularTV = tvshow!
-            
-           // DispatchQueue.main.async {
+             self.popularTV = tvshow!
+            Helpers.downloadImage(tvShow: tvshow!, completion: { (images) in
+                self.popularImage = images
                 completion()
-            //}
+            })
             }
         }
     }
@@ -97,40 +96,41 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
     func getTopRated(completion:@escaping()->()){
         DispatchQueue.global().async {
          let manager = TVSHowManager()
-            manager.bestRateTV{ (tvshow) in
-              self.topRatedImage = Helpers.downloadImage(tvShow: tvshow!)
+            manager.bestRateTV { (tvshow) in
                 self.topRatedTV = tvshow!
-                //DispatchQueue.main.async {
-                    completion()
-                //}
-        }
+                Helpers.downloadImage(tvShow: tvshow!, completion: { (images) in
+                    self.topRatedImage = images
+                     completion()
+                })
+                
+               
+            }
     }
 }
     /// method to get airing tv show
     func getAiringToday(completion:@escaping()->()){
         DispatchQueue.global().async {
-        let manager = TVSHowManager()
-        manager.airingTodayTV{ (tvshow) in
-            self.airingImage = Helpers.downloadImage(tvShow: tvshow)
-            self.airingTV = tvshow
-            //DispatchQueue.main.async {
-                completion()
-            //}
+            let manager = TVSHowManager()
+            manager.airingTodayTV { (tvshow) in
+                self.airingTV = tvshow
+                Helpers.downloadImage(tvShow: tvshow, completion: { (images) in
+                    self.airingImage = images
+                     completion()
+                })
+            }
         }
-    }
 }
     func getDiscoverTV(completion:@escaping()->()){
-        
-        let manager = TVSHowManager()
-       DispatchQueue.global().async {
-        manager.discoverShow{ (tvshow) in
-           self.discoverImage = Helpers.downloadImage(tvShow: tvshow)
-            self.discoverTV = tvshow
-           // DispatchQueue.main.async {
-                completion()
-            //}
+        DispatchQueue.global().async {
+            let manager = TVSHowManager()
+            manager.discoverShow { (tvshow) in
+                self.discoverTV = tvshow
+                Helpers.downloadImage(tvShow: tvshow, completion: { (images) in
+                    self.discoverImage = images
+                     completion()
+                })
+            }
         }
-    }
 }
     
     
@@ -140,11 +140,21 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         let logOut = UIAlertAction(title: "Logout", style: .default) { (logout) in
              KeychainSwift().set(false, forKey: "isLogin")
             NetworkAdapter.request(target: .logOut, success: { (response) in
+                ViewControllerUtils().showActivityIndicator(uiView: alert.view)
                 if response.response?.statusCode == 200{
                     
                     KeychainSwift().set(false, forKey: "isLogin")
                     let lginPage = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "login")
                     self.present(lginPage, animated: true, completion: nil)
+                    ViewControllerUtils().showActivityIndicator(uiView: alert.view)
+                }
+                else{
+                    // a better implementation need to be done here
+                    KeychainSwift().set(false, forKey: "isLogin")
+                    let lginPage = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "login")
+                    self.present(lginPage, animated: true, completion: nil)
+                    ViewControllerUtils().showActivityIndicator(uiView: alert.view)
+
                 }
             }, error: { (error) in
                 
@@ -196,18 +206,23 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor(rgb: 0x1A1E36)
-         ViewControllerUtils().showActivityIndicator(uiView: self.view)
+//        self.view.backgroundColor = UIColor(rgb: 0x1A1E36)
+        
         self.waitView = UIView(frame: self.view.frame)
         self.waitView2 =  UIView(frame: self.view.frame)
         self.waitView3 =  UIView(frame: self.view.frame)
+        self.blankView = UIView(frame: self.view.frame)
         self.waitView.tag = 100
+         self.waitView2.tag = 100
+         self.waitView3.tag = 100
+        self.blankView.tag = 100
+        
         self.waitView.getRandomColor(alpha: CGFloat( 0.2))
-        self.waitView2.getRandomColor(alpha: CGFloat( 0.4))
+        self.waitView2.getRandomColor(alpha: CGFloat( 0.2))
         self.waitView3.getRandomColor(alpha: CGFloat( 0.3))
         let bg = UIImageView(frame: self.view.frame)
-        bg.image = UIImage(named: "bg1")
-        self.waitView.addSubview(bg)
+        bg.image = UIImage(named: "b1")
+        self.blankView.addSubview(bg)
         
         self.delegate = self
         self.airingView.dataSource = self
@@ -219,13 +234,11 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
        
         // configure the spinner
         
-        spinner.frame = CGRect(x: 20.0, y: 6.0, width: 40.0, height: 40.0)
-        spinner.startAnimating()
-        spinner.alpha = 0.0
+               
         
         // configure airing view
         self.airingView.transformer = FSPagerViewTransformer(type: .linear)
-        airingView.itemSize = CGSize(width: 300, height: 180)
+        airingView.itemSize = CGSize(width: 280, height: 180)
         airingView.isInfinite = true
         airingView.interitemSpacing = 5
         
@@ -255,7 +268,7 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     
-        self.view.addSubview(self.waitView)
+       
 //        self.view.addSubview(self.waitView2)
 //        self.view.addSubview(self.waitView3)
 //        self.waitView.getRandomColor(alpha: CGFloat( 0.2))
@@ -264,27 +277,51 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         _ = DispatchQueue(label: "yveslym", qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: DispatchQueue.global())
         
        
-       
+        DispatchQueue.global().async {
+            DispatchQueue.main.async {
+                self.view.addSubview(self.blankView)
+                 ViewControllerUtils().showActivityIndicator(uiView: self.view)
+                UIView.animate(withDuration: 3, animations: {
+                    self.view.addSubview(self.waitView)
+                })
+            }
+            
             self.getAiringToday {
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 3, animations: {
+                        self.view.addSubview(self.waitView3)
+                    })
+                }
                
                 self.getDiscoverTV {
                    
+                    DispatchQueue.main.async {
+                        self.airingView.reloadData()
+                        self.discoverTVView.reloadData()
+                        
+                        self.view.willRemoveSubview(self.waitView)
+                        
+                        self.view.willRemoveSubview(self.waitView3)
+                        self.view.willRemoveSubview(self.blankView)
+                        ViewControllerUtils().hideActivityIndicator(uiView: self.view)
+                    }
+                    
+                     self.getPopularTV {
+                        DispatchQueue.main.async {
+                            self.popularView.reloadData()
+                            
+                        }
                     self.getTopRated {
-                       
-                        self.getPopularTV {
                             DispatchQueue.main.async {
-                                 self.airingView.reloadData()
-                                 self.discoverTVView.reloadData()
+                                
                                  self.topRatedView.reloadData()
-                                 self.popularView.reloadData()
-                                self.view.willRemoveSubview(self.waitView)
-                                ViewControllerUtils().hideActivityIndicator(uiView: self.view)
+                                
                             }
                         }
                     }
                 }
             }
-        
+        }
     }
 
     override func didReceiveMemoryWarning() {

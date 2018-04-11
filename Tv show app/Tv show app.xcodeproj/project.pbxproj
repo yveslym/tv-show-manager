@@ -560,7 +560,7 @@
 				DEVELOPMENT_TEAM = K7R433H2CL;
 				INFOPLIST_FILE = "Tv show app/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "yveslym-corp.Tv-show-app";
+				PRODUCT_BUNDLE_IDENTIFIER = "yveslym-corp.showbix";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -576,7 +576,7 @@
 				DEVELOPMENT_TEAM = K7R433H2CL;
 				INFOPLIST_FILE = "Tv show app/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "yveslym-corp.Tv-show-app";
+				PRODUCT_BUNDLE_IDENTIFIER = "yveslym-corp.showbix";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

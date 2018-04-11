@@ -124,7 +124,7 @@ extension UIView{
         let blue  = Float((arc4random() % 256)) / 255.0
         let alpha = alpha
         
-        UIView.animate(withDuration: 1.0, delay: 0.0, options:[.repeat, .autoreverse], animations: {
+        UIView.animate(withDuration: 0.1, delay: 0.0, options:[.repeat, .autoreverse], animations: {
             self.backgroundColor = UIColor(red: CGFloat(red), green: CGFloat(green), blue: CGFloat(blue), alpha: CGFloat(alpha))
         }, completion:nil)
     }

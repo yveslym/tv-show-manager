@@ -11,10 +11,12 @@ import UIKit
 
 struct Helpers{
     ///function to download tvshow images
-    static func downloadImage(tvShow: [TVSHow]) -> [UIImage]{
+    static func downloadImage(tvShow: [TVSHow], completion: @escaping([UIImage])->()){
         
+            
+         DispatchQueue.global().async {
         var images = [UIImage]()
-        
+       
         tvShow.forEach{
             do{
                 if $0.imageURL != nil{
@@ -31,9 +33,10 @@ struct Helpers{
                 images.append(image!)
             }
         }
-         return images
+      completion(images)
     }
    
+    }
 }
 
 import Foundation

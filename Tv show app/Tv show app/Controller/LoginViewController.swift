@@ -41,6 +41,8 @@ class LoginViewController: UIViewController {
     @IBAction func unwindToVC1(segue:UIStoryboardSegue) { }
     override func viewDidLoad() {
         super.viewDidLoad()
+        email.desActivateAutoCorrectAndCap()
+        password.desActivateAutoCorrectAndCap()
         loginButton.configureButton()
         self.hideKeyboardWhenTappedAround()
         // Do any additional setup after loading the view.
@@ -75,7 +77,14 @@ extension LoginViewController{
             }
             else if response.response?.statusCode == 400{
                  ViewControllerUtils().hideActivityIndicator(uiView: self.view)
-              let alert = UIAlertController(title: "Wrong Credential", message: "Either your email or password is incorrect", preferredStyle: .alert)
+                let alert = UIAlertController(title: "Wrong Credential", message: "Either your email or password is incorrect", preferredStyle: .alert)
+                let cancel = UIAlertAction(title: "Return", style: .cancel, handler: nil)
+                alert.addAction(cancel)
+                self.present(alert, animated: true, completion: nil)
+                return
+            }else{
+                ViewControllerUtils().hideActivityIndicator(uiView: self.view)
+                let alert = UIAlertController(title: "Bad Credential", message: "either email or password is too short", preferredStyle: .alert)
                 let cancel = UIAlertAction(title: "Return", style: .cancel, handler: nil)
                 alert.addAction(cancel)
                 self.present(alert, animated: true, completion: nil)

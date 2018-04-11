@@ -213,21 +213,40 @@ completion: { Void in()  })
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
+        self.getSimilarTV {
+//            DispatchQueue.main.async {
+//                self.similarTVShowView.reloadData()
+//                self.similarTVCell.isHidden = false
+//                ActivitySpinner.spinner.alpha = 0.0
+//                ViewControllerUtils().hideActivityIndicator(uiView: self.view)
+//            }
+        }
        
     }
     override func viewWillAppear(_ animated: Bool) {
         
     }
     
-    func getSimilarTV(completion: @escaping()->()){
+    func getSimilarTV(completion: ()->()){
+       
+        DispatchQueue.main.async {
+        }
+        
         DispatchQueue.global().async {
-            ViewControllerUtils().showActivityIndicator(uiView: self.view)
+            
+            
             let manager = TVSHowManager()
+            
             manager.similarTV(tvShowID: self.tvShow.id!, completionHandler: { (tvshow) in
                 self.similarTV = tvshow!
-               self.similarImage = Helpers.downloadImage(tvShow: tvshow!)
-                return completion()
+                Helpers.downloadImage(tvShow: self.similarTV, completion: { (images) in
+                    self.similarImage = images
+                    DispatchQueue.main.async {
+                        self.similarTVShowView.reloadData()
+                        self.similarTVCell.isHidden = false
+                        
+                    }
+                })
             })
         }
     }
@@ -260,14 +279,14 @@ completion: { Void in()  })
          ActivitySpinner.spinner.alpha = 0.0
         
         self.reloadInputViews()
-        self.getSimilarTV {
-            DispatchQueue.main.async {
-                self.similarTVShowView.reloadData()
-                self.similarTVCell.isHidden = false
-                ActivitySpinner.spinner.alpha = 0.0
-                ViewControllerUtils().hideActivityIndicator(uiView: self.view)
-            }
-        }
+//        self.getSimilarTV {
+//            DispatchQueue.main.async {
+//                self.similarTVShowView.reloadData()
+//                self.similarTVCell.isHidden = false
+//                ActivitySpinner.spinner.alpha = 0.0
+//                ViewControllerUtils().hideActivityIndicator(uiView: self.view)
+//            }
+//        }
     }
 
    

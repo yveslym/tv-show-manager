@@ -55,4 +55,12 @@ extension UIViewController {
         view.endEditing(true)
     }
 }
+extension UITextField{
+    func desActivateAutoCorrectAndCap(){
+        self.autocorrectionType = .no
+        
+        self.autocapitalizationType = .none
+        
+    }
+}
 

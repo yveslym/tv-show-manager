@@ -26,7 +26,10 @@ class RegisterViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         signupButtonTapped.configureButton()
         self.hideKeyboardWhenTappedAround()
-       
+       usernameLabel.desActivateAutoCorrectAndCap()
+        passwordLabel.desActivateAutoCorrectAndCap()
+        emailLabel.desActivateAutoCorrectAndCap()
+        nameLabel.desActivateAutoCorrectAndCap()
         usernameLabel.delegate = self
         emailLabel.delegate = self
         passwordLabel.delegate = self

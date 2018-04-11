@@ -72,7 +72,7 @@ class FavoriteShowViewController: UIViewController {
         guard let email = KeychainSwift().get("email") else {return}
         let favoriteTVID = UserDefaults.standard.array(forKey:email)  as? [Int] ?? [Int]()
        
-        if !favoriteTVID.isEmpty{
+        if favoriteTVID.count > 0{
             
             ViewControllerUtils().showActivityIndicator(uiView: view)
             
@@ -159,11 +159,22 @@ extension FavoriteShowViewController: UITableViewDelegate, UITableViewDataSource
         cell.tvPoster.roundCornersForAspectFit(radius: 5.0)
         let tv = tvShow[indexPath.row]
         cell.tvName.text = tv.name
-        //cell.tvPopularity.text = String(describing: tv.popularity!)
+       
         cell.tvRunTime.text = String("\(tv.runTime?.first! ?? 0) min")
+        
         cell.tvPopularity.text = String("Vote:  \( tv.voteAverage?.rounded() ?? 0.0)")
-//        cell.tvAiringDate.text = tv.lastAirDate
+
         cell.tvPoster.image = self.tvShowImage[indexPath.row]
+        
+        let episodes = tv.seasons?.last?.episodes
+        var airingEpisode = String()
+        episodes?.forEach{
+            shows: if ($0.airedDate?.toDate())! > Date(){
+                airingEpisode = $0.airedDate!
+                break shows
+            }
+        }
+        
         let day = Date.dayLeft(day: (tv.lastAirDate?.toDate())!).day
         let serieStatus = tv.status?.components(separatedBy: " ").first
         if serieStatus == "Returning"{
@@ -229,9 +240,28 @@ extension FavoriteShowViewController: UITableViewDelegate, UITableViewDataSource
         }
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == UITableViewCellEditingStyle.delete) {
+           
+            guard let email = KeychainSwift().get("email") else {return}
+            var favoriteTV = UserDefaults.standard.array(forKey:email)  as? [Int] ?? [Int]()
+            
+            if let index = favoriteTV.index(of: self.tvShow[indexPath.row].id!) {
+                favoriteTV.remove(at: index)
+                self.self.defaults.set(favoriteTV, forKey: email)
+               
+                
+            }
+             self.tableView.reloadData()
+        }
+       
+    }
+    
 }
-
-
 
 
 
