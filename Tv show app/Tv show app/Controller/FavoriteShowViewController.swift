@@ -104,8 +104,9 @@ class FavoriteShowViewController: UIViewController {
             self.tvShowImage = []
             let manager = TVSHowManager()
             let dg = DispatchGroup()
-           
+            DispatchQueue.global().async {
             favoriteTVID.forEach{
+                
                 
                 dg.enter()
                 manager.tvShowComplet(tvShowId: $0, completionHandler: { (tv, seasons) in
@@ -135,6 +136,7 @@ class FavoriteShowViewController: UIViewController {
                     
                 })
             }
+        }
         }
         else{
             ViewControllerUtils().hideActivityIndicator(uiView: self.view)

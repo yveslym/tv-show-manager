@@ -69,9 +69,10 @@ struct Notification{
                 let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
                 
                 // content
+                
                 let content = UNMutableNotificationContent()
-                content.title = "Your Favorite TV airing Today"
-                content.body = "Hey, Your favorite tv \(tvshowName) is going to be air today."
+                content.title = "Airing TV"
+                content.body = "Hey, Your favorite tv \(tvshowName) is going to air today."
                 //content.categoryIdentifier = "customIdentifier"
                 //content.userInfo = ["customData": "fizzbuzz"]
                 content.sound = UNNotificationSound.default()
