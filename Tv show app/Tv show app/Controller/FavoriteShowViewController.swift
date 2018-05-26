@@ -168,16 +168,13 @@ extension FavoriteShowViewController: UITableViewDelegate, UITableViewDataSource
 
         cell.tvPoster.image = self.tvShowImage[indexPath.row]
         
-        let episodes = tv.seasons?.last?.episodes
-        var airingEpisode = String()
-        episodes?.forEach{
-            shows: if ($0.airedDate?.toDate())! > Date(){
-                airingEpisode = $0.airedDate!
-                break shows
-            }
-        }
+        let manager = TVSHowManager()
+        let episode = manager.nextEpisode(tv.seasons!, lastAiringDate: (tv.lastAirDate)!)
         
-        let day = Date.dayLeft(day: (tv.lastAirDate?.toDate())!).day
+        
+        let day : Int?
+        //let day = Date.dayLeft(day: (episode?.airedDate?.toDate())!).day
+        (episode != nil) ? (day = Date.dayLeft(day: (episode?.airedDate?.toDate())!).day) : (day = -1)
         let serieStatus = tv.status?.components(separatedBy: " ").first
         if serieStatus == "Returning"{
             cell.tvStatus.text = serieStatus ?? ""}
@@ -187,24 +184,26 @@ extension FavoriteShowViewController: UITableViewDelegate, UITableViewDataSource
             cell.tvStatus.textColor = UIColor.red
         }
         
-        let lastEpisode = tv.seasons?.last?.episodes?.filter{$0.airedDate == tv.lastAirDate}
-        let currentSeasonNumber = lastEpisode?.first?.seasonNumber
-        let currentSeason = tv.seasons?.filter{$0.seasonNumber == currentSeasonNumber}.first
+        
+        let currentSeason = (episode != nil) ? (tv.seasons![(episode?.seasonNumber)! - 1] ) : (tv.seasons?.last)
         
         cell.seasonName.text = currentSeason?.name
 //        if (lastEpisode?.first?.overview != "") { astEpisode?.first?.overview ! " There's no description for this episode yet" //lastEpisode?.first?.overview ?? " There's no description for this episode yet"
         
         
-        if lastEpisode?.first?.overview != ""{
-            cell.episodeDescription.text = lastEpisode?.first?.overview
-        }
-        else if lastEpisode?.first?.overview == nil{
-            cell.episodeDescription.text = tvShow[indexPath.row].overview
+        if episode != nil{
+            if (episode?.overview?.isEmpty)!{cell.episodeDescription.text = tv.overview}
+            else{cell.episodeDescription.text = episode?.overview}
+                
+             cell.episodeName.text = episode?.name
         }
         else{
-            cell.episodeDescription.text = tvShow[indexPath.row].overview
+             cell.episodeName.text = tv.seasons?.last?.episodes?.last?.name
+            cell.episodeDescription.text = tv.overview
         }
-        cell.episodeName.text = lastEpisode?.first?.name
+        
+        
+       
         
         
         if day! > 0{

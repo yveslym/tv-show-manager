@@ -14,6 +14,12 @@ extension Date {
         let day2 = calendar.startOfDay(for: day)
         return calendar.dateComponents([.day], from: today, to: day2)
     }
+    func toString( ) -> String
+    {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.string(from: self)
+    }
 }
 
 extension String {

@@ -301,4 +301,79 @@ struct TVSHowManager{
         }
         return array
     }
+    /// function to return if the last episode pass already
+    private func isMoreEpisode(_ lastAiringDate: String) -> Bool{
+        return Date().toString() < lastAiringDate
+    }
+    
+    /// function to return all episodes of a tv show
+    private func getAllEpisodes(_ seasons: [Season]) -> [Episodes]{
+        var episodes = [Episodes]()
+        seasons.forEach{
+            $0.episodes?.forEach{
+                episodes.append($0)
+            }
+        }
+        return episodes
+    }
+    
+    private func getEpisodeDate(_ episodes: [Episodes]) -> [String]{
+        var episodeDate = [String]()
+        episodes.forEach{
+            episodeDate.append(($0.airedDate)!)
+        }
+        return episodeDate
+    }
+    
+    // function to return next episodes
+    func nextEpisode(_ seasons:[Season], lastAiringDate: String) -> Episodes?{
+        
+        // check if there's up coming episodes
+        if !isMoreEpisode(lastAiringDate){
+            return nil
+        }
+        
+        let episodes = getAllEpisodes(seasons)
+        var episodesDate = getEpisodeDate(episodes)
+        
+        // inject current day
+        episodesDate.append(Date().toString())
+       
+        
+        // sort episode date
+        episodesDate.sort{ return $0 < $1}
+        print(Date())
+        print(episodesDate[8])
+        let todayIndex = episodesDate.index(where: { (date) -> Bool in
+           date == Date().toString()
+        })
+        
+       
+        
+        
+        // check if it's the last episode
+        if Int(todayIndex!) + 1 < episodesDate.count{
+            let nextEpisodeDate = episodesDate[Int(todayIndex!) + 1]
+            if let index = episodes.index(where: { $0.airedDate == nextEpisodeDate }) {
+                return episodes[index]
+            }
+            
+        }
+        else{
+            return episodes.last
+        }
+        return nil
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
