@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14133" systemVersion="17E199" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="FavoriteTV" representedClassName=".FavoriteTV" syncable="YES">
+        <attribute name="dayLeft" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="episodeName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="episodeNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="episodePosterLink" optional="YES" attributeType="URI" syncable="YES"/>
+        <attribute name="seasonName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="seasonNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="tvShowID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tvShowLastAiringDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tvShowName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tvShowOverview" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="tvShowPosterLink" optional="YES" attributeType="URI" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="FavoriteTV" positionX="-63" positionY="-18" width="128" height="210"/>
+    </elements>
+</model>

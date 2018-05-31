@@ -90,8 +90,6 @@ class FavoriteShowViewController: UIViewController {
                 }
             }
         }
-        
-     
     }
     
     /// Method to get favorite tv

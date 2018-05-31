@@ -24,6 +24,16 @@
 		200D130420C084AF0075E1F8 /* Image+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D4609200DE8FF00A48384 /* Image+Extension.swift */; };
 		200D130520C084B20075E1F8 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A626A92037A4A50001C065 /* Date+Extension.swift */; };
 		200D130620C084B50075E1F8 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2012F3E9206CAB2800789955 /* UIColor+Extension.swift */; };
+		200D130A20C085980075E1F8 /* TVModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 200D130820C085980075E1F8 /* TVModel.xcdatamodeld */; };
+		200D130B20C086940075E1F8 /* Preferences.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 20A626AD2037A91F0001C065 /* Preferences.xcdatamodeld */; };
+		200D130D20C08C8E0075E1F8 /* FavoriteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200D130C20C08C8E0075E1F8 /* FavoriteManager.swift */; };
+		200D130E20C08D9E0075E1F8 /* TVModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 200D130820C085980075E1F8 /* TVModel.xcdatamodeld */; };
+		200D131120C08EB80075E1F8 /* FavoriteTV+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200D130F20C08EB80075E1F8 /* FavoriteTV+CoreDataClass.swift */; };
+		200D131220C08EB80075E1F8 /* FavoriteTV+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200D130F20C08EB80075E1F8 /* FavoriteTV+CoreDataClass.swift */; };
+		200D131320C08EB80075E1F8 /* FavoriteTV+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200D131020C08EB80075E1F8 /* FavoriteTV+CoreDataProperties.swift */; };
+		200D131420C08EB80075E1F8 /* FavoriteTV+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200D131020C08EB80075E1F8 /* FavoriteTV+CoreDataProperties.swift */; };
+		200D131620C0952C0075E1F8 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200D131520C0952C0075E1F8 /* CoreDataStack.swift */; };
+		200D131720C0952C0075E1F8 /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200D131520C0952C0075E1F8 /* CoreDataStack.swift */; };
 		2012F3E8206C275300789955 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2012F3E7206C275300789955 /* Helpers.swift */; };
 		2012F3EA206CAB2800789955 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2012F3E9206CAB2800789955 /* UIColor+Extension.swift */; };
 		201C73152039F94600EFFD03 /* favoriteTVTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 201C73142039F94600EFFD03 /* favoriteTVTableViewCell.swift */; };
@@ -91,6 +101,11 @@
 		200D12EC20C082270075E1F8 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
 		200D12EF20C082270075E1F8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		200D12F120C082270075E1F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		200D130920C085980075E1F8 /* TVModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TVModel.xcdatamodel; sourceTree = "<group>"; };
+		200D130C20C08C8E0075E1F8 /* FavoriteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteManager.swift; sourceTree = "<group>"; };
+		200D130F20C08EB80075E1F8 /* FavoriteTV+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteTV+CoreDataClass.swift"; sourceTree = "<group>"; };
+		200D131020C08EB80075E1F8 /* FavoriteTV+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FavoriteTV+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		200D131520C0952C0075E1F8 /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		2012F3E7206C275300789955 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		2012F3E9206CAB2800789955 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		201C73142039F94600EFFD03 /* favoriteTVTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = favoriteTVTableViewCell.swift; path = "Tv show app/view/favoriteTVTableViewCell.swift"; sourceTree = SOURCE_ROOT; };
@@ -168,11 +183,24 @@
 		200D12EB20C082270075E1F8 /* Favorite TV Show */ = {
 			isa = PBXGroup;
 			children = (
+				200D130720C0857B0075E1F8 /* Model */,
 				200D12EC20C082270075E1F8 /* TodayViewController.swift */,
 				200D12EE20C082270075E1F8 /* MainInterface.storyboard */,
 				200D12F120C082270075E1F8 /* Info.plist */,
+				200D130C20C08C8E0075E1F8 /* FavoriteManager.swift */,
 			);
 			path = "Favorite TV Show";
+			sourceTree = "<group>";
+		};
+		200D130720C0857B0075E1F8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				200D130F20C08EB80075E1F8 /* FavoriteTV+CoreDataClass.swift */,
+				200D131020C08EB80075E1F8 /* FavoriteTV+CoreDataProperties.swift */,
+				200D130820C085980075E1F8 /* TVModel.xcdatamodeld */,
+				200D131520C0952C0075E1F8 /* CoreDataStack.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		201C7316203A3FDC00EFFD03 /* Helper */ = {
@@ -533,18 +561,24 @@
 			files = (
 				200D12FB20C0846D0075E1F8 /* Season.swift in Sources */,
 				200D12FE20C084810075E1F8 /* NetworkAdapter.swift in Sources */,
+				200D130B20C086940075E1F8 /* Preferences.xcdatamodeld in Sources */,
 				200D12F920C084660075E1F8 /* TVShow.swift in Sources */,
 				200D130120C084910075E1F8 /* ApiConfiguration.swift in Sources */,
 				200D130320C084AB0075E1F8 /* URL+Extension.swift in Sources */,
+				200D131420C08EB80075E1F8 /* FavoriteTV+CoreDataProperties.swift in Sources */,
+				200D130D20C08C8E0075E1F8 /* FavoriteManager.swift in Sources */,
 				200D130020C0848D0075E1F8 /* Language.swift in Sources */,
 				200D130420C084AF0075E1F8 /* Image+Extension.swift in Sources */,
 				200D12FA20C084690075E1F8 /* Episode.swift in Sources */,
+				200D130A20C085980075E1F8 /* TVModel.xcdatamodeld in Sources */,
 				200D130620C084B50075E1F8 /* UIColor+Extension.swift in Sources */,
 				200D12FF20C084860075E1F8 /* TVShowManager.swift in Sources */,
 				200D12FC20C084700075E1F8 /* User.swift in Sources */,
+				200D131720C0952C0075E1F8 /* CoreDataStack.swift in Sources */,
 				200D130520C084B20075E1F8 /* Date+Extension.swift in Sources */,
 				200D12ED20C082270075E1F8 /* TodayViewController.swift in Sources */,
 				200D12FD20C0847B0075E1F8 /* ClientApi.swift in Sources */,
+				200D131220C08EB80075E1F8 /* FavoriteTV+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -559,11 +593,14 @@
 				202D4608200DA55C00A48384 /* TVShowDetailsTableViewController.swift in Sources */,
 				206FD9B0206EC40E008D00BE /* LoginViewController.swift in Sources */,
 				20CFE5FC20054A5B00876855 /* ViewController.swift in Sources */,
+				200D131120C08EB80075E1F8 /* FavoriteTV+CoreDataClass.swift in Sources */,
+				200D130E20C08D9E0075E1F8 /* TVModel.xcdatamodeld in Sources */,
 				20CFE61D2007753000876855 /* TVShow.swift in Sources */,
 				20A626AC2037A8270001C065 /* FavoriteShowViewController.swift in Sources */,
 				20AF761C2007E0AF001A32F6 /* ApiConfiguration.swift in Sources */,
 				20A13752200AAD8800CED7DF /* Season.swift in Sources */,
 				2049188B203ABE59000274A1 /* SearchCollectionViewCell.swift in Sources */,
+				200D131320C08EB80075E1F8 /* FavoriteTV+CoreDataProperties.swift in Sources */,
 				201C73152039F94600EFFD03 /* favoriteTVTableViewCell.swift in Sources */,
 				20CFE61B200773C400876855 /* TVShowManager.swift in Sources */,
 				201C7318203A3FF000EFFD03 /* Notification Center.swift in Sources */,
@@ -578,6 +615,7 @@
 				202D460A200DE8FF00A48384 /* Image+Extension.swift in Sources */,
 				20CFE6172005E23C00876855 /* URL+Extension.swift in Sources */,
 				20CFE61F2007754600876855 /* Episode.swift in Sources */,
+				200D131620C0952C0075E1F8 /* CoreDataStack.swift in Sources */,
 				20CFE61120054AD000876855 /* ClientApi.swift in Sources */,
 				2012F3E8206C275300789955 /* Helpers.swift in Sources */,
 				20A626AA2037A4A50001C065 /* Date+Extension.swift in Sources */,
@@ -843,6 +881,16 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
+		200D130820C085980075E1F8 /* TVModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				200D130920C085980075E1F8 /* TVModel.xcdatamodel */,
+			);
+			currentVersion = 200D130920C085980075E1F8 /* TVModel.xcdatamodel */;
+			path = TVModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
 		20A626AD2037A91F0001C065 /* Preferences.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
