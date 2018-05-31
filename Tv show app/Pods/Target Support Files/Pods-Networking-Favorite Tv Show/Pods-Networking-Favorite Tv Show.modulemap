@@ -1,5 +1,5 @@
-framework module Pods_Networking_Favorite_Tv_Show {
-  umbrella header "Pods-Networking-Favorite Tv Show-umbrella.h"
+framework module Pods_Networking_Favorite_TV_Show {
+  umbrella header "Pods-Networking-Favorite TV Show-umbrella.h"
 
   export *
   module * { export * }

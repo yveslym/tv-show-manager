@@ -1,15 +1,20 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '9.0'
 
-target 'Tv show app' do
-  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
-  use_frameworks!
-
-pod 'youtube-ios-player-helper'
- pod 'FSPagerView'
-pod 'Moya-ModelMapper'
-pod 'KeychainSwift', '~> 10.0'
-pod 'IQKeyboardManagerSwift'
+abstract_target 'Networking' do
+    
+     use_frameworks!
+     
+    pod 'Moya-ModelMapper'
+    pod 'KeychainSwift', '~> 10.0'
+    
+    target 'Favorite TV Show'
+    
+    target 'Tv show app' do
+ 
+    pod 'youtube-ios-player-helper'
+    pod 'FSPagerView'
+    pod 'IQKeyboardManagerSwift'
   # Pods for Tv show app
-
+    end
 end

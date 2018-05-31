@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double Pods_Networking_Favorite_Tv_ShowVersionNumber;
-FOUNDATION_EXPORT const unsigned char Pods_Networking_Favorite_Tv_ShowVersionString[];
+FOUNDATION_EXPORT double Pods_Networking_Favorite_TV_ShowVersionNumber;
+FOUNDATION_EXPORT const unsigned char Pods_Networking_Favorite_TV_ShowVersionString[];
 
