@@ -14,8 +14,8 @@ import CoreData
 class CoreDataStack {
     static var instance = CoreDataStack()
     
-    private lazy var persistanceContainer: NSPersistentContainer = {
-        let contenainer = NSPersistentContainer(name: "TVModel")
+    private lazy var persistanceContainer: CustomPersistantContainer = {
+        let contenainer = CustomPersistantContainer(name: "TVModel")
         contenainer.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError?{
                 fatalError("Unresolved error \(error), \(error.userInfo)") // need to be change
@@ -73,7 +73,19 @@ class CoreDataStack {
         
         return result
     }
+}
+
+class CustomPersistantContainer : NSPersistentContainer {
     
+    static let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.sharedTvID")!
+    let storeDescription = NSPersistentStoreDescription(url: url)
+    
+    var containerPath = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.sharedTvID")?.path
+    lazy var sqlitePath = "\(containerPath ?? "")/\("database.sqlite")"
+    
+    override class func defaultDirectoryURL() -> URL {
+        return url
+    }
 }
 enum Entity: String{
     case FavoriteTV

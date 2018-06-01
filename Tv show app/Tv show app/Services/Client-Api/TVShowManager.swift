@@ -342,8 +342,8 @@ struct TVSHowManager{
         
         // sort episode date
         episodesDate.sort{ return $0 < $1}
-        print(Date())
-        print(episodesDate[8])
+        //print(Date())
+        //print(episodesDate[8])
         let todayIndex = episodesDate.index(where: { (date) -> Bool in
            date == Date().toString()
         })

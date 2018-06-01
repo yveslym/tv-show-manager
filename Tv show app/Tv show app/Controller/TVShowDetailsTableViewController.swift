@@ -124,7 +124,12 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
                           
                             
                             _ = FavoriteTV(context: self.stack.viewContext, tvshow: self.tvShow)
-                            self.stack.saveTo(context: self.stack.viewContext)
+                            if self.stack.viewContext.hasChanges {
+                                self.stack.saveTo(context: self.stack.viewContext)
+                            }
+                            
+                            let movie = CoreDataStack.instance.fetchRecordsForEntity(.FavoriteTV, inManagedObjectContext: CoreDataStack.instance.viewContext) as! [FavoriteTV]
+                            print(movie)
                             
                         case false:
                             // remove tv id
@@ -135,7 +140,9 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
                                 
                                 let record = self.stack.fetchRecordsForEntity(.FavoriteTV, inManagedObjectContext: self.stack.viewContext) as! [FavoriteTV]
                                 let favoritetv = record.filter{return Int($0.tvShowID!)! == self.tvShow.id!}.first
+                                if favoritetv != nil{
                                 self.stack.delete(context: self.stack.viewContext, item: favoritetv!)
+                                }
                             }
                             else{
                                 // add tv id
@@ -144,7 +151,11 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
                                 self.favoriteButton.isSelected = true
                                 
                                 _ = FavoriteTV(context: self.stack.viewContext, tvshow: self.tvShow)
+                                if self.stack.viewContext.hasChanges {
                                 self.stack.saveTo(context: self.stack.viewContext)
+                                }
+                                let movie = CoreDataStack.instance.fetchRecordsForEntity(.FavoriteTV, inManagedObjectContext: CoreDataStack.instance.viewContext) as! [FavoriteTV]
+                                print(movie)
                             }
                             
                         }
@@ -239,7 +250,8 @@ completion: { Void in()  })
        
     }
     override func viewWillAppear(_ animated: Bool) {
-        
+        let tv = CoreDataStack.instance.fetchRecordsForEntity(.FavoriteTV, inManagedObjectContext: CoreDataStack.instance.viewContext) as! [FavoriteTV]
+        print(tv)
     }
     
     func getSimilarTV(completion: ()->()){

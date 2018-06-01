@@ -19,7 +19,7 @@ class FavoriteShowViewController: UIViewController {
     @IBOutlet weak var previewPage: UIView!
     @IBOutlet weak var tableView: UITableView!
     // - MARK: PROPERTIES
-     let defaults = UserDefaults.standard
+     let defaults = UserDefaults(suiteName: "group.sharedTvID")
    
     
     var tvShow = [TVSHow]()
@@ -69,10 +69,17 @@ class FavoriteShowViewController: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         
-        guard let email = KeychainSwift().get("email") else {return}
-        let favoriteTVID = UserDefaults.standard.array(forKey:email)  as? [Int] ?? [Int]()
+        let keychain = KeychainSwift()
+        
+        let movie = CoreDataStack.instance.fetchRecordsForEntity(.FavoriteTV, inManagedObjectContext: CoreDataStack.instance.viewContext) as! [FavoriteTV]
+        print(movie)
+        
+        keychain.accessGroup = "K7R433H2CL.yveslym-corp.showbix2"
+        guard let email = keychain.get("email") else {return}
+        
+        let favoriteTVID = defaults?.array(forKey:email)  as? [Int] ?? [Int]()
        
-        if favoriteTVID.count > 0{
+        if favoriteTVID.count > 0 {
             
             ViewControllerUtils().showActivityIndicator(uiView: view)
             
@@ -94,8 +101,13 @@ class FavoriteShowViewController: UIViewController {
     
     /// Method to get favorite tv
     func getfavoriteTV( completion: @escaping()->()){
-        guard let email = KeychainSwift().get("email") else {return}
-        let favoriteTVID = UserDefaults.standard.array(forKey:email)  as? [Int] ?? [Int]()
+        let keychain = KeychainSwift()
+        keychain.accessGroup = "K7R433H2CL.yveslym-corp.showbix2"
+        
+        guard let email = keychain.get("email") else {return}
+         let defaults = UserDefaults(suiteName: "group.sharedTvID")
+        
+        let favoriteTVID = defaults?.array(forKey:email)  as? [Int] ?? [Int]()
         
         if !favoriteTVID.isEmpty{
             self.tvShow = []
@@ -245,13 +257,16 @@ extension FavoriteShowViewController: UITableViewDelegate, UITableViewDataSource
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == UITableViewCellEditingStyle.delete) {
-           
-            guard let email = KeychainSwift().get("email") else {return}
-            var favoriteTV = UserDefaults.standard.array(forKey:email)  as? [Int] ?? [Int]()
+            
+            let keychain = KeychainSwift()
+            keychain.accessGroup = "K7R433H2CL.yveslym-corp.showbix2"
+            
+            guard let email = keychain.get("email") else {return}
+            var favoriteTV = defaults?.array(forKey:email)  as? [Int] ?? [Int]()
             
             if let index = favoriteTV.index(of: self.tvShow[indexPath.row].id!) {
                 favoriteTV.remove(at: index)
-                self.self.defaults.set(favoriteTV, forKey: email)
+                self.defaults?.set(favoriteTV, forKey: email)
                
                 
             }
