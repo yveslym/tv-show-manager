@@ -326,7 +326,7 @@ struct TVSHowManager{
     }
     
     // function to return next episodes
-    func nextEpisode(_ seasons:[Season], lastAiringDate: String) -> Episodes?{
+    func nextEpisode(_ seasons:[Season], lastAiringDate: String) -> Episodes? {
         
         // check if there's up coming episodes
         if !isMoreEpisode(lastAiringDate){
@@ -348,21 +348,33 @@ struct TVSHowManager{
            date == Date().toString()
         })
         
-       
-        
-        
         // check if it's the last episode
         if Int(todayIndex!) + 1 < episodesDate.count{
             let nextEpisodeDate = episodesDate[Int(todayIndex!) + 1]
             if let index = episodes.index(where: { $0.airedDate == nextEpisodeDate }) {
                 return episodes[index]
             }
-            
         }
         else{
             return episodes.last
         }
         return nil
+    }
+    
+    /// function to update tvshow recorded
+    func upDateRecordedTV(_ tvShows: [TVSHow]){
+       let stack  = CoreDataStack.instance
+        
+        /// get the recorded tv show
+        let favoriteTV = stack.fetchRecordsForEntity(.FavoriteTV, inManagedObjectContext: stack.viewContext) as! [FavoriteTV]
+        /// map and update the recorded movie with the updated one
+        _ = favoriteTV.map { (favorite) -> FavoriteTV? in
+           let tv = tvShows.filter{return $0.id! == Int(favorite.tvShowID!)!}.first
+            
+               return FavoriteTV(context: stack.viewContext, tvshow: tv!)
+        }
+        // save
+        stack.saveTo(context: stack.viewContext)
     }
 }
 

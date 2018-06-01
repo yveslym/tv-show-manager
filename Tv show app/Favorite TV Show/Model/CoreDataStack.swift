@@ -15,7 +15,7 @@ class CoreDataStack {
     static var instance = CoreDataStack()
     
     private lazy var persistanceContainer: NSPersistentContainer = {
-        let contenainer = NSPersistentContainer(name: "BankingModel")
+        let contenainer = NSPersistentContainer(name: "TVModel")
         contenainer.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError?{
                 fatalError("Unresolved error \(error), \(error.userInfo)") // need to be change

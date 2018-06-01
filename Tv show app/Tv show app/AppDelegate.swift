@@ -23,7 +23,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge]) { (permitionGranted, error) in
             Notification.generateNotification()
         }
-        if let login: Bool = KeychainSwift().getBool("isLogin") {
+        let keychain = KeychainSwift()
+       
+         keychain.accessGroup = "K7R433H2CL.yveslym-corp.showbix2"
+        
+        if let login: Bool = keychain.getBool("isLogin") {
         
         if login {
              ApiConfiguration.TVShow(themoviedbApiKey: "ba61b7a133d03578fcb757842f1d9e79")

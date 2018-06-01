@@ -43,11 +43,11 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
     var coverImage = UIImage()
     var posterImage = UIImage()
     var similarTVName = [String]()
-    let defaults = UserDefaults.standard
-    let email: String = KeychainSwift().get("email")!
-    lazy var favoriteID = UserDefaults.standard.array(forKey: self.email)  as? [Int] ?? [Int]()
+    let defaults = UserDefaults(suiteName: "group.sharedTvID")
+    var email: String = ""
+    lazy var favoriteID = defaults!.array(forKey: self.email)  as? [Int] ?? [Int]()
     var similarImage = [UIImage]()
-    
+    let stack = CoreDataStack.instance
     
     var tvShow = TVSHow(){
         didSet{
@@ -58,6 +58,7 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
                 
             }
         }
+        
     }
     var seasonImage = [UIImage](){
         didSet{
@@ -115,24 +116,38 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
                         
                         switch self.favoriteID.isEmpty{
                         case true:
+                            // add tv id
                             self.favoriteID.append(self.tvShow.id!)
-                            self.defaults.set(self.favoriteID, forKey: self.email)
+                            self.defaults?.set(self.favoriteID, forKey: self.email)
                             self.favoriteButton.isSelected = true
                             
+                          
+                            
+                            _ = FavoriteTV(context: self.stack.viewContext, tvshow: self.tvShow)
+                            self.stack.saveTo(context: self.stack.viewContext)
+                            
                         case false:
+                            // remove tv id
                             if let index = self.favoriteID.index(of:self.tvShow.id!) {
                                 self.favoriteID.remove(at: index)
-                                self.self.defaults.set(self.favoriteID, forKey: self.email)
+                                self.self.defaults?.set(self.favoriteID, forKey: self.email)
                                self.favoriteButton.isSelected = false
+                                
+                                let record = self.stack.fetchRecordsForEntity(.FavoriteTV, inManagedObjectContext: self.stack.viewContext) as! [FavoriteTV]
+                                let favoritetv = record.filter{return Int($0.tvShowID!)! == self.tvShow.id!}.first
+                                self.stack.delete(context: self.stack.viewContext, item: favoritetv!)
                             }
                             else{
+                                // add tv id
                                 self.favoriteID.append(self.tvShow.id!)
-                                self.defaults.set(self.favoriteID, forKey: self.email)
+                                self.defaults?.set(self.favoriteID, forKey: self.email)
                                 self.favoriteButton.isSelected = true
+                                
+                                _ = FavoriteTV(context: self.stack.viewContext, tvshow: self.tvShow)
+                                self.stack.saveTo(context: self.stack.viewContext)
                             }
                             
                         }
-                        
         },
 completion: { Void in()  })
         
@@ -278,6 +293,9 @@ completion: { Void in()  })
          ActivitySpinner.spinner.startAnimating()
          ActivitySpinner.spinner.alpha = 0.0
         
+        let keychain = KeychainSwift()
+        keychain.accessGroup = "K7R433H2CL.yveslym-corp.showbix2"
+        email = keychain.get("email")!
         self.reloadInputViews()
 //        self.getSimilarTV {
 //            DispatchQueue.main.async {

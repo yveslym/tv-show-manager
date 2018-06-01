@@ -29,17 +29,20 @@ struct Notification{
                     manager.tvShowDetails(id: $0, completionHandler: { (tvshow) in
                         
                         // check if the airing date is today for each favorite tv show
-                        if Date.dayLeft(day: (tvshow?.lastAirDate?.toDate())!).day == 0{
-                            tvShow.append(tvshow!)
-                             print(tvshow?.name! ?? " no name ", " airing tonight")
-                        }
-                        else{
-                            print(tvshow?.name! ?? " no name ", " NO")
-                        }
+                        let manager = TVSHowManager()
+                        
+                        let airingEpisode = manager.nextEpisode((tvshow?.seasons)!, lastAiringDate: (tvshow?.lastAirDate)!)
+                        
+                        
+//                        if Date.dayLeft(day: (airingEpisode?.airedDate?.toDate())!).day == 0{
+//                            tvShow.append(tvshow!)
+//                             print(tvshow?.name! ?? " no name ", " airing tonight")
+//                        }
+//                        else{
+//                            print(tvshow?.name! ?? " no name ", " NO")
+//                        }
                         dg.leave()
                     })
-                    
-                    
                 }
                 dg.notify(queue: .global(), execute: {
                    completion(tvShow)

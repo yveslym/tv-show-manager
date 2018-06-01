@@ -64,11 +64,16 @@ extension LoginViewController{
         NetworkAdapter.request(target: .login, success: { (response) in
             if response.response?.statusCode == 200 {
             let user = try! JSONDecoder().decode(User.self, from: response.data)
-            KeychainSwift().set(true, forKey: "isLogin")
-            KeychainSwift().set(user.email!, forKey: "email")
-                KeychainSwift().set(user.username ?? "", forKey: "username")
-            KeychainSwift().set(user.authentication_token!, forKey: "token")
-            KeychainSwift().set(true, forKey: "isLogin")
+           
+                let keychain = KeychainSwift()
+                
+                keychain.accessGroup = "K7R433H2CL.yveslym-corp.showbix2"
+                
+                keychain.set(true, forKey: "isLogin")
+                keychain.set(user.email!, forKey: "email")
+                keychain.set(user.username ?? "", forKey: "username")
+                keychain.set(user.authentication_token!, forKey: "token")
+                keychain.set(true, forKey: "isLogin")
                 DispatchQueue.main.async {
                      self.performSegue(withIdentifier: "home tab", sender: nil)
                    
