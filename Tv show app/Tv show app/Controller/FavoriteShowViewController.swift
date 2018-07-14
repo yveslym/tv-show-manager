@@ -8,6 +8,7 @@
 
 import UIKit
 import KeychainSwift
+import ChameleonFramework
 
 class FavoriteShowViewController: UIViewController {
     
@@ -38,6 +39,12 @@ class FavoriteShowViewController: UIViewController {
             }
         }
     }
+    func setupBarColor(color: UIColor){
+        self.navigationController?.navigationBar.barTintColor = color
+        self.tabBarController?.tabBar.tintColor = UIColor.flatWhite()
+        self.tabBarController?.tabBar.barTintColor = color
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,6 +93,7 @@ class FavoriteShowViewController: UIViewController {
                 self.view.addSubview(self.previewPage)
             }
         }
+        self.setupBarColor(color: UIColor.flatBlueColorDark())
     }
     override func viewDidAppear(_ animated: Bool) {
         

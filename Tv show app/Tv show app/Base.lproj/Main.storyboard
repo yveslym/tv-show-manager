@@ -230,7 +230,7 @@
                                         <rect key="frame" x="0.0" y="727" width="375" height="18"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dRM-m4-RGr" id="28O-DU-XKR">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="17.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="18"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Isr-SG-hIc">
@@ -272,7 +272,7 @@
                                         <rect key="frame" x="0.0" y="745" width="375" height="205"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ct7-Dh-d7J" id="uGo-FJ-2ME">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="204.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="205"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="jg3-Ve-jOR" customClass="FSPagerView" customModule="FSPagerView">
@@ -1740,6 +1740,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="G3q-MP-7WY"/>
-        <segue reference="Yma-i0-RPg"/>
+        <segue reference="reG-qC-cTV"/>
     </inferredMetricsTieBreakers>
 </document>

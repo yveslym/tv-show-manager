@@ -208,10 +208,14 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
            
         }
     }
+    func setupBarColor(color: UIColor){
+        self.navigationController?.navigationBar.barTintColor = color
+        self.tabBarController?.tabBar.tintColor = UIColor.flatWhite()
+        self.tabBarController?.tabBar.barTintColor = color
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.navigationBar.barTintColor = UIColor.white
-        tabBarController?.tabBar.tintColor = UIColor.flatBlueColorDark()
-          self.tabBarController?.tabBar.barTintColor = UIColor.flatWhite()
+        self.setupBarColor(color: UIColor.flatBlueColorDark())
     }
     func createGradient()-> UIColor{
         var colors = [UIColor]()
@@ -465,7 +469,9 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
             print("oups")
         }
     }
+    
     func pagerView(_ pagerView: FSPagerView, didHighlightItemAt index: Int) {
+       
         pagerView.layer.shadowColor = UIColor.blue.cgColor
         pagerView.backgroundView?.layer.shadowColor = UIColor.blue.cgColor
     }
