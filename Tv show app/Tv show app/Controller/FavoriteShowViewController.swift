@@ -67,6 +67,26 @@ class FavoriteShowViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         ViewControllerUtils().hideActivityIndicator(uiView: self.view)
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+         let keychain = KeychainSwift()
+        DispatchQueue.main.async {
+            keychain.accessGroup = "K7R433H2CL.yveslym-corp.showbix2"
+            guard let email = keychain.get("email") else {return}
+            
+            let favoriteTVID = self.defaults?.array(forKey:email)  as? [Int] ?? [Int]()
+            if favoriteTVID.count > 0 {
+            if let viewWithTag = self.view.viewWithTag(100) {
+                viewWithTag.removeFromSuperview()
+                }
+            }
+            else{
+                self.previewPage.frame = self.view.frame
+                self.previewPage.tag = 100
+                self.view.addSubview(self.previewPage)
+            }
+        }
+    }
     override func viewDidAppear(_ animated: Bool) {
         
         let keychain = KeychainSwift()
@@ -97,6 +117,7 @@ class FavoriteShowViewController: UIViewController {
                 }
             }
         }
+        
     }
     
     /// Method to get favorite tv
@@ -267,10 +288,12 @@ extension FavoriteShowViewController: UITableViewDelegate, UITableViewDataSource
             if let index = favoriteTV.index(of: self.tvShow[indexPath.row].id!) {
                 favoriteTV.remove(at: index)
                 self.defaults?.set(favoriteTV, forKey: email)
-               
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
                 
             }
-             self.tableView.reloadData()
+            
         }
        
     }

@@ -41,6 +41,8 @@
 		202D4606200CADF000A48384 /* FSPagerCollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D4605200CADF000A48384 /* FSPagerCollectionView+Extension.swift */; };
 		202D4608200DA55C00A48384 /* TVShowDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D4607200DA55C00A48384 /* TVShowDetailsTableViewController.swift */; };
 		202D460A200DE8FF00A48384 /* Image+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 202D4609200DE8FF00A48384 /* Image+Extension.swift */; };
+		2046E77720FA61E800BB5F2D /* Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2046E77620FA61E800BB5F2D /* Gradient.swift */; };
+		2046E77820FA61E800BB5F2D /* Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2046E77620FA61E800BB5F2D /* Gradient.swift */; };
 		20491889203AB2DD000274A1 /* SearchTVViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20491888203AB2DD000274A1 /* SearchTVViewController.swift */; };
 		2049188B203ABE59000274A1 /* SearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2049188A203ABE59000274A1 /* SearchCollectionViewCell.swift */; };
 		20676A7C207C80170040C1D4 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20676A7B207C80170040C1D4 /* RegisterViewController.swift */; };
@@ -115,6 +117,7 @@
 		202D4605200CADF000A48384 /* FSPagerCollectionView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FSPagerCollectionView+Extension.swift"; sourceTree = "<group>"; };
 		202D4607200DA55C00A48384 /* TVShowDetailsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVShowDetailsTableViewController.swift; sourceTree = "<group>"; };
 		202D4609200DE8FF00A48384 /* Image+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Image+Extension.swift"; sourceTree = "<group>"; };
+		2046E77620FA61E800BB5F2D /* Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gradient.swift; sourceTree = "<group>"; };
 		20491888203AB2DD000274A1 /* SearchTVViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTVViewController.swift; sourceTree = "<group>"; };
 		2049188A203ABE59000274A1 /* SearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewCell.swift; sourceTree = "<group>"; };
 		20676A7B207C80170040C1D4 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
@@ -211,6 +214,7 @@
 			children = (
 				201C7317203A3FF000EFFD03 /* Notification Center.swift */,
 				2012F3E7206C275300789955 /* Helpers.swift */,
+				2046E77620FA61E800BB5F2D /* Gradient.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -480,24 +484,26 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Networking-Tv show app/Pods-Networking-Tv show app-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/FSPagerView/FSPagerView.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/ModelMapper/Mapper.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya-ModelMapper/Moya_ModelMapper.framework",
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
-				"${BUILT_PRODUCTS_DIR}/FSPagerView/FSPagerView.framework",
+				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/youtube-ios-player-helper/youtube_ios_player_helper.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSPagerView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya_ModelMapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSPagerView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/youtube_ios_player_helper.framework",
 			);
@@ -596,6 +602,7 @@
 				200D12FC20C084700075E1F8 /* User.swift in Sources */,
 				200D131720C0952C0075E1F8 /* CoreDataStack.swift in Sources */,
 				200D130520C084B20075E1F8 /* Date+Extension.swift in Sources */,
+				2046E77820FA61E800BB5F2D /* Gradient.swift in Sources */,
 				200D12ED20C082270075E1F8 /* TodayViewController.swift in Sources */,
 				200D12FD20C0847B0075E1F8 /* ClientApi.swift in Sources */,
 				200D131220C08EB80075E1F8 /* FavoriteTV+CoreDataClass.swift in Sources */,
@@ -616,6 +623,7 @@
 				200D131120C08EB80075E1F8 /* FavoriteTV+CoreDataClass.swift in Sources */,
 				200D130E20C08D9E0075E1F8 /* TVModel.xcdatamodeld in Sources */,
 				20CFE61D2007753000876855 /* TVShow.swift in Sources */,
+				2046E77720FA61E800BB5F2D /* Gradient.swift in Sources */,
 				20A626AC2037A8270001C065 /* FavoriteShowViewController.swift in Sources */,
 				20AF761C2007E0AF001A32F6 /* ApiConfiguration.swift in Sources */,
 				20A13752200AAD8800CED7DF /* Season.swift in Sources */,

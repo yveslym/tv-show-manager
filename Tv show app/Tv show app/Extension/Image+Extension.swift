@@ -128,6 +128,7 @@ extension UIView{
             self.backgroundColor = UIColor(red: CGFloat(red), green: CGFloat(green), blue: CGFloat(blue), alpha: CGFloat(alpha))
         }, completion:nil)
     }
+  
     
     func dropShadow(scale: Bool = true) {
         layer.masksToBounds = false
@@ -139,6 +140,16 @@ extension UIView{
         layer.shadowPath = UIBezierPath(rect: bounds).cgPath
         layer.shouldRasterize = true
         layer.rasterizationScale = scale ? UIScreen.main.scale : 1
+    }
+}
+extension UIColor{
+    static func randomColor(alpha: CGFloat) -> UIColor {
+        let red   = Float((arc4random() % 256)) / 255.0
+        let green = Float((arc4random() % 256)) / 255.0
+        let blue  = Float((arc4random() % 256)) / 255.0
+        let alpha = alpha
+        
+        return UIColor(red: CGFloat(red), green: CGFloat(green), blue: CGFloat(blue), alpha: CGFloat(alpha))
     }
 }
 

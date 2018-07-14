@@ -10,6 +10,7 @@ import UIKit
 import FSPagerView
 import UserNotifications
 import KeychainSwift
+import ChameleonFramework
 //mport NVActivityIndicatorView
 
 
@@ -207,26 +208,51 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
            
         }
     }
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.navigationBar.barTintColor = UIColor.white
+        tabBarController?.tabBar.tintColor = UIColor.flatBlueColorDark()
+          self.tabBarController?.tabBar.barTintColor = UIColor.flatWhite()
+    }
+    func createGradient()-> UIColor{
+        var colors = [UIColor]()
+        for _ in 0 ... 2{
+            colors.append(UIColor.randomFlat())
+        }
+        let gradient = GradientColor(gradientStyle: .topToBottom, frame: self.view.frame, colors: colors)
+        return gradient
+    }
+    func animateView(){
+        self.waitView.backgroundColor = createGradient()
+        self.waitView.alpha = 0.3
+        
+        let animation = {
+            self.waitView.alpha = 1
+        }
+        UIView.animate(withDuration: 1, delay: 0, options: [.repeat, .autoreverse], animations: animation, completion: nil)
+        
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.view.backgroundColor = UIColor(rgb: 0x1A1E36)
+       
         
         self.waitView = UIView(frame: self.view.frame)
-        self.waitView2 =  UIView(frame: self.view.frame)
-        self.waitView3 =  UIView(frame: self.view.frame)
+      
+//        self.waitView2 =  UIView(frame: self.view.frame)
+//        self.waitView3 =  UIView(frame: self.view.frame)
         self.blankView = UIView(frame: self.view.frame)
         self.waitView.tag = 100
-         self.waitView2.tag = 100
-         self.waitView3.tag = 100
+//         self.waitView2.tag = 100
+//         self.waitView3.tag = 100
         self.blankView.tag = 100
         
-        self.waitView.getRandomColor(alpha: CGFloat( 0.2))
-        self.waitView2.getRandomColor(alpha: CGFloat( 0.2))
-        self.waitView3.getRandomColor(alpha: CGFloat( 0.3))
-        let bg = UIImageView(frame: self.view.frame)
-        bg.image = UIImage(named: "b1")
-        self.blankView.addSubview(bg)
+       // self.waitView.getRandomColor(alpha: CGFloat( 0.2))
+//        self.waitView2.getRandomColor(alpha: CGFloat( 0.2))
+//        self.waitView3.getRandomColor(alpha: CGFloat( 0.3))
+//        let bg = UIImageView(frame: self.view.frame)
+ //       bg.image = UIImage(named: "b1")
+        self.blankView.backgroundColor = UIColor.flatWhite()
         
         self.delegate = self
         self.airingView.dataSource = self
@@ -242,27 +268,28 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         
         // configure airing view
         self.airingView.transformer = FSPagerViewTransformer(type: .linear)
-        airingView.itemSize = CGSize(width: 280, height: 180)
+        airingView.itemSize = CGSize(width: 230, height: 200)
         airingView.isInfinite = true
-        airingView.interitemSpacing = 5
+        airingView.interitemSpacing = 0
+        
         
         //configure topRated view
         self.topRatedView.transformer = FSPagerViewTransformer(type: .linear)
-        topRatedView.itemSize = CGSize(width: 150, height: 180)
+        topRatedView.itemSize = CGSize(width: 180, height: 180)
         topRatedView.isInfinite = true
-        topRatedView.interitemSpacing = 0
+        topRatedView.interitemSpacing = 5
         
         //configure airing view
         self.popularView.transformer = FSPagerViewTransformer(type: .linear)
-        popularView.itemSize = CGSize(width: 150, height: 180)
+        popularView.itemSize = CGSize(width: 180, height: 180)
         popularView.isInfinite = true
-        popularView.interitemSpacing = 5
+        popularView.interitemSpacing = 15
         
         //configure discover view
         self.discoverTVView.transformer = FSPagerViewTransformer(type: .linear)
-        discoverTVView.itemSize = CGSize(width: 150, height: 180)
+        discoverTVView.itemSize = CGSize(width: 180, height: 180)
         discoverTVView.isInfinite = true
-        discoverTVView.interitemSpacing = 5
+        discoverTVView.interitemSpacing = 25
         
         
         
@@ -282,18 +309,21 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         
        
         DispatchQueue.global().async {
+            
             DispatchQueue.main.async {
                 self.view.addSubview(self.blankView)
+                self.view.addSubview(self.waitView)
+                self.animateView()
                  ViewControllerUtils().showActivityIndicator(uiView: self.view)
                 UIView.animate(withDuration: 3, animations: {
-                    self.view.addSubview(self.waitView)
+                    //self.view.addSubview(self.waitView)
                 })
             }
             
             self.getAiringToday {
                 DispatchQueue.main.async {
                     UIView.animate(withDuration: 3, animations: {
-                        self.view.addSubview(self.waitView3)
+                       // self.view.addSubview(self.waitView3)
                     })
                 }
                
@@ -303,11 +333,12 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
                         self.airingView.reloadData()
                         self.discoverTVView.reloadData()
                         
-                        self.view.willRemoveSubview(self.waitView)
+                       // self.view.willRemoveSubview(self.waitView)
                         
-                        self.view.willRemoveSubview(self.waitView3)
+                        //self.view.willRemoveSubview(self.waitView3)
                         self.view.willRemoveSubview(self.blankView)
                         ViewControllerUtils().hideActivityIndicator(uiView: self.view)
+                         self.view.willRemoveSubview(self.waitView)
                     }
                     
                      self.getPopularTV {
@@ -433,6 +464,10 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         default:
             print("oups")
         }
+    }
+    func pagerView(_ pagerView: FSPagerView, didHighlightItemAt index: Int) {
+        pagerView.layer.shadowColor = UIColor.blue.cgColor
+        pagerView.backgroundView?.layer.shadowColor = UIColor.blue.cgColor
     }
 }
 

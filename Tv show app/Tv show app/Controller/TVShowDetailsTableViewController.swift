@@ -10,6 +10,8 @@ import UIKit
 import FSPagerView
 import youtube_ios_player_helper
 import KeychainSwift
+import ChameleonFramework
+
 struct ActivitySpinner{
      static let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
     
@@ -309,14 +311,23 @@ completion: { Void in()  })
         keychain.accessGroup = "K7R433H2CL.yveslym-corp.showbix2"
         email = keychain.get("email")!
         self.reloadInputViews()
-//        self.getSimilarTV {
-//            DispatchQueue.main.async {
-//                self.similarTVShowView.reloadData()
-//                self.similarTVCell.isHidden = false
-//                ActivitySpinner.spinner.alpha = 0.0
-//                ViewControllerUtils().hideActivityIndicator(uiView: self.view)
-//            }
-//        }
+
+        let colors = ColorsFromImage(image: posterImage, withFlatScheme: true)
+        let gradient = GradientColor(gradientStyle: .topToBottom, frame: self.view.frame, colors: colors)
+        self.tableview.backgroundColor = gradient
+        let contrastColor = ContrastColorOf(backgroundColor: gradient, returnFlat: true)
+       overView.textColor = contrastColor
+        let compColor = ComplementaryFlatColorOf(color: contrastColor)
+        compColor.withAlphaComponent(0.2)
+        
+        self.tabBarController?.tabBar.barTintColor = colors.last!
+        self.navigationController?.navigationBar.barTintColor = colors.first!
+       
+         //UITabBar.appearance().tintColor = UIColor.clear
+       
+        tabBarController?.tabBar.tintColor = contrastColor
+        self.navigationController?.navigationBar.titleTextAttributes = [kCTForegroundColorAttributeName as NSAttributedStringKey: contrastColor]
+
     }
 
    
