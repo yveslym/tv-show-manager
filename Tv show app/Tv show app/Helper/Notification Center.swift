@@ -78,7 +78,7 @@ struct Notification{
                 
                 dateComponents.hour = 11
                 
-                dateComponents.minute = 50
+                dateComponents.minute = 55
                 let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
                 
                 // content

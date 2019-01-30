@@ -31,14 +31,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Notification.generateNotification()
         }
         let keychain = KeychainSwift()
+
+        for (key, value) in ProcessInfo.processInfo.environment {
+            print("\(key): \(value)")
+        }
+        let youtubeApiKey = ProcessInfo.processInfo.environment["youtubeApi"]
+        let movieApi = ProcessInfo.processInfo.environment["movieApi"]
        
          keychain.accessGroup = "K7R433H2CL.yveslym-corp.showbix2"
+        ApiConfiguration.TVShow(themoviedbApiKey: movieApi!)
+        YoutubeKit.shared.setAPIKey(youtubeApiKey!)
         
         if let login: Bool = keychain.getBool("isLogin") {
         
         if login {
-             ApiConfiguration.TVShow(themoviedbApiKey: "ba61b7a133d03578fcb757842f1d9e79")
-             YoutubeKit.shared.setAPIKey("AIzaSyBUn1adNgh7whGiwDwoF1ba8uO8ky31wx4")
             let mainStoryBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let rootController = mainStoryBoard.instantiateViewController(withIdentifier: "home tab")
             window?.rootViewController = rootController
@@ -46,11 +52,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
            window?.makeKeyAndVisible()
         }
         }
-        
-        ApiConfiguration.TVShow(themoviedbApiKey: "ba61b7a133d03578fcb757842f1d9e79")
-        
-        
-        
         return true
     }
 
