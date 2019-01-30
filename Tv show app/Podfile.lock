@@ -21,6 +21,7 @@ PODS:
     - Result (~> 3.0)
   - Result (3.2.4)
   - youtube-ios-player-helper (0.1.6)
+  - YoutubeKit (0.3.0)
 
 DEPENDENCIES:
   - AMScrollingNavbar
@@ -31,6 +32,7 @@ DEPENDENCIES:
   - Kingfisher
   - Moya-ModelMapper
   - youtube-ios-player-helper
+  - YoutubeKit
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -46,6 +48,7 @@ SPEC REPOS:
     - Moya-ModelMapper
     - Result
     - youtube-ios-player-helper
+    - YoutubeKit
 
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
@@ -60,7 +63,8 @@ SPEC CHECKSUMS:
   Moya-ModelMapper: 35209257d9e886cedf91289559a41723f5fbd095
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
+  YoutubeKit: a00e9eebcb3cfe26d7e233c5f8591dfd0b08f7a0
 
-PODFILE CHECKSUM: c9dbb072f712179bdea130b6a2a9351556fa3d2e
+PODFILE CHECKSUM: 08688a6085ab5b6b03476d0bec7ee24ff8ea1c51
 
 COCOAPODS: 1.6.0.beta.2

@@ -24,6 +24,7 @@ enum TvShowApi{
     case logOut
     case getUser
     case login
+    case getEpisodeTrailer(_ tvshowId: Int, _ seasonNumber: Int, _ episodeNumber: Int)
 }
 
 extension TvShowApi:  TargetType{
@@ -31,11 +32,10 @@ extension TvShowApi:  TargetType{
     public var baseURL: URL{
         switch self{
             
-        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons,.airingToday, .discover:
+        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons,.airingToday, .discover, .getEpisodeTrailer(_, _, _):
             return URL(string: "https://api.themoviedb.org")!
         case .createUser, .logOut, .getUser, .login:
             return URL(string:"https://api-show-bix.herokuapp.com")!
-      
         }
     }
     // propertie to get the path
@@ -65,20 +65,21 @@ extension TvShowApi:  TargetType{
             return "/v1/sessions"
         case .login:
              return "/v1/login"
+        case .getEpisodeTrailer(let tvshowId, let seasonNumber, let episodeNumber):
+            return "/3/tv/\(tvshowId)/season/\(seasonNumber)/episode/\(episodeNumber)/videos"
         }
     }
     // properties to get the method
     public var method: Moya.Method {
         switch self{
             
-        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons, .airingToday, .discover, .getUser:
+        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons, .airingToday, .discover, .getUser, .getEpisodeTrailer(_, _, _):
             return .get
        
         case .createUser, .login:
             return .post
         case .logOut:
             return .delete
-        
         }
     }
     
@@ -86,9 +87,11 @@ extension TvShowApi:  TargetType{
     public var sampleData: Data {
         switch self{
             
-        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons, .airingToday, .discover, .createUser, .logOut, .getUser, .login:
+        case .popularTvShow, .bestRateTvShow, .similarTvShow, .TVShowDetail, .findTvShow, .getVideos, .getSeasons, .airingToday, .discover, .createUser, .logOut, .getUser, .login,  .getEpisodeTrailer(_, _, _):
            
             return "{}".data(using: String.Encoding.utf8)!
+
+
         }
     }
     
@@ -106,6 +109,10 @@ extension TvShowApi:  TargetType{
             return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language, "page": 1, "with_runtime.gte": "40"], encoding: URLEncoding.default)
         case .getVideos(let language):
             return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language], encoding: URLEncoding.default)
+
+        case .getEpisodeTrailer(_, _, _):
+             return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": Language.english], encoding: URLEncoding.default)
+
         case .findTvShow(let query,let language):
             return .requestParameters(parameters: ["api_key": api.themoviedbApiKey!, "language": language, "query": query, "page": 1], encoding: URLEncoding.default)
       
@@ -135,6 +142,7 @@ extension TvShowApi:  TargetType{
              return .requestPlain
         case .login:
              return .requestParameters(parameters: ["email":  User.currentUser.email!, "password":  User.currentUser.password!], encoding: URLEncoding.queryString)
+
         }
     }
     
@@ -155,6 +163,8 @@ extension TvShowApi:  TargetType{
             
             return ["x-User-Email": email!,
                     "x-User-Token": token!]
+        case .getEpisodeTrailer(_, _, _):
+            return [:]
         }
     }
 }

@@ -20,6 +20,7 @@ abstract_target 'Networking' do
     pod 'IQKeyboardManagerSwift'
     pod 'ChameleonFramework/Swift'
     pod 'AMScrollingNavbar'
+    pod 'YoutubeKit'
 
   # Pods for Tv show app
     end

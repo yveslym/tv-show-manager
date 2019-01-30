@@ -276,6 +276,18 @@ struct TVSHowManager{
             
         }
     }
+
+    func getEpisodeVideos (_ tvShowId: Int, _ seasonNumber: Int, _ episodeNumber: Int, completionHandler: @escaping (videoModel)->()){
+
+        NetworkAdapter.request(target: .getEpisodeTrailer(tvShowId, seasonNumber, episodeNumber), success: { (response) in
+            let video = try! response.map(to: videoModel.self, keyPath: "results")
+            return completionHandler(video)
+        }, error: { (error) in
+
+        }) { (error) in
+
+        }
+    }
     
     func discoverShow(completionHandler: @escaping([TVSHow])-> Void){
         DispatchQueue.global().async {

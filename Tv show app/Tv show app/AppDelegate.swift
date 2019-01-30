@@ -11,6 +11,7 @@ import UserNotifications
 import KeychainSwift
 import IQKeyboardManagerSwift
 import ChameleonFramework
+ import YoutubeKit
  
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -37,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if login {
              ApiConfiguration.TVShow(themoviedbApiKey: "ba61b7a133d03578fcb757842f1d9e79")
-            
+             YoutubeKit.shared.setAPIKey("AIzaSyBUn1adNgh7whGiwDwoF1ba8uO8ky31wx4")
             let mainStoryBoard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
             let rootController = mainStoryBoard.instantiateViewController(withIdentifier: "home tab")
             window?.rootViewController = rootController
