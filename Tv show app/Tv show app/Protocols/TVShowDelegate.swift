@@ -8,6 +8,7 @@
 
 import Foundation
 import FSPagerView
+import Kingfisher
 protocol TVShowDelegate: class{
     func TVShowDetailViewController(tvShow: TVSHow)
     func tvShowSimilar(tvShow: TVSHow, TVShowController:TVShowDetailsTableViewController)
@@ -88,6 +89,7 @@ extension TVShowDelegate where Self: UIViewController{
                 let tvDetailViewController = self.storyboard?.instantiateViewController(withIdentifier: "tvshow") as! TVShowDetailsTableViewController
                 
                  var imageList = [UIImage]()
+
                 completTv.seasons?.forEach{
                     do{
                         if let url = $0.imageURL{

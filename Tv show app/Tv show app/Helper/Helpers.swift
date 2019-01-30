@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Kingfisher
 
 struct Helpers{
     ///function to download tvshow images
@@ -19,8 +20,8 @@ struct Helpers{
        
         tvShow.forEach{
             do{
-                if $0.imageURL != nil{
-                    let data = try  Data(contentsOf: $0.imageURL!)
+                if let url = $0.imageURL {
+                    let data = try  Data(contentsOf: url)
                     let image = UIImage(data: data)
                     images.append(image!)
                 }else{

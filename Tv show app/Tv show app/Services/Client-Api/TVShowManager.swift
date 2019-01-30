@@ -326,39 +326,33 @@ struct TVSHowManager{
     }
     
     // function to return next episodes
-    func nextEpisode(_ seasons:[Season], lastAiringDate: String) -> Episodes? {
+    func nextEpisode(_ tvshow: TVSHow) -> Episodes? {
         
-        // check if there's up coming episodes
-        if !isMoreEpisode(lastAiringDate){
-            return nil
-        }
+        var allEpisodes = [Episodes]()
+        var episodesDate = [String]()
+        let today = Date().toString()
+        episodesDate.append(today)
         
-        let episodes = getAllEpisodes(seasons)
-        var episodesDate = getEpisodeDate(episodes)
-        
-        // inject current day
-        episodesDate.append(Date().toString())
+        tvshow.seasons?.forEach({ (season) in
+            season.episodes?.forEach({ (episode) in
+                episodesDate.append((episode.airedDate ?? "")!)
+                allEpisodes.append(episode)
+            })
+        })
+        let sortedDate = episodesDate.sorted(by: {$0 < $1})
+        let airingDateIndex = sortedDate.index(where: {$0 == today})
        
         
-        // sort episode date
-        episodesDate.sort{ return $0 < $1}
-        //print(Date())
-        //print(episodesDate[8])
-        let todayIndex = episodesDate.index(where: { (date) -> Bool in
-           date == Date().toString()
-        })
-        
-        // check if it's the last episode
-        if Int(todayIndex!) + 1 < episodesDate.count{
-            let nextEpisodeDate = episodesDate[Int(todayIndex!) + 1]
-            if let index = episodes.index(where: { $0.airedDate == nextEpisodeDate }) {
-                return episodes[index]
-            }
+        if today > sortedDate.last!{
+            return nil
+        }
+        else if sortedDate.last! == today{
+            return allEpisodes.last!
         }
         else{
-            return episodes.last
+            return allEpisodes[airingDateIndex!]
         }
-        return nil
+        
     }
     
     /// function to update tvshow recorded

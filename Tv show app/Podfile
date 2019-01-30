@@ -8,8 +8,10 @@ abstract_target 'Networking' do
     pod 'Moya-ModelMapper'
     pod 'KeychainSwift', '~> 10.0'
     pod 'FSPagerView'
-
+    pod 'Kingfisher'
     target 'Favorite TV Show'
+
+
     
     target 'Tv show app' do
  
@@ -17,6 +19,8 @@ abstract_target 'Networking' do
     pod 'FSPagerView'
     pod 'IQKeyboardManagerSwift'
     pod 'ChameleonFramework/Swift'
+    pod 'AMScrollingNavbar'
+
   # Pods for Tv show app
     end
 end

@@ -27,7 +27,12 @@ class VideoViewController: UIViewController, YTPlayerViewDelegate {
        
         DispatchQueue.main.async {
         let manager = TVSHowManager()
+            if let lastEpisode = manager.nextEpisode(tvShow){
+                //if let lastEpisode.
+            }
+
         manager.getVideos(withId: self.tvShow.id!) { (videos) in
+
             
             let player = YTPlayerView(frame: self.playerView.frame)
             player.load(withVideoId: (videos?.first?.key!)!)

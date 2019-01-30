@@ -987,9 +987,12 @@ public class IQKeyboardManager: NSObject, UIGestureRecognizerDelegate {
             let newKeyboardDistanceFromTextField = (specialKeyboardDistanceFromTextField == kIQUseDefaultKeyboardDistance) ? keyboardDistanceFromTextField : specialKeyboardDistanceFromTextField
             var kbSize = _kbSize
             kbSize.height += newKeyboardDistanceFromTextField
-            
-            let topLayoutGuide : CGFloat = rootController.view.layoutMargins.top + 5
-            let bottomLayoutGuide : CGFloat = rootController.view.layoutMargins.bottom
+
+            let navigationBarAreaHeight : CGFloat = UIApplication.shared.statusBarFrame.height + ( rootController.navigationController?.navigationBar.frame.height ?? 0)
+            let layoutAreaHeight : CGFloat = rootController.view.layoutMargins.bottom
+
+            let topLayoutGuide : CGFloat = max(navigationBarAreaHeight, layoutAreaHeight) + 5
+            let bottomLayoutGuide : CGFloat = (textFieldView is UITextView) ? 0 : rootController.view.layoutMargins.bottom  //Validation of textView for case where there is a tab bar at the bottom or running on iPhone X and textView is at the bottom.
 
             //  Move positive = textField is hidden.
             //  Move negative = textField is showing.

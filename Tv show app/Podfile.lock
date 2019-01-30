@@ -1,12 +1,14 @@
 PODS:
   - Alamofire (4.7.3)
+  - AMScrollingNavbar (5.0.3)
   - ChameleonFramework/Default (2.1.0)
   - ChameleonFramework/Swift (2.1.0):
     - ChameleonFramework/Default
-  - FSPagerView (0.7.1)
-  - IQKeyboardManagerSwift (6.1.0)
+  - FSPagerView (0.7.2)
+  - IQKeyboardManagerSwift (6.1.1)
   - KeychainSwift (10.0.0)
-  - ModelMapper (8.0.0)
+  - Kingfisher (4.10.1)
+  - ModelMapper (8.1.0)
   - Moya (11.0.2):
     - Moya/Core (= 11.0.2)
   - Moya-ModelMapper (7.1.0):
@@ -21,25 +23,44 @@ PODS:
   - youtube-ios-player-helper (0.1.6)
 
 DEPENDENCIES:
+  - AMScrollingNavbar
   - ChameleonFramework/Swift
   - FSPagerView
   - IQKeyboardManagerSwift
   - KeychainSwift (~> 10.0)
+  - Kingfisher
   - Moya-ModelMapper
   - youtube-ios-player-helper
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - AMScrollingNavbar
+    - ChameleonFramework
+    - FSPagerView
+    - IQKeyboardManagerSwift
+    - KeychainSwift
+    - Kingfisher
+    - ModelMapper
+    - Moya
+    - Moya-ModelMapper
+    - Result
+    - youtube-ios-player-helper
+
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  AMScrollingNavbar: eec8b9739bca2f8448cba8a4f2347001d980fa95
   ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
-  FSPagerView: 958aba39684e1573755ddcfcc29f7eebb8413cee
-  IQKeyboardManagerSwift: f5004f5860d9a8ed23a7ef7a156ae168828eb018
+  FSPagerView: 7515f63c424da71623d299d4fbbfb3dd884642ff
+  IQKeyboardManagerSwift: 977affaeb4d6e971975c7790a6850f31d38f1207
   KeychainSwift: f9f7910449a0c0fd2cabc889121530dd2c477c33
-  ModelMapper: a258c5f8e1422e0e826c8265a3e89ae1b329c3a6
+  Kingfisher: c148cd7b47ebde9989f6bc7c27dcaa79d81279a0
+  ModelMapper: 767fab844b495de49f511784c0c705610731127f
   Moya: a725035953bc1c0eb1be505ab903984501d82440
   Moya-ModelMapper: 35209257d9e886cedf91289559a41723f5fbd095
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 37300b2e63c524b44e7fec4dc4b1c2c649fcb2a9
+PODFILE CHECKSUM: c9dbb072f712179bdea130b6a2a9351556fa3d2e
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.6.0.beta.2

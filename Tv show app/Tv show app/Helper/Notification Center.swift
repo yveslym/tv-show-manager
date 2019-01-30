@@ -9,6 +9,8 @@
 import Foundation
 import UserNotifications
 import KeychainSwift
+
+
 struct Notification{
     static func checkFavoriteAiringTV(completion:@escaping([TVSHow]?)-> Void){
       
@@ -29,18 +31,18 @@ struct Notification{
                     manager.tvShowDetails(id: $0, completionHandler: { (tvshow) in
                         
                         // check if the airing date is today for each favorite tv show
+
+                        guard let tvshow = tvshow else {return}
                         let manager = TVSHowManager()
                         
-                        let airingEpisode = manager.nextEpisode((tvshow?.seasons)!, lastAiringDate: (tvshow?.lastAirDate)!)
-                        
-                        
-//                        if Date.dayLeft(day: (airingEpisode?.airedDate?.toDate())!).day == 0{
-//                            tvShow.append(tvshow!)
-//                             print(tvshow?.name! ?? " no name ", " airing tonight")
-//                        }
-//                        else{
-//                            print(tvshow?.name! ?? " no name ", " NO")
-//                        }
+                        let airingEpisode = manager.nextEpisode(tvshow)
+                        if let airingDate = airingEpisode?.airedDate?.toDate(){
+                            let day = Date.dayLeft(day: airingDate).day
+                            if day == 0{
+                                tvShow.append(tvshow)
+                            }
+                        }
+
                         dg.leave()
                     })
                 }
@@ -52,9 +54,10 @@ struct Notification{
     }
 }
     
-    static func generateNotification(){
+    static func generateNotification() {
         
         let center = UNUserNotificationCenter.current()
+
         center.removeAllPendingNotificationRequests()
         
         Notification.checkFavoriteAiringTV { (tvshow) in

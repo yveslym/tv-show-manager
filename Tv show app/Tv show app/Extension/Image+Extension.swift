@@ -174,5 +174,18 @@ extension UIButton {
         self.layer.cornerRadius = CGFloat(cornerRadius)
         self.clipsToBounds = true
     }
+    
 }
+
+extension UIImageView{
+    func roundView(){
+        //layer.masksToBounds = true
+        layer.shadowColor = UIColor.gray.cgColor
+        layer.shadowOpacity = 1
+        layer.shadowRadius = 5
+        
+    }
+}
+
+
 

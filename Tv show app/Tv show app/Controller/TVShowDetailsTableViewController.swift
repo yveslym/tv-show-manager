@@ -68,7 +68,6 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
                 if !self.seasonImage.isEmpty && self.tvShowSeasonsView != nil {
                       self.tvShowSeasonsView.reloadData()
                 }
-                
             }
         }
     }
@@ -82,6 +81,11 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
         }
     }
     
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        // self.navigationController?.isNavigationBarHidden = false
+    }
     
     // Mark: IBOUtlet
     
@@ -103,6 +107,13 @@ class TVShowDetailsTableViewController: UITableViewController, FSPagerViewDelega
     
     
     // Mark: - IBAction
+    @IBAction func returnButtonTapped(_ sender: UIButton) {
+       self.navigationController?.popViewController(animated: true)
+    }
+   
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+         self.navigationController?.popViewController(animated: true)
+    }
     
     @IBAction func favoriteButtonTapped(_ sender: UIButton) {
        
@@ -242,18 +253,12 @@ completion: { Void in()  })
     
     override func viewDidAppear(_ animated: Bool) {
         self.getSimilarTV {
-//            DispatchQueue.main.async {
-//                self.similarTVShowView.reloadData()
-//                self.similarTVCell.isHidden = false
-//                ActivitySpinner.spinner.alpha = 0.0
-//                ViewControllerUtils().hideActivityIndicator(uiView: self.view)
-//            }
         }
        
     }
     override func viewWillAppear(_ animated: Bool) {
         let tv = CoreDataStack.instance.fetchRecordsForEntity(.FavoriteTV, inManagedObjectContext: CoreDataStack.instance.viewContext) as! [FavoriteTV]
-        print(tv)
+         self.navigationController?.isNavigationBarHidden = true
     }
     
     func getSimilarTV(completion: ()->()){
@@ -337,6 +342,7 @@ completion: { Void in()  })
         switch pagerView.tag{
         case 1:
             if self.tvShow.seasons == nil{return 0}
+                
             else{return (self.tvShow.seasons?.count)!}
         case 2:
             return self.similarTV.count
@@ -358,11 +364,7 @@ completion: { Void in()  })
              //cell.textLabel?.text =  self.similarTVName[index]
              cell.imageView?.image = self.similarImage[index]
              
-//             if self.similarTV.indices.contains(index-1){
-//             self.similarTVTitleLabel.text = self.similarTV[index-1].name
-//             }else{
-//                self.similarTVTitleLabel.text = self.similarTV[1].name
-//             }
+
             return cell
         default:
             let cell = pagerView.dequeueReusableCell(withReuseIdentifier: "cell", at: index)
@@ -385,5 +387,6 @@ completion: { Void in()  })
         default: print("sorry pal")
         }
     }
+
 }
 

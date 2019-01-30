@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import Foundation
 import FSPagerView
 import UserNotifications
 import KeychainSwift
 import ChameleonFramework
-//mport NVActivityIndicatorView
+import AMScrollingNavbar
+
 
 
 
@@ -93,7 +95,7 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
     
     
     
-    //function toget top rated tv
+    //function to get top rated tv
     func getTopRated(completion:@escaping()->()){
         DispatchQueue.global().async {
          let manager = TVSHowManager()
@@ -116,7 +118,7 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
                 self.airingTV = tvshow
                 Helpers.downloadImage(tvShow: tvshow, completion: { (images) in
                     self.airingImage = images
-                     completion()
+                    return completion()
                 })
             }
         }
@@ -128,7 +130,7 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
                 self.discoverTV = tvshow
                 Helpers.downloadImage(tvShow: tvshow, completion: { (images) in
                     self.discoverImage = images
-                     completion()
+                   return completion()
                 })
             }
         }
@@ -180,16 +182,7 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
     }
     
     @objc private func refresfavoriteTV(_ sender: Any) {
-        // Fetch Weather Data
-        
        
-        
-//        self.getfavoriteTV {
-//            DispatchQueue.main.async {
-//                self.tableView.reloadData()
-//                self.refreshControl.endRefreshing()
-//            }
-//        }
     }
     
     // - MARK: VIEW CONTROLLER LIFE CYCLE
@@ -209,14 +202,28 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         }
     }
     func setupBarColor(color: UIColor){
-        self.navigationController?.navigationBar.barTintColor = color
+        //self.navigationController?.navigationBar.barTintColor = color
+        
+        
+
         self.tabBarController?.tabBar.tintColor = UIColor.flatWhite()
         self.tabBarController?.tabBar.barTintColor = color
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.setupBarColor(color: UIColor.flatBlueColorDark())
+        if let navigationController = navigationController as? ScrollingNavigationController {
+            navigationController.followScrollView(tableView, delay: 5.0)
+        }
     }
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        if let navigationController = navigationController as? ScrollingNavigationController {
+            navigationController.stopFollowingScrollView()
+        }
+    }
+    
     func createGradient()-> UIColor{
         var colors = [UIColor]()
         for _ in 0 ... 2{
@@ -237,25 +244,24 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+//        let height: CGFloat = 200 //whatever height you want to add to the existing height
+//        let bounds = self.navigationController!.navigationBar.bounds
+//        self.navigationController?.navigationBar.frame = CGRect(x: 0, y: 0, width: bounds.width, height: bounds.height + height)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
        
         
         self.waitView = UIView(frame: self.view.frame)
       
-//        self.waitView2 =  UIView(frame: self.view.frame)
-//        self.waitView3 =  UIView(frame: self.view.frame)
+
         self.blankView = UIView(frame: self.view.frame)
         self.waitView.tag = 100
-//         self.waitView2.tag = 100
-//         self.waitView3.tag = 100
+
         self.blankView.tag = 100
-        
-       // self.waitView.getRandomColor(alpha: CGFloat( 0.2))
-//        self.waitView2.getRandomColor(alpha: CGFloat( 0.2))
-//        self.waitView3.getRandomColor(alpha: CGFloat( 0.3))
-//        let bg = UIImageView(frame: self.view.frame)
- //       bg.image = UIImage(named: "b1")
+
         self.blankView.backgroundColor = UIColor.flatWhite()
         
         self.delegate = self
@@ -279,19 +285,19 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         
         //configure topRated view
         self.topRatedView.transformer = FSPagerViewTransformer(type: .linear)
-        topRatedView.itemSize = CGSize(width: 180, height: 180)
+        topRatedView.itemSize = CGSize(width: 150, height: 150)
         topRatedView.isInfinite = true
         topRatedView.interitemSpacing = 5
         
         //configure airing view
         self.popularView.transformer = FSPagerViewTransformer(type: .linear)
-        popularView.itemSize = CGSize(width: 180, height: 180)
+        popularView.itemSize = CGSize(width: 150, height: 150)
         popularView.isInfinite = true
         popularView.interitemSpacing = 15
         
         //configure discover view
         self.discoverTVView.transformer = FSPagerViewTransformer(type: .linear)
-        discoverTVView.itemSize = CGSize(width: 180, height: 180)
+        discoverTVView.itemSize = CGSize(width: 150, height: 150)
         discoverTVView.isInfinite = true
         discoverTVView.interitemSpacing = 25
         
@@ -302,13 +308,7 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-    
-       
-//        self.view.addSubview(self.waitView2)
-//        self.view.addSubview(self.waitView3)
-//        self.waitView.getRandomColor(alpha: CGFloat( 0.2))
-//        self.waitView2.getRandomColor(alpha: CGFloat( 0.4))
-//        self.waitView3.getRandomColor(alpha: CGFloat( 0.3))
+
         _ = DispatchQueue(label: "yveslym", qos: .background, attributes: .concurrent, autoreleaseFrequency: .inherit, target: DispatchQueue.global())
         
        
@@ -326,6 +326,7 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
             
             self.getAiringToday {
                 DispatchQueue.main.async {
+                    self.airingView.reloadData()
                     UIView.animate(withDuration: 3, animations: {
                        // self.view.addSubview(self.waitView3)
                     })
@@ -334,7 +335,7 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
                 self.getDiscoverTV {
                    
                     DispatchQueue.main.async {
-                        self.airingView.reloadData()
+
                         self.discoverTVView.reloadData()
                         
                        // self.view.willRemoveSubview(self.waitView)
@@ -475,5 +476,36 @@ class MainTableViewController: UITableViewController, FSPagerViewDelegate, FSPag
         pagerView.layer.shadowColor = UIColor.blue.cgColor
         pagerView.backgroundView?.layer.shadowColor = UIColor.blue.cgColor
     }
+    
+//
+//    override func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+//
+//        if(velocity.y>0) {
+//            //Code will work without the animation block.I am using animation block incase if you want to set any delay to it.
+//            UIView.animate(withDuration: 2.5, delay: 0, options: UIViewAnimationOptions(), animations: {
+//                self.navigationController?.setNavigationBarHidden(true, animated: true)
+//                self.navigationController?.setToolbarHidden(true, animated: true)
+//                print("Hide")
+//            }, completion: nil)
+//
+//        } else {
+//            UIView.animate(withDuration: 2.5, delay: 0, options: UIViewAnimationOptions(), animations: {
+//                self.navigationController?.setNavigationBarHidden(false, animated: true)
+//                self.navigationController?.setToolbarHidden(false, animated: true)
+//                print("Unhide")
+//            }, completion: nil)
+//        }
+//    }
+//
+    
+    
+}
+
+class TTNavigationBar: UINavigationBar {
+    
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        return CGSize(width: UIScreen.main.bounds.width, height: 100)
+    }
+    
 }
 

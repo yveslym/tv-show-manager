@@ -40,7 +40,7 @@ extension FavoriteTV{
          self.init(entity: entity, insertInto: context)
     
         let manager = TVSHowManager()
-        let airingEpisode = manager.nextEpisode(tvshow.seasons!, lastAiringDate: tvshow.lastAirDate!)
+        let airingEpisode = manager.nextEpisode(tvshow)
         
         if airingEpisode != nil{
             self.episodeNumber = Int16(airingEpisode?.episodeNumber! ?? 0)

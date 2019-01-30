@@ -69,8 +69,8 @@
 		20CFE61B200773C400876855 /* TVShowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CFE61A200773C300876855 /* TVShowManager.swift */; };
 		20CFE61D2007753000876855 /* TVShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CFE61C2007753000876855 /* TVShow.swift */; };
 		20CFE61F2007754600876855 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20CFE61E2007754600876855 /* Episode.swift */; };
-		3DC202475EE82B0D93C8412A /* Pods_Networking_Favorite_TV_Show.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59D422D74785B499F2275C14 /* Pods_Networking_Favorite_TV_Show.framework */; };
 		A15D24A747D86DDF82AA7E90 /* Pods_Networking_Tv_show_app.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39BB066C28A1F65CDA90C577 /* Pods_Networking_Tv_show_app.framework */; };
+		AE95F64D4FBB0CCEBBB73666 /* Pods_Networking_Favorite_TV_Show.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 59D422D74785B499F2275C14 /* Pods_Networking_Favorite_TV_Show.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,11 +147,11 @@
 		20CFE61C2007753000876855 /* TVShow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TVShow.swift; sourceTree = "<group>"; };
 		20CFE61E2007754600876855 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		39BB066C28A1F65CDA90C577 /* Pods_Networking_Tv_show_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Networking_Tv_show_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		575565233C3D1D4899B21ED8 /* Pods-Networking-Favorite TV Show.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Networking-Favorite TV Show.release.xcconfig"; path = "Pods/Target Support Files/Pods-Networking-Favorite TV Show/Pods-Networking-Favorite TV Show.release.xcconfig"; sourceTree = "<group>"; };
 		59D422D74785B499F2275C14 /* Pods_Networking_Favorite_TV_Show.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Networking_Favorite_TV_Show.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		780AF5D45FA0DEC52967981F /* Pods-Networking-Tv show app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Networking-Tv show app.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Networking-Tv show app/Pods-Networking-Tv show app.debug.xcconfig"; sourceTree = "<group>"; };
 		92385F171C63B5AA3AA52898 /* Pods-Networking-Tv show app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Networking-Tv show app.release.xcconfig"; path = "Pods/Target Support Files/Pods-Networking-Tv show app/Pods-Networking-Tv show app.release.xcconfig"; sourceTree = "<group>"; };
-		BDD0169DC45E50F883165CF7 /* Pods-Networking-Favorite TV Show.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Networking-Favorite TV Show.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Networking-Favorite TV Show/Pods-Networking-Favorite TV Show.debug.xcconfig"; sourceTree = "<group>"; };
+		9EE2EADA56E1CBC05AB7BE01 /* Pods-Networking-Favorite TV Show.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Networking-Favorite TV Show.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Networking-Favorite TV Show/Pods-Networking-Favorite TV Show.debug.xcconfig"; sourceTree = "<group>"; };
+		EBD10C373EE0B150EB99216A /* Pods-Networking-Favorite TV Show.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Networking-Favorite TV Show.release.xcconfig"; path = "Pods/Target Support Files/Pods-Networking-Favorite TV Show/Pods-Networking-Favorite TV Show.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,7 +160,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				200D12EA20C082270075E1F8 /* NotificationCenter.framework in Frameworks */,
-				3DC202475EE82B0D93C8412A /* Pods_Networking_Favorite_TV_Show.framework in Frameworks */,
+				AE95F64D4FBB0CCEBBB73666 /* Pods_Networking_Favorite_TV_Show.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -347,10 +347,10 @@
 		79866FB2E86D18503473A669 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				BDD0169DC45E50F883165CF7 /* Pods-Networking-Favorite TV Show.debug.xcconfig */,
-				575565233C3D1D4899B21ED8 /* Pods-Networking-Favorite TV Show.release.xcconfig */,
 				780AF5D45FA0DEC52967981F /* Pods-Networking-Tv show app.debug.xcconfig */,
 				92385F171C63B5AA3AA52898 /* Pods-Networking-Tv show app.release.xcconfig */,
+				9EE2EADA56E1CBC05AB7BE01 /* Pods-Networking-Favorite TV Show.debug.xcconfig */,
+				EBD10C373EE0B150EB99216A /* Pods-Networking-Favorite TV Show.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -362,11 +362,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 200D12F720C082270075E1F8 /* Build configuration list for PBXNativeTarget "Favorite TV Show" */;
 			buildPhases = (
-				17C1CE755F0FDEA4FB3F5608 /* [CP] Check Pods Manifest.lock */,
+				F7F282F9BC6A6EA49E6AB7BA /* [CP] Check Pods Manifest.lock */,
 				200D12E420C082260075E1F8 /* Sources */,
 				200D12E520C082260075E1F8 /* Frameworks */,
 				200D12E620C082260075E1F8 /* Resources */,
-				2906AFD2A7E3FA8DCC8E51D1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -387,7 +386,6 @@
 				20CFE5F420054A5B00876855 /* Resources */,
 				200D12F820C082270075E1F8 /* Embed App Extensions */,
 				150220385DFE331AB726F3B3 /* [CP] Embed Pods Frameworks */,
-				5D77A03C46FF3E607E54C477 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -426,6 +424,9 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
 							com.apple.Keychain = {
@@ -482,14 +483,16 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Networking-Tv show app/Pods-Networking-Tv show app-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Networking-Tv show app/Pods-Networking-Tv show app-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/FSPagerView/FSPagerView.framework",
 				"${BUILT_PRODUCTS_DIR}/KeychainSwift/KeychainSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/ModelMapper/Mapper.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya/Moya.framework",
 				"${BUILT_PRODUCTS_DIR}/Moya-ModelMapper/Moya_ModelMapper.framework",
 				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
+				"${BUILT_PRODUCTS_DIR}/AMScrollingNavbar/AMScrollingNavbar.framework",
 				"${BUILT_PRODUCTS_DIR}/ChameleonFramework/ChameleonFramework.framework",
 				"${BUILT_PRODUCTS_DIR}/IQKeyboardManagerSwift/IQKeyboardManagerSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/youtube-ios-player-helper/youtube_ios_player_helper.framework",
@@ -499,65 +502,19 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FSPagerView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/KeychainSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Moya_ModelMapper.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AMScrollingNavbar.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChameleonFramework.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IQKeyboardManagerSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/youtube_ios_player_helper.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Networking-Tv show app/Pods-Networking-Tv show app-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		17C1CE755F0FDEA4FB3F5608 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Networking-Favorite TV Show-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		2906AFD2A7E3FA8DCC8E51D1 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Networking-Favorite TV Show/Pods-Networking-Favorite TV Show-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5D77A03C46FF3E607E54C477 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Networking-Tv show app/Pods-Networking-Tv show app-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Networking-Tv show app/Pods-Networking-Tv show app-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E518C81884BD6AD8261A9794 /* [CP] Check Pods Manifest.lock */ = {
@@ -572,6 +529,24 @@
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Networking-Tv show app-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F7F282F9BC6A6EA49E6AB7BA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Networking-Favorite TV Show-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -691,7 +666,7 @@
 /* Begin XCBuildConfiguration section */
 		200D12F520C082270075E1F8 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BDD0169DC45E50F883165CF7 /* Pods-Networking-Favorite TV Show.debug.xcconfig */;
+			baseConfigurationReference = 9EE2EADA56E1CBC05AB7BE01 /* Pods-Networking-Favorite TV Show.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
@@ -712,7 +687,7 @@
 		};
 		200D12F620C082270075E1F8 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 575565233C3D1D4899B21ED8 /* Pods-Networking-Favorite TV Show.release.xcconfig */;
+			baseConfigurationReference = EBD10C373EE0B150EB99216A /* Pods-Networking-Favorite TV Show.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
