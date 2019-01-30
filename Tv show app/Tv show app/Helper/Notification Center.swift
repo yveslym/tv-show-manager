@@ -31,11 +31,15 @@ struct Notification{
             
                 favoriteTVID.forEach{
                     dg.enter()
-                    manager.tvShowDetails(id: $0, completionHandler: { (tvshow) in
+                    manager.tvShowComplet(tvShowId: $0, completionHandler: { (tvshow, seasons) in
+
+
                         
                         // check if the airing date is today for each favorite tv show
 
-                        guard let tvshow = tvshow else {return}
+                        guard var tvshow = tvshow else {return}
+
+                        tvshow.seasons = seasons
                         let manager = TVSHowManager()
                         
                         let airingEpisode = manager.nextEpisode(tvshow)
@@ -72,9 +76,9 @@ struct Notification{
                 // trigger
                 var dateComponents = DateComponents()
                 
-                dateComponents.hour = 10
+                dateComponents.hour = 11
                 
-                dateComponents.minute = 00
+                dateComponents.minute = 50
                 let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
                 
                 // content
