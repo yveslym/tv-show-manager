@@ -11,7 +11,7 @@ import UserNotifications
 import KeychainSwift
 
 
-struct Notification{
+class Notification: NSObject{
     static func checkFavoriteAiringTV(completion:@escaping([TVSHow]?)-> Void){
       
        // let defaults = UserDefaults.standard
@@ -76,10 +76,10 @@ struct Notification{
                 // trigger
                 var dateComponents = DateComponents()
                 
-                dateComponents.hour = 11
+                dateComponents.hour = 10
                 
-                dateComponents.minute = 55
-                let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+                dateComponents.minute = 00
+                let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: false)
                 
                 // content
                 
@@ -96,6 +96,21 @@ struct Notification{
             }
         }
     }
+}
+
+class customContent: UNMutableNotificationContent{
+    var showId: Int!
+    override init() {
+        super.init()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+}
+extension Notification: UNUserNotificationCenterDelegate{
+
+
 }
 
 

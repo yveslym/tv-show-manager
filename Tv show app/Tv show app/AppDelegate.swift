@@ -14,7 +14,7 @@ import ChameleonFramework
  import YoutubeKit
  
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
 
@@ -24,11 +24,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       
       
         
-        //IQKeyboardManager.sharedManager().enable = true
-        IQKeyboardManager.shared.enable = true
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge]) { (permitionGranted, error) in
 
-            Notification.generateNotification()
+        IQKeyboardManager.shared.enable = true
+
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.delegate = self
+
+        let options: UNAuthorizationOptions = [.alert, .sound, .badge]
+
+        notificationCenter.requestAuthorization(options: options) {
+            (didAllow, error) in
+            if didAllow {
+                Notification.generateNotification()
+            }
         }
         let keychain = KeychainSwift()
 
@@ -79,6 +87,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("here")
+        
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        print("here...")
+    }
 
 }
 
