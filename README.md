@@ -2,6 +2,8 @@
 
 # ShowBix
 
+![](https://i.imgur.com/1S9Y3vi.png)
+
 ShowBix is an iOS app that allowed users to get notification when their favorite tv show is airing.
 
 ## Project Built with
@@ -24,7 +26,8 @@ ShowBix is an iOS app that allowed users to get notification when their favorite
 
 | ![](https://i.imgur.com/A5dGF88.jpg) | ![](https://i.imgur.com/EishSwr.jpg) | ![](https://i.imgur.com/13DkgJm.jpg) |
 | -------- | -------- | -------- |
-| ![](https://i.imgur.com/9a5gEoI.jpg)    | ![](https://i.imgur.com/AJHVy5l.jpg)   |      |
+| ![](https://i.imgur.com/9a5gEoI.jpg)    | ![](https://i.imgur.com/AJHVy5l.jpg)   | 
+     |
 
 
 
